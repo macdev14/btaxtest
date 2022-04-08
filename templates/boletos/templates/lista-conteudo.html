@@ -1,0 +1,17 @@
+{% load core_tags %}
+{% for tb in templates_boletos %}
+    <tr>
+        <td>
+            {% retorna_id tb as tb_id %}
+            <a href="{% url 'boletos:templates-editar' tb_id %}">{{ tb_id }}</a>
+        </td>
+        <td>{{ tb.descricao }}</td>
+        <td class="text-right">
+            <a href="#" data-url="{% url 'boletos:templates-excluir' tb_id %}" class="btn-excluir"><i class="fas fa-trash"></i></a>
+        </td>
+    </tr>
+{% empty %}
+    <tr>
+        <td colspan="4" class="text-center">Nenhum template encontrado</td>
+    </tr>
+{% endfor %}

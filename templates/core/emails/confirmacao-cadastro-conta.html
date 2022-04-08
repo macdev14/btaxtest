@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmação de Cadastro Bitrix24.tax</title>
+</head>
+<body>
+    <h1>Olá {{ nome }}</h1>
+    <p>Sua conta foi criada com sucesso no Bitrix24.tax</p>
+    <p>Acesse o link abaixo para criar uma senha e ter acesso à plataforma.</p>
+    <a href="{% url 'autenticacao:criar-senha' usuario_id %}">Clique aqui</a>
+    
+</body>
+</html>

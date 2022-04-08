@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contas{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'vendor/sweetalert2/dist/sweetalert2.min.css' %}">
+{% endblock %}
+
+{% block page_title %}Contas{% endblock %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'core:home' %}"><i class="fas fa-home"></i></a></li>
+    <li class="breadcrumb-item active" aria-current="page">Contas</a></li>
+{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-header border-0">
+        <div class="row">
+            <div class="col-6">
+                <h3>Contas</h3>
+            </div>
+            <div class="col-6 text-right">
+                <a href="{% url 'core:contas-novo' %}" class="btn btn-primary">Novo</a>
+            </div>
+        </div>
+    </div>
+    <div id="tb-contas" class="table-responsive">
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th>Nome</th>
+                    <th>Razão Social</th>
+                    <th>Tipo</th>
+                    <th>Token API</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% include 'core/contas-lista-conteudo.html' %}
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer"></div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $('#tb-contas').on('click', '.btn-excluir', function(e){
+        e.preventDefault();
+        let btn = $(this);
+        Swal.fire({
+            title: 'Confirmar exclusão?',
+            text: 'Isso irá remover a conta!',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#5E72E4',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim, quero excluir!',
+            cancelButtonText: 'Não!'
+        }).then((result) => {
+            if(result.value) {
+                $.ajax({
+                    url: btn.data('url'),
+                    type: 'get',
+                    success: (data) => {
+                        $('#tb-contas tbody').html(data.html_lista);
+                        Swal.fire(
+                            'Feito!',
+                            'Conta excluída com sucesso!',
+                            'success'
+                        );
+                    },
+                    error: () => {
+                        Swal.fire(
+                            'Ops!',
+                            'Houve um erro ao tentar excluir a conta.',
+                            'error'
+                        );
+                    }
+                })
+            }
+        })
+    })
+    $('#tb-contas').on('click', '.btn-atualiza-token', function(e){
+        e.preventDefault();
+        let btn = $(this);
+        Swal.fire({
+            title: 'Confirmar atualização?',
+            text: 'Será gerado um novo token para essa conta!',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#5E72E4',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim, quero gerar!',
+            cancelButtonText: 'Não!'
+        }).then((result) => {
+            if(result.value) {
+                $.ajax({
+                    url: btn.data('url'),
+                    type: 'get',
+                    success: (data) => {
+                        $('#tb-contas tbody').html(data.html_lista);
+                        Swal.fire(
+                            'Feito!',
+                            'Novo token criado com sucesso!',
+                            'success'
+                        );
+                    },
+                    error: () => {
+                        Swal.fire(
+                            'Ops!',
+                            'Houve um erro ao tentar criar novo token.',
+                            'error'
+                        );
+                    }
+                })
+            }
+        })
+    })
+</script>
+{% endblock %}

@@ -1,0 +1,589 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Serviços{% endblock %}
+
+{% block page_title %}Cadastro de Serviços{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'core:home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item"><a href="{% url 'core:servicos' %}">Serviços</a></li>
+<li class="breadcrumb-item active" aria-current="page">Cadastro</a></li>
+{% endblock %}
+{% block content %}
+<form action="" method="post" novalidate>
+    {% csrf_token %}
+    {% for hidden in servico_form.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+    <div class="card">
+        <div class="card-header">
+            <h3>Cadastro de Serviço</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-3">
+                    <div class="form-group">
+                        {{ servico_form.codigo.label_tag }}
+                        {{ servico_form.codigo }}
+                        {% for error in servico_form.codigo.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <div class="form-group">
+                        {{ servico_form.id_integracao.label_tag }}
+                        <a href="#" data-toggle="tooltip" title="{{ servico_form.id_integracao.help_text }}"><i class="far fa-question-circle ml-2"></i></a>
+                        {{ servico_form.id_integracao }}
+                        {% for error in servico_form.id_integracao.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-3">
+                    <div class="form-group">
+                        <label for="{{ servidor_form.tributos_federais_retidos.auto_id }}">
+                            {{ servico_form.tributos_federais_retidos.label }}
+                        </label>
+                        <label class="custom-toggle">
+                            {{ servico_form.tributos_federais_retidos }}
+                            <span class="custom-toggle-slider rounded-circle"></span>
+                        </label>
+                        {% for error in servico_form.tributos_federais_retidos.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ servidor_form.tributavel.auto_id }}">
+                            {{ servico_form.tributavel.label }}
+                        </label>
+                        <label class="custom-toggle">
+                            {{ servico_form.tributavel }}
+                            <span class="custom-toggle-slider rounded-circle"></span>
+                        </label>
+                        {% for error in servico_form.tributavel.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        {{ servico_form.discriminacao.label_tag }}
+                        {{ servico_form.discriminacao }}
+                        {% for error in servico_form.discriminacao.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-3">
+                    <div class="form-group">
+                        {{ servico_form.codigo_tributacao.label_tag }}
+                        {{ servico_form.codigo_tributacao }}
+                        {% for error in servico_form.codigo_tributacao.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-3">
+                    <div class="form-group">
+                        {{ servico_form.cnae.label_tag }}
+                        {{ servico_form.cnae }}
+                        {% for error in servico_form.cnae.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-3">
+                    <div class="form-group">
+                        {{ servico_form.codigo_cidade_incidencia.label_tag }}
+                        {{ servico_form.codigo_cidade_incidencia }}
+                        {% for error in servico_form.codigo_cidade_incidencia.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-3">
+                    <div class="form-group">
+                        {{ servico_form.descricao_cidade_incidencia.label_tag }}
+                        {{ servico_form.descricao_cidade_incidencia }}
+                        {% for error in servico_form.descricao_cidade_incidencia.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-4">
+                    <div class="form-group">
+                        {{ servico_form.unidade.label_tag }}
+                        {{ servico_form.unidade }}
+                        {% for error in servico_form.unidade.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-4">
+                    <div class="form-group">
+                        {{ servico_form.quantidade.label_tag }}
+                        {{ servico_form.quantidade }}
+                        {% for error in servico_form.quantidade.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-4">
+                    <div class="form-group">
+                        {{ servico_form.responsavel_retencao.label_tag }}
+                        {{ servico_form.responsavel_retencao }}
+                        {% for error in servico_form.responsavel_retencao.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3>ISS</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        {{ servico_form.iss_tipo_tributacao.label_tag }}
+                        {{ servico_form.iss_tipo_tributacao }}
+                        {% for error in servico_form.iss_tipo_tributacao.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ servico_form.iss_exigibilidade.label_tag }}
+                        {{ servico_form.iss_exigibilidade }}
+                        {% for error in servico_form.iss_exigibilidade.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ servico_form.iss_retido.auto_id }}">{{ servico_form.iss_retido.label }}</label>
+                        <label class="custom-toggle ml-2">
+                            {{ servico_form.iss_retido }}
+                            <span class="custom-toggle-slider rounded-circle"></span>
+                        </label>
+                        {% for error in servico_form.iss_retido.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ servico_form.iss_aliquota.label_tag }}
+                        {{ servico_form.iss_aliquota }}
+                        {% for error in servico_form.iss_aliquota.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ servico_form.iss_valor.label_tag }}
+                        {{ servico_form.iss_valor }}
+                        {% for error in servico_form.iss_valor.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ servico_form.iss_valor_retido.label_tag }}
+                        {{ servico_form.iss_valor_retido }}
+                        {% for error in servico_form.iss_valor_retido.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ servico_form.iss_processo_suspensao.label_tag }}
+                        {{ servico_form.iss_processo_suspensao }}
+                        {% for error in servico_form.iss_processo_suspensao.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3>Dedução</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        {{ servico_form.deducao_tipo.label_tag }}
+                        {{ servico_form.deducao_tipo }}
+                        {% for error in servico_form.deducao_tipo.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ servico_form.deducao_descricao.label_tag }}
+                        {{ servico_form.deducao_descricao }}
+                        {% for error in servico_form.deducao_descricao.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Obra</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        {{ servico_form.obra_art.label_tag }}
+                        {{ servico_form.obra_art }}
+                        {% for error in servico_form.obra_art.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ servico_form.obra_codigo.label_tag }}
+                        {{ servico_form.obra_codigo }}
+                        {% for error in servico_form.obra_codigo.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ servico_form.obra_cei.label_tag }}
+                        {{ servico_form.obra_cei }}
+                        {% for error in servico_form.obra_cei.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3>Valor</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        {{ servico_form.valor_servico.label_tag }}
+                        {{ servico_form.valor_servico }}
+                        {% for error in servico_form.valor_servico.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ servico_form.valor_base_calculo.label_tag }}
+                        {{ servico_form.valor_base_calculo }}
+                        {% for error in servico_form.valor_base_calculo.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ servico_form.valor_deducoes.label_tag }}
+                        {{ servico_form.valor_deducoes }}
+                        {% for error in servico_form.valor_deducoes.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ servico_form.valor_desconto_condicionado.label_tag }}
+                        {{ servico_form.valor_desconto_condicionado }}
+                        {% for error in servico_form.valor_desconto_condicionado.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ servico_form.valor_desconto_incondicionado.label_tag }}
+                        {{ servico_form.valor_desconto_incondicionado }}
+                        {% for error in servico_form.valor_desconto_incondicionado.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ servico_form.valor_liquido.label_tag }}
+                        {{ servico_form.valor_liquido }}
+                        {% for error in servico_form.valor_liquido.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ servico_form.valor_unitario.label_tag }}
+                        {{ servico_form.valor_unitario }}
+                        {% for error in servico_form.valor_unitario.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ servico_form.valor_aproximado_tributos.label_tag }}
+                        {{ servico_form.valor_aproximado_tributos }}
+                        {% for error in servico_form.valor_aproximado_tributos.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3>IBPT</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <h4>Detalhado</h4>
+                    <div class="form-group">
+                        {{ servico_form.ibpt_detalhado_aliquota_municipal.label_tag }}
+                        {{ servico_form.ibpt_detalhado_aliquota_municipal }}
+                        {% for error in servico_form.ibpt_detalhado_aliquota_municipal.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ servico_form.ibpt_detalhado_aliquota_estadual.label_tag }}
+                        {{ servico_form.ibpt_detalhado_aliquota_estadual }}
+                        {% for error in servico_form.ibpt_detalhado_aliquota_estadual.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ servico_form.ibpt_detalhado_aliquota_federal.label_tag }}
+                        {{ servico_form.ibpt_detalhado_aliquota_federal }}
+                        {% for error in servico_form.ibpt_detalhado_aliquota_federal.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <h4>Simplificado</h4>
+                    <div class="form-group">
+                        {{ servico_form.ibpt_simplificado_aliquota.label_tag }}
+                        {{ servico_form.ibpt_simplificado_aliquota }}
+                        {% for error in servico_form.ibpt_simplificado_aliquota.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h2 class="mb-3">Retenção</h2>
+    <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h3>PIS</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        {{ servico_form.retencao_pis_base_calculo.label_tag }}
+                        {{ servico_form.retencao_pis_base_calculo }}
+                        {% for error in servico_form.retencao_pis_base_calculo.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ servico_form.retencao_pis_aliquota.label_tag }}
+                        {{ servico_form.retencao_pis_aliquota }}
+                        {% for error in servico_form.retencao_pis_aliquota.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ servico_form.retencao_pis_valor.label_tag }}
+                        {{ servico_form.retencao_pis_valor }}
+                        {% for error in servico_form.retencao_pis_valor.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ servico_form.retencao_pis_cst.label_tag }}
+                        {{ servico_form.retencao_pis_cst }}
+                        {% for error in servico_form.retencao_pis_cst.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h3>COFINS</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        {{ servico_form.retencao_cofins_base_calculo.label_tag }}
+                        {{ servico_form.retencao_cofins_base_calculo }}
+                        {% for error in servico_form.retencao_cofins_base_calculo.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ servico_form.retencao_cofins_aliquota.label_tag }}
+                        {{ servico_form.retencao_cofins_aliquota }}
+                        {% for error in servico_form.retencao_cofins_aliquota.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ servico_form.retencao_cofins_valor.label_tag }}
+                        {{ servico_form.retencao_cofins_valor }}
+                        {% for error in servico_form.retencao_cofins_valor.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ servico_form.retencao_cofins_cst.label_tag }}
+                        {{ servico_form.retencao_cofins_cst }}
+                        {% for error in servico_form.retencao_cofins_cst.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-sm-12 col-md-6 col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h3>INSS</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        {{ servico_form.retencao_inss_aliquota.label_tag }}
+                        {{ servico_form.retencao_inss_aliquota }}
+                        {% for error in servico_form.retencao_inss_aliquota.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ servico_form.retencao_inss_valor.label_tag }}
+                        {{ servico_form.retencao_inss_valor }}
+                        {% for error in servico_form.retencao_inss_valor.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3>Outras Retenções</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        {{ servico_form.retencao_outras_retencoes.label_tag }}
+                        {{ servico_form.retencao_outras_retencoes }}
+                        {% for error in servico_form.retencao_outras_retencoes.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h3>IRRF</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        {{ servico_form.retencao_irrf_aliquota.label_tag }}
+                        {{ servico_form.retencao_irrf_aliquota }}
+                        {% for error in servico_form.retencao_irrf_aliquota.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ servico_form.retencao_irrf_valor.label_tag }}
+                        {{ servico_form.retencao_irrf_valor }}
+                        {% for error in servico_form.retencao_irrf_valor.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h3>CPP</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        {{ servico_form.retencao_cpp_aliquota.label_tag }}
+                        {{ servico_form.retencao_cpp_aliquota }}
+                        {% for error in servico_form.retencao_cpp_aliquota.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ servico_form.retencao_cpp_valor.label_tag }}
+                        {{ servico_form.retencao_cpp_valor }}
+                        {% for error in servico_form.retencao_cpp_valor.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h3>CSLL</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        {{ servico_form.retencao_csll_aliquota.label_tag }}
+                        {{ servico_form.retencao_csll_aliquota }}
+                        {% for error in servico_form.retencao_csll_aliquota.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ servico_form.retencao_csll_valor.label_tag }}
+                        {{ servico_form.retencao_csll_valor }}
+                        {% for error in servico_form.retencao_csll_valor.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <div class="card">
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-6">
+                    <a href="{% url 'core:servicos' %}" class="btn btn-default">Voltar</a>
+                </div>
+                <div class="col-6 text-right">
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+{% block extra_js %}
+<script>
+    $('#{{servico_form.codigo_cidade_incidencia.auto_id }}').on('blur', function(){
+        let codigo = $(this).val();
+        console.log('tamanho do codigo ' + codigo.length)
+        let campo_nome_cidade = $('#{{ servico_form.descricao_cidade_incidencia.auto_id }}');
+        if(codigo.length == 7){
+            $.ajax({
+                url: `https://servicodados.ibge.gov.br/api/v1/localidades/municipios/${codigo}`,
+                type: 'get',
+                beforeSend: () => campo_nome_cidade.prop('disabled', true),
+                success: (data) => {
+                    if(data.length !== []){
+                        campo_nome_cidade.val(data.nome);
+                    }
+                },
+                complete: () => campo_nome_cidade.prop('disabled', false)
+            })
+        }
+    })
+</script>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Serviços{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'vendor/sweetalert2/dist/sweetalert2.min.css' %}">
+{% endblock %}
+
+{% block page_title %}Serviços{% endblock %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'core:home' %}"><i class="fas fa-home"></i></a></li>
+    <li class="breadcrumb-item active" aria-current="page">Serviços</a></li>
+{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-header border-0">
+        <div class="row">
+            <div class="col-6">
+                <h3>Serviços</h3>
+            </div>
+            <div class="col-6 text-right">
+                <a href="{% url 'core:servicos-novo' %}" class="btn btn-primary">Novo</a>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table id="tb-servicos" class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th>Discriminacao</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% include 'core/cliente/servicos-lista-conteudo.html' %}
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer"></div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $('#tb-servicos').on('click', '.btn-excluir', function(e){
+        e.preventDefault();
+        let btn = $(this);
+        Swal.fire({
+            title: 'Confirmar exclusão?',
+            text: 'Isso irá excluir o serviço!',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#5E72E4',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim, quero excluir!',
+            cancelButtonText: 'Não!'
+        }).then((result) => {
+            if(result.value) {
+                $.ajax({
+                    url: btn.data('url'),
+                    type: 'get',
+                    success: (data) => {
+                        $('#tb-servicos tbody').html(data.html_lista);
+                        Swal.fire(
+                            'Feito!',
+                            'Serviço excluído com sucesso!',
+                            'success'
+                        );
+                    },
+                    error: () => {
+                        Swal.fire(
+                            'Ops!',
+                            'Houve um erro ao tentar excluir o serviço.',
+                            'error'
+                        );
+                    }
+                })
+            }
+        })
+    })
+</script>
+{% endblock %}
