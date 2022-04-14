@@ -24,8 +24,7 @@ from .models_mongodb import ServicoMongo, mongo_to_dict
 from pybitrix24 import Bitrix24
 from pybitrix import PyBitrix
 
-#remoto:
-bx24 = Bitrix24('beytrix.bitrix24.com.br', 'local.62542020d85557.44615100', '8MlsoRMTipPgHzU5ejSfGC6WZWxGm8Cik7nSHaBsLL1V5syQ2')
+
  
 # Local: 
 # bx24 = Bitrix24('beytrix.bitrix24.com.br', 'local.625425573ccf01.19175085', 'QLwJT6k15YjxJX085UWCOFaqrs4JrQaNKnhhmtu3M3Djg2klcy' )
@@ -34,9 +33,19 @@ bx24 = Bitrix24('beytrix.bitrix24.com.br', 'local.62542020d85557.44615100', '8Ml
 # http://localhost:8000/?code=0c275462005ad5dd001942f700000318a0ab0798e2b501426e7cd42c5bf6a01bd507e3&state=&domain=beytrix.bitrix24.com.br&member_id=a6356c8a1ad614323f514888ad4f6068&scope=crm&server_domain=oauth.bitrix.info
 print(bx24.build_authorization_url())
 
-client_secret= "QLwJT6k15YjxJX085UWCOFaqrs4JrQaNKnhhmtu3M3Djg2klcy"
-client_id = "local.625425573ccf01.19175085"
+# Local: client_secret= "QLwJT6k15YjxJX085UWCOFaqrs4JrQaNKnhhmtu3M3Djg2klcy"
+#Local: client_id = "local.625425573ccf01.19175085"
+
+# remoto:
+client_id = "local.62542020d85557.44615100"
+
+client_secret = "8MlsoRMTipPgHzU5ejSfGC6WZWxGm8Cik7nSHaBsLL1V5syQ2r"
+
 domain = 'beytrix.bitrix24.com.br'
+
+#remoto:
+bx24 = Bitrix24(domain, client_id, client_secret)
+
 #auth_id = "0c275462005ad5dd001942f700000318a0ab0798e2b501426e7cd42c5bf6a01bd507e3"
 
 data = None
