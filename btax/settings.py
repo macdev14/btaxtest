@@ -29,7 +29,7 @@ DEBUG = os.environ['DEBUG'] if 'DEBUG' in os.environ else False
 
 ALLOWED_HOSTS = os.environ['ALLOWED_HOSTS'].split(' ')
 
-CSRF_TRUSTED_ORIGINS = ['https://beytrix.bitrix24.com.br/']
+
 
 X_FRAME_OPTIONS = 'ALLOWALL'
 
@@ -173,3 +173,4 @@ REST_FRAMEWORK = {
 
 # django-cors-headers
 CORS_ORIGIN_ALLOW_ALL = True
+CSRF_TRUSTED_ORIGINS = ['*']
