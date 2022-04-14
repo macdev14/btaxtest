@@ -173,4 +173,5 @@ REST_FRAMEWORK = {
 
 # django-cors-headers
 CORS_ORIGIN_ALLOW_ALL = True
+CSRF_COOKIE_HTTPONLY = False
 CSRF_TRUSTED_ORIGINS = ['.bitrix24.com.br','https://beytrix.bitrix24.com.br', 'https://beytrix.bitrix24.com.br/', 'https://btaxtest.herokuapp.com/','https://btaxtest.herokuapp.com']
