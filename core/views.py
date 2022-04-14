@@ -31,7 +31,7 @@ from pybitrix import PyBitrix
 # auth_hostname="oauth.bitrix.info"
 # https://beytrix.bitrix24.com.br/oauth/authorize/?client_id=local.625425573ccf01.19175085&response_type=code
 # http://localhost:8000/?code=0c275462005ad5dd001942f700000318a0ab0798e2b501426e7cd42c5bf6a01bd507e3&state=&domain=beytrix.bitrix24.com.br&member_id=a6356c8a1ad614323f514888ad4f6068&scope=crm&server_domain=oauth.bitrix.info
-print(bx24.build_authorization_url())
+
 
 # Local: client_secret= "QLwJT6k15YjxJX085UWCOFaqrs4JrQaNKnhhmtu3M3Djg2klcy"
 #Local: client_id = "local.625425573ccf01.19175085"
@@ -45,7 +45,7 @@ domain = 'beytrix.bitrix24.com.br'
 
 #remoto:
 bx24 = Bitrix24(domain, client_id, client_secret)
-
+print(bx24.build_authorization_url())
 #auth_id = "0c275462005ad5dd001942f700000318a0ab0798e2b501426e7cd42c5bf6a01bd507e3"
 
 data = None
