@@ -7,7 +7,8 @@ from mongodb import querys
 
 def install_robot(token, account_id, bx24, domain="dev.btax24.com"):
     templates_boletos = querys.filtra_objs(TemplateBoleto.COLLECTION_NAME, {'conta_id': str(account_id), 'deletado': False })
-    
+    print('USER TOKEN:')
+    print(token)
     #def dict_append()
     
     
