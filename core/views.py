@@ -93,11 +93,11 @@ def home(request):
     global refresh_token, access_token, code, auth_url, bx24, instalation
    
 
-    # templates_boletos = querys.filtra_objs(TemplateBoleto.COLLECTION_NAME, {'conta_id': str(request.user.profile.conta.id), 'deletado': False })
+    templates_boletos = querys.filtra_objs(TemplateBoleto.COLLECTION_NAME, {'conta_id': str(request.user.profile.conta.id), 'deletado': False })
     
-    # dict_options = {}
-    # for id_boleto in templates_boletos:
-    #     dict_options[ str(id_boleto.get('descricao')) ] = str(id_boleto.get('_id'))
+    dict_options = {}
+    for id_boleto in templates_boletos:
+        dict_options[ str(id_boleto.get('descricao')) ] = str(id_boleto.get('_id'))
 
 
 
@@ -164,10 +164,12 @@ def instalacao_btax(request):
     if (refresh_token is None) and (access_token is None) and (code is None): return redirect(auth_url)
     
     # obter informacoes do usuario caso nao haja redireciona para a pagina principal
-    if not 'result' in bx24.call('user.current'): return redirect('core:home')
+    #if not 'result' in bx24.call('user.current'): return redirect('core:home')
     
     try:
         bitrix24_user = bx24.call('user.current')['result'] 
+        bitrix24_user_tst = bx24.call('user.current')
+        bitrix24_user_tst['result']
     except:
         return redirect('core:home')
     
