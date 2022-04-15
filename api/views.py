@@ -56,6 +56,19 @@ class CobrancaEmitir(APIView):
         print(request.__dict__, flush=True)
         print('POST', flush=True)
         print(request.__dict__, flush=True)
+
+
+        print('DATA:')
+        print(request.data)
+        print('HEADERS')
+        print(request.headers)
+        print('DICT')
+        print(request.__dict__)
+        print('GET')
+        print(request.__dict__)
+        print('POST')
+        print(request.__dict__)
+
         serializer = CobrancaSerializer(conta=request.user.profile.conta, data=request.data)
         if serializer.is_valid():
             cobranca = serializer.save()
