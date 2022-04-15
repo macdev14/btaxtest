@@ -93,11 +93,11 @@ def home(request):
     global refresh_token, access_token, code, auth_url, bx24, instalation
    
 
-    templates_boletos = querys.filtra_objs(TemplateBoleto.COLLECTION_NAME, {'conta_id': str(request.user.profile.conta.id), 'deletado': False })
+    # templates_boletos = querys.filtra_objs(TemplateBoleto.COLLECTION_NAME, {'conta_id': str(request.user.profile.conta.id), 'deletado': False })
     
-    dict_options = {}
-    for id_boleto in templates_boletos:
-        dict_options[ str(id_boleto.get('descricao')) ] = str(id_boleto.get('_id'))
+    # dict_options = {}
+    # for id_boleto in templates_boletos:
+    #     dict_options[ str(id_boleto.get('descricao')) ] = str(id_boleto.get('_id'))
 
 
 
