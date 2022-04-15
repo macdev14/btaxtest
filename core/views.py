@@ -1,5 +1,4 @@
-import json
-from time import sleep
+from .bitrix24 import *
 from bson.objectid import ObjectId
 
 from django.shortcuts import render, reverse, redirect, get_object_or_404
@@ -7,25 +6,24 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, Http40
 from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
 from django.forms import modelformset_factory
-from boletos.models import TemplateBoleto
+
 from rest_framework.authtoken.models import Token
-import requests
+
 from autenticacao.models import User
 from autenticacao import gerador_senha
 from .models import Conta, Profile, Telefone, Empresa
-from .forms import ContasForm, EmpresaForm, EnderecoForm, TelefoneForm
-from .forms import ServicoForm
+from .forms import *
 from .decorators import only_administrators
 from .envia_email import EnviaEmail
-
+from rest_framework.authtoken.models import Token
 from mongodb import querys
 from .models_mongodb import ServicoMongo, mongo_to_dict
 
 from pybitrix24 import Bitrix24
-from pybitrix import PyBitrix
+import schedule
 
 
- 
+
 # Local: 
 # bx24 = Bitrix24('beytrix.bitrix24.com.br', 'local.625425573ccf01.19175085', 'QLwJT6k15YjxJX085UWCOFaqrs4JrQaNKnhhmtu3M3Djg2klcy' )
 # auth_hostname="oauth.bitrix.info"
@@ -33,8 +31,8 @@ from pybitrix import PyBitrix
 # http://localhost:8000/?code=0c275462005ad5dd001942f700000318a0ab0798e2b501426e7cd42c5bf6a01bd507e3&state=&domain=beytrix.bitrix24.com.br&member_id=a6356c8a1ad614323f514888ad4f6068&scope=crm&server_domain=oauth.bitrix.info
 
 
-# Local: client_secret= "QLwJT6k15YjxJX085UWCOFaqrs4JrQaNKnhhmtu3M3Djg2klcy"
-#Local: client_id = "local.625425573ccf01.19175085"
+client_secret_local= "QLwJT6k15YjxJX085UWCOFaqrs4JrQaNKnhhmtu3M3Djg2klcy"
+client_id_local = "local.625425573ccf01.19175085"
 
 # remoto:
 client_id = "local.62542020d85557.44615100"
@@ -44,9 +42,18 @@ client_secret = "8MlsoRMTipPgHzU5ejSfGC6WZWxGm8Cik7nSHaBsLL1V5syQ2r"
 domain = 'beytrix.bitrix24.com.br'
 
 #remoto:
-bx24 = Bitrix24(domain, client_id, client_secret)
+#bx24 = Bitrix24(domain, client_id, client_secret)
+
+#local:
+bx24 = Bitrix24(domain, client_id_local, client_secret_local)
+
+
 print(bx24.build_authorization_url())
 #auth_id = "0c275462005ad5dd001942f700000318a0ab0798e2b501426e7cd42c5bf6a01bd507e3"
+
+
+
+
 
 data = None
 app_id = client_id
@@ -56,374 +63,79 @@ refresh_token = None
 access_token = None
 code = None
 auth_url = bx24.build_authorization_url()
+instalation = False
+
+
+
+def set_tokens(dicts=[]):
+    global access_token, refresh_token
+    print(dicts)
+    
+    access_token = dicts['access_token']
+    refresh_token = dicts['refresh_token']
+    
+
+#scheduler2.every(50).minutes.do(redirect(auth_url))
+def schedule_refresh():
+    def sched_set():
+        set_tokens(bx24.refresh_tokens())
+    schedule.every(1).minutes.do(sched_set)
 
 # ao instalar criar conta no btax -> enviar credenciais para o email de quem instalou
 
 # gerar token adicionar no robot
 
-def test_call(account_id):
-    global b24, bx24, refresh_token
-    print("Inside token: "+str(refresh_token))
-    templates_boletos = querys.filtra_objs(TemplateBoleto.COLLECTION_NAME, {'conta_id': str(account_id), 'deletado': False })
-
- #{"HANDLER_URL": "http://localhost:8000/api/cobrancas/emitir/"}
-    bx24.call('bizproc.robot.delete', {'CODE': 'btax' })
-    add_robo = bx24.call('bizproc.robot.add', {
-
-
-        'CODE': 'btax',
-        'HANDLER': 'https://dev.btax24.com/api/cobrancas/emitir/',
-        'AUTH_USER_ID': '8da64525cfdfa028e0ae651dc41976a29526e6cd',
-        'NAME': 'Btax',
-
-        'PROPERTIES':{
-           
-              'template_boleto_id': {
-                    'Name': 'Template de Boleto Cadastrado',
-                    'Type': 'select',
-                    'Options': {
-                        '618315f0358ffd0721aeaebd': 'Template 1',
-                        '': 'Template 2'
-                    },
-                    'Default': '618315f0358ffd0721aeaebd'
-                },
-
-                'sacado_cpf_cnpj': {
-                    'Name': 'CPF ou CNPJ do Sacado',
-                    'Type': 'string',
-                    #'Default': ''
-                    'Default': '{{sacado cpf cnpj}}'
-                },
-
-                 'sacado_email': {
-                    'Name': 'E-mail do Sacado',
-                    'Type': 'string',
-                    #'Default': ''
-                    'Default': '{{sacado email}}'
-                },
-
-                 'sacado_endereco_logradouro': {
-                    'Name': 'Logradouro do endereço do Sacado',
-                    'Type': 'string',
-                    #'Default': ''
-                    'Default': '{{endereço logradouro}}'
-                },
-
-                'sacado_endereco_numero': {
-                    'Name': 'Número do endereço do Sacado',
-                    'Type': 'string',
-                    #'Default': ''
-                    'Default': '{{Numero do Endereço do Sacado}}'
-                },
-
-                'sacado_endereco_complemento': {
-                    'Name': 'Complemento do endereço do Sacado',
-                    'Type': 'string',
-                    #'Default': ''
-                    'Default': '{{Complemento de Endereço do Sacado}}'
-                },
-
-                'sacado_endereco_cep': {
-                    'Name': 'CEP do endereço do Sacado',
-                    'Type': 'string',
-                    #'Default': ''
-                    'Default': '{{CEP do Endereço do Sacado}}'
-                },
-
-                'sacado_endereco_cidade': {
-                    'Name': 'Cidade do endereço do Sacado',
-                    'Type': 'string',
-                    #Default': ''
-                    'Default': '{{Cidade do Endereço do Sacado}}'
-                },
-
-                'sacado_endereco_uf': {
-                    'Name': 'UF do endereço do Sacado',
-                    'Type': 'string',
-                    #'Default': ''
-                    'Default': '{{UF do Endereço do Sacado}}'
-                },
-
-                 'sacado_endereco_pais': {
-                    'Name': 'País do endereço do Sacado',
-                    'Type': 'string',
-                    #'Default': ''
-                    'Default': '{{Pais do Endereço do Sacado}}'
-                },
-
-
-                 'sacado_nome': {
-                    'Name': 'Nome do Sacado',
-                    'Type': 'string',
-                    #'Default': ''
-                    'Default': '{{Nome do Sacado}}'
-                },
-
-                'sacado_telefone': {
-                    'Name': 'Telefone do Sacado',
-                    'Type': 'string',
-                    #'Default': ''
-                    'Default': '{{Telefone do Sacado}}'
-                },
-
-                'sacado_celular': {
-                    'Name': 'Celular do Sacado',
-                    'Type': 'string',
-                    #'Default': ''
-                    'Default': '{{Celular do Sacado}}'
-                },
-
-                 'titulo_valor': {
-                    'Name': 'Valor do título',
-                    'Type': 'double',
-                    #'Default': ''
-                    'Default': '{{Valor}}'
-                },
-
-                'titulo_numero_documento': {
-                    'Name': 'Valor para controle interno',
-                    'Description': 'Campo que pode ser informado com um valor para controle interno.',
-                    'Type': 'string',
-                    #'Default': ''
-                    'Default': '{{numero documento}}'
-                },
-
-                'titulo_data_vencimento': {
-                    'Name': 'Data de vencimento do título ',
-                    'Description': 'Data de vencimento do título no formato dd/mm/aaaa.',
-                    'Type': 'date',
-                    #'Default': ''
-                    'Default': '{{data vencimento}}'
-                },    
-            
-              
-                
-        },    
-                
-                
-                #  '': {
-                #     'Name': 'sacado_cpf_cnpj',
-                #     'Type': 'string',
-                #     'Default': ''
-                #     #'Default': '{{sacado cpf cnpj}}'
-                # },
-
-
-           
-
-            'RETURN_PROPERTIES': {
-                'string': {
-                    'Name': 'template_boleto_id',
-                    'Type': 'string',
-                    'Default': '618315f0358ffd0721aeaebd'
-                },
-
-                'string': {
-                    'Name': 'sacado_cpf_cnpj',
-                    'Type': 'string',
-                    'Default': ''
-                    #'Default': '{{sacado cpf cnpj}}'
-                },
-
-                 'string': {
-                    'Name': 'sacado_email',
-                    'Type': 'string',
-                    'Default': ''
-                    #'Default': '{{sacado email}}'
-                },
-
-                 'string': {
-                    'Name': 'sacado_endereco_logradouro',
-                    'Type': 'string',
-                    'Default': ''
-                    #'Default': '{{endereço logradouro}}'
-                },
-
-                'string': {
-                    'Name': 'sacado_endereco_numero',
-                    'Type': 'string',
-                    'Default': ''
-                    #'Default': '{{Numero do Endereço do Sacado}}'
-                },
-
-                'string': {
-                    'Name': 'sacado_endereco_complemento',
-                    'Type': 'string',
-                    'Default': ''
-                    #'Default': '{{Complemento de Endereço do Sacado}}'
-                },
-
-                'string': {
-                    'Name': 'sacado_endereco_cep',
-                    'Type': 'string',
-                    'Default': ''
-                    #'Default': '{{CEP do Endereço do Sacado}}'
-                },
-
-                'string': {
-                    'Name': 'sacado_endereco_cidade',
-                    'Type': 'string',
-                    'Default': '',
-                    'Default': '{{Cidade do Endereço do Sacado}}'
-                },
-
-                'string': {
-                    'Name': 'sacado_endereco_uf',
-                    'Type': 'string',
-                    'Default': '',
-                    #'Default': '{{UF do Endereço do Sacado}}'
-                },
-
-                 'string': {
-                    'Name': 'sacado_endereco_pais',
-                    'Type': 'string',
-                    'Default': '',
-                    #'Default': '{{Pais do Endereço do Sacado}}'
-                },
-
-
-                 'string': {
-                    'Name': 'sacado_nome',
-                    'Type': 'string',
-                    'Default': '',
-                    #'Default': '{{Nome do Sacado}}'
-                },
-
-                'string': {
-                    'Name': 'sacado_telefone',
-                    'Type': 'string',
-                    'Default': '',
-                    #'Default': '{{Telefone do Sacado}}'
-                },
-
-                'string': {
-                    'Name': 'sacado_celular',
-                    'Type': 'string',
-                    'Default': '',
-                    #'Default': '{{Celular do Sacado}}'
-                },
-
-                 'double': {
-                    'Name': 'titulo_valor',
-                    'Type': 'double',
-                    'Default': '',
-                    #'Default': '{{Valor}}'
-                },
-
-                'string': {
-                    'Name': 'titulo_numero_documento',
-                    'Type': 'string',
-                    'Default': '',
-                    #'Default': '{{numero documento}}'
-                },
-
-                'date': {
-                    'Name': 'titulo_data_vencimento',
-                    'Type': 'date',
-                    'Default': ''
-                    #'Default': '{{data vencimento}}'
-                },
-
-
-
-
-            }
-
-            # 'PROPERTIES': {
-            #     'bool': {
-            #         'Name': 'Yes/No',
-            #         'Type': 'bool',
-            #         'Required': 'Y',
-            #         'Multiple': 'N'
-            #     },
-            #     'date': {
-            #         'Name': 'Date',
-            #         'Type': 'date'
-            #     },
-            #     'datetime': {
-            #         'Name': 'Date/Time',
-            #         'Type': 'datetime'
-            #     },
-            #     'double': {
-            #         'Name': 'Number',
-            #         'Type': 'double',
-            #         'Required': 'Y'
-            #     },
-            #     'int': {
-            #         'Name': 'Integer number',
-            #         'Type': 'int'
-            #     },
-            #     'select': {
-            #         'Name': 'List',
-            #         'Type': 'select',
-            #         'Options': {
-            #             'one': 'one',
-            #             'two': 'two'
-            #         }
-            #     },
-            #     'string': {
-            #         'Name': 'String',
-            #         'Type': 'string',
-            #         'Default': 'default string value'
-            #     },
-            #     'text': {
-            #         'Name': 'Text',
-            #         'Type': 'text'
-            #     },
-            #     'user': {
-            #         'Name': 'User',
-            #         'Type': 'user'
-            #     }
-            # }
-
-    }
-    
-    )
-    #test = bx24.call_event_unbind('onCrmInvoiceAdd', 'http://btaxtest.herokuapp.com/api/cobrancas/emitir/', {'Authorization': 'Token dc188af8fb2ae310412bd58c2abc938ddc259ff5'})
-    #test = bx24.call_event_bind('onCrmInvoiceAdd', 'http://btaxtest.herokuapp.com/api/cobrancas/emitir/', {'Authorization': 'Token dc188af8fb2ae310412bd58c2abc938ddc259ff5'})
-    print("Event bind")
-    #test = bx24.call_event_bind('OnAppUpdate', 'https://example.com/')
-    #bx24.refresh_tokens()
-    #b24 = PyBitrix(domain=domain, access_token=access_token, refresh_token=refresh_token, app_id=app_id, app_secret=app_secret)
-    # test= b24.call('crm.invoice.list', {
-    # 'order': ['DSC'],
-       
-    # })
-    #print(test)
-    print("Robot")
-    print(add_robo)
-    tst = bx24.call('bizproc.robot.list')
-    print(tst)
 
 
 
 @login_required
 def home(request):
-    global refresh_token, access_token, code, auth_url, bx24
+    global refresh_token, access_token, code, auth_url, bx24, instalation
    
+
+    templates_boletos = querys.filtra_objs(TemplateBoleto.COLLECTION_NAME, {'conta_id': str(request.user.profile.conta.id), 'deletado': False })
+    
+    dict_options = {}
+    for id_boleto in templates_boletos:
+        dict_options[ str(id_boleto.get('descricao')) ] = str(id_boleto.get('_id'))
+
+
+
+    #print(dict_options)
+    def auth_redirect():
+        return redirect(auth_url)
+    
     if request.method == "GET":
         if "code" in request.GET:
             code = request.GET["code"]
-            #url = f"https://beytrix.bitrix24.com.br/oauth/token/?grant_type=authorization_code&client_id={client_id}&client_secret={client_secret}&code={code}"
-            #resp = requests.get(url=url)
-            #data = resp.json()
-            #print(data)
-            # if resp.status_code == 200:
-            #     refresh_token = data['refresh_token']
-            #     access_token = data['access_token']
-            #     #test_call()
-        if (refresh_token is None) and  (access_token is None) and (code is None): return redirect(auth_url)
+            
+        #if (refresh_token is None) and  (access_token is None) and (code is None): return redirect(auth_url)
         try:
             tokens = bx24.obtain_tokens(code)
             print(tokens)
             refresh_token = tokens['refresh_token']
             access_token = tokens['access_token']
-        except:
+            #bx24.call('bizproc.robot.delete', {'CODE': 'btax' })
+            
+        except: 
+            schedule.every(50).minutes.do(auth_redirect)
+            
             return redirect(auth_url)
         print(refresh_token or None)
         print(access_token or None)
         print(code or None )
-        test_call(request.user.id)
+        print("instalacao: ")
+        print(instalation)
+        schedule_refresh()
+        
+
+
+
+
+        if instalation:
+            instalation = False
+            return redirect('core:instalacao')
+            
         return render(request, 'core/home.html')
 
 @login_required
@@ -439,17 +151,86 @@ def contas(request):
     )
 
 
-def instalacao_conta(request):
+def instalacao_btax(request):
+    # Obter variaveis globais para modificacao e leitura
+    global refresh_token, access_token, code, auth_url, bx24, instalation
+    instalation = True
+    ''' 
+
+    Autorizar app a obter informacoes de quem instalou o btax e voltar para a pagina de instalacao para criar o robot com o token 
+
+    '''
+    # se estiver vazio os tokens de acesso autorizar novamente e obter tokens 
     if (refresh_token is None) and (access_token is None) and (code is None): return redirect(auth_url)
-    post_data = {'name': 'Gladys'}
-    #usuario = User.objects.create_user_for_customer(email=conta.contato_email, password=senha, first_name=conta.nome)
+    
+    # obter informacoes do usuario caso nao haja redireciona para a pagina principal
+    if not 'result' in bx24.call('user.current'): return redirect('core:home')
+    
+    try:
+        bitrix24_user = bx24.call('user.current')['result'] 
+    except:
+        return redirect('core:home')
+    
+    #print(bitrix24_user)
+    
+    info = bitrix24_user
+    #print("info")
+
+    #print(info)
+
+
+        
+    # guardar informacoes nome e email
+    email = info["EMAIL"]
+    nome = info["NAME"]+ " "+info["LAST_NAME"]
+    print("informacoes:")
+    #print(email)
+    #print(nome)
+    # verificar se existe uma conta com este nome e email
+    if Conta.objects.filter(contato_email=email).exists():
+        # teste de obter conta; conta = Conta.objects.get(is_deletado=False, nome=nome,email=email)
+       
+        # obter usuario que possui este email
+        user = User.objects.get(email=email)
+
+        # obter token
+        token = Token.objects.get(user=user)
+
+        # passar token e id do usuario do btax para criacao do robo no bitrix24
+        print("Creating Robot")
+        instalation = False
+        
+        install_robot(token, user.profile.conta.id, bx24, request.META['HTTP_HOST'])
+        return redirect('core:home')
+    
+    # Se não possuir conta no btax24 o usuário que tentou instalar será notificado
+    print("Error while creating robot")
+    bx24.call('im.notify', {'to': int(info['ID']), 'message': 'Conta com esse Email inexistente'  })
+    instalation = False
+    return redirect('core:home')
+    ''''
+    **** Teste de criacao de conta mas falta dados, cnpj/cpf, endereco ****
+
+        if Conta.objects.filter(nome=nome,email=email).exists() 
+                or Conta.objects.filter(nome=nome).exists() 
+                or Conta.objects.filter(email=email).exists(): 
+                    return redirect(domain)
+        Conta.objects.create(nome=nome,email=email,cpf_cnpj="000000000")
+
+    Verficar esta funcao: #usuario = User.objects.create_user_for_customer(email=conta.contato_email, password=senha, first_name=conta.nome)
+
+    **** ****
+    '''
+  
+    
+    
 
 @login_required
 @only_administrators
 def contas_novo(request):
     if request.method == 'POST':
-        print(request.POST)
-        return HttpResponseRedirect(reverse('core:contas'))
+        #print(request.POST)
+        #return HttpResponseRedirect(reverse('core:contas'))
         form = ContasForm(request.POST)
         if form.is_valid():
             conta = form.save()
