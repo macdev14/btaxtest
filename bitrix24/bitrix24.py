@@ -168,7 +168,7 @@ def install_robot(token, account_id, bx24, bitrix_userid, domain="dev.btax24.com
                     'Description': 'Data de vencimento do título no formato dd/mm/aaaa.',
                     'Type': 'date',
                     #'Default': ''
-                    'Default': '{{data vencimento}}'
+                    'Default': '{{Data de Vencimento do Titulo}}'
                 },    
             
               

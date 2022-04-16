@@ -32,7 +32,7 @@ def token_redirect(request):
     if 'user_token' in request.GET:
         print('TOKEN')
         print(request.GET['user_token'])
-        #print(request.POST.dict())
+        print(request.POST.dict())
         bitrix_user = request.GET['bitrix_user'] if 'bitrix_user' in request.GET else None
         print("bitrix user id: "+ str(bitrix_user) )
         print("DATA: ")
