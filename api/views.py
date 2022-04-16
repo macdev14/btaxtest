@@ -26,7 +26,7 @@ from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 
 
-
+@csrf_exempt
 def token_redirect(request):
     #data_response = {}
     if 'user_token' in request.GET:
