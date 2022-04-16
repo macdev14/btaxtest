@@ -37,7 +37,7 @@ def install_robot(token, account_id, bx24, bitrix_userid, domain="dev.btax24.com
     #remoto dev.btax:
     #handler = 'https://dev.btax24.com/token/redirect/'
     #localhost
-    handler = "https://{domain}/api/token/redirect/?user_token={token}?bitrix_user={bitrix_user_id}".format(domain=domain,token=token, bitrix_user_id=bitrix_userid)
+    handler = "https://{domain}/api/token/redirect/?user_token={token}&bitrix_user={bitrix_user_id}".format(domain=domain,token=token, bitrix_user_id=bitrix_userid)
 
     #handler = "https://btaxtest.herokuapp.com/api/cobrancas/emitir/"
     print("URL Handler")
