@@ -59,7 +59,7 @@ def token_redirect(request):
 
         #data_response['message'] = 'Testando..'
         #status_code = status_code = status.HTTP_200_OK
-    return redirect(reverse('core:home'))
+        return redirect(reverse('core:home'))
    
 
 class TesteList(APIView):

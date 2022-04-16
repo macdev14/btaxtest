@@ -118,9 +118,10 @@ def instalacao_btax(request):
 
         # passar token e id do usuario do btax para criacao do robo no bitrix24
         print("Creating Robot")
+        
         instalation = False
         
-        install_robot(token, user.profile.conta.id, bx24, request.META['HTTP_HOST'])
+        install_robot(token, user.profile.conta.id, bx24, info['ID'], request.META['HTTP_HOST'])
         return redirect('core:home')
     
     # Se não possuir conta no btax24 o usuário que tentou instalar será notificado
