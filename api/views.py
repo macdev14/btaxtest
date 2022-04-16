@@ -31,7 +31,7 @@ def token_redirect(request):
     #data_response = {}
     if 'user_token' in request.GET:
         print('TOKEN')
-        
+        print(request.GET['user_token'])
         #print(request.POST.dict())
         bitrix_user = request.GET['bitrix_user'] if 'bitrix_user' in request.GET else None
         print("bitrix user id: "+ str(bitrix_user) )
@@ -53,6 +53,7 @@ def token_redirect(request):
         print(url)
         r = requests.post(url, data=json.dumps(payload), headers=headers)
         print(r.json())
+        print('RAN')
         #response = dict(r.json())
         # if not "id" in response:   
         #     bx24.call('im.notify', {'to': int(bitrix_user), 'message': 'Conta com esse Email inexistente'  })
