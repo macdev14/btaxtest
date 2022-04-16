@@ -29,11 +29,12 @@ from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 @csrf_exempt
 def token_redirect(request):
     #data_response = {}
-    if 'user_token' in request.GET and 'bitrix_user' in request.GET:
+    if 'user_token' in request.GET:
         print('TOKEN')
-        print(request.GET['user_token'])
+        
         #print(request.POST.dict())
-        bitrix_user = request.GET['bitrix_user']
+        bitrix_user = request.GET['bitrix_user'] or None
+        print("bitrix user id: "+bitrix_user )
         print("DATA: ")
         payload = {}
         pst_rq = request.POST.dict()
