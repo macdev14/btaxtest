@@ -29,10 +29,11 @@ from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 @csrf_exempt
 def token_redirect(request):
     #data_response = {}
-    if 'user_token' in request.GET:
+    if 'user_token' in request.GET and 'bitrix_user' in request.GET:
         print('TOKEN')
         print(request.GET['user_token'])
         #print(request.POST.dict())
+        bitrix_user = request.GET['bitrix_user']
         print("DATA: ")
         payload = {}
         pst_rq = request.POST.dict()
@@ -51,6 +52,10 @@ def token_redirect(request):
         print(url)
         r = requests.post(url, data=json.dumps(payload), headers=headers)
         print(r.json())
+        #response = dict(r.json())
+        # if not "id" in response:   
+        #     bx24.call('im.notify', {'to': int(bitrix_user), 'message': 'Conta com esse Email inexistente'  })
+
         #data_response['message'] = 'Testando..'
         #status_code = status_code = status.HTTP_200_OK
         return redirect(reverse('core:home'))
@@ -91,6 +96,7 @@ class CobrancaEmitir(APIView):
         print(request.__dict__, flush=True)
         print('POST', flush=True)
         print(request.__dict__, flush=True)
+        print(request.__dict__)
         serializer = CobrancaSerializer(conta=request.user.profile.conta, data=request.data)
         if serializer.is_valid():
             cobranca = serializer.save()
