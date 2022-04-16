@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from . import views
 
 
-def testre(request):
+def testre2(request):
     print(request.POST)
     print(request)
     print(request.json())
@@ -16,7 +16,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('installapp/', views.instalacao_btax, name='instalacao'),
 
-    path('token/test', testre, name='tokentest'),
+    #path('token/test', testre, name='tokentest'),
 
     path('contas/', views.contas, name='contas'),
     path('contas/novo/', views.contas_novo, name='contas-novo'),
