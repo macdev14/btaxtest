@@ -27,7 +27,7 @@ from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 
 
 
-@api_view(('GET',))
+@api_view(('GET', 'POST'))
 @renderer_classes((TemplateHTMLRenderer, JSONRenderer))
 def token_redirect(request):
     data_response = {}
