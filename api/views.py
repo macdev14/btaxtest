@@ -34,7 +34,7 @@ def token_redirect(request):
         
         #print(request.POST.dict())
         bitrix_user = request.GET['bitrix_user'] if 'bitrix_user' in request.GET else None
-        print("bitrix user id: "+bitrix_user )
+        print("bitrix user id: "+ str(bitrix_user) )
         print("DATA: ")
         payload = {}
         pst_rq = request.POST.dict()
