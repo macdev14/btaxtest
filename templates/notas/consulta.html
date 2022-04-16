@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Notas{% endblock %}
+{% block page_title %}Notas{% endblock %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'core:home' %}"><i class="fas fa-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'notas:lista' %}"><i class="fas fa-sticky-note"></i> Notas</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Consulta</a></li>
+{% endblock %}
+
+{% block content %}
+{% endblock %}

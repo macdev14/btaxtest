@@ -1,0 +1,471 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Empresas{% endblock %}
+
+{% block page_title %}Empresas{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'core:home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item"><a href="{% url 'core:empresas' %}">Empresas</a></li>
+<li class="breadcrumb-item active" aria-current="page">Cadastro</a></li>
+{% endblock %}
+{% block content %}
+<form action="" method="post" novalidate>
+    {% csrf_token %}
+    <div class="card">
+        <div class="card-header">
+            <h3>Cadastro de Empresa</h3>
+        </div>
+        <div class="card-body">
+            {% for error in form_empresa.non_field_errors %}
+            <p class="text-danger">{{ error }}</p>
+            {% endfor %}
+            {% for error in form_endereco.non_field_errors %}
+            <p class="text-danger">{{ error }}</p>
+            {% endfor %}
+
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        {{ form_empresa.nome_fantasia.label_tag }}
+                        {{ form_empresa.nome_fantasia }}
+                        {% for error in form_empresa.nome_fantasia.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        {{ form_empresa.razao_social.label_tag }}
+                        {{ form_empresa.razao_social }}
+                        {% for error in form_empresa.razao_social.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        {{ form_empresa.cpf_cnpj.label_tag }}
+                        {{ form_empresa.cpf_cnpj }}
+                        {% for error in form_empresa.cpf_cnpj.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        {{ form_empresa.inscricao_estadual.label_tag }}
+                        {{ form_empresa.inscricao_estadual }}
+                        {% for error in form_empresa.inscricao_estadual.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        {{ form_empresa.inscricao_municipal.label_tag }}
+                        {{ form_empresa.inscricao_municipal }}
+                        {% for error in form_empresa.inscricao_municipal.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form_empresa.regime_tributario.label_tag }}
+                        {{ form_empresa.regime_tributario }}
+                        {% for error in form_empresa.regime_tributario.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form_empresa.regime_tributario_especial.label_tag }}
+                        {{ form_empresa.regime_tributario_especial }}
+                        {% for error in form_empresa.regime_tributario_especial.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group text-center">
+                        <label for="{{ form_empresa.simples_nacional.auto_id }}" class="w-100">{{ form_empresa.simples_nacional.label }}</label>
+                        <label class="custom-toggle">
+                            {{ form_empresa.simples_nacional }}
+                            <span class="custom-toggle-slider rounded-circle"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group text-center">
+                        <label for="{{ form_empresa.incentivo_fiscal.auto_id }}" class="w-100">{{ form_empresa.incentivo_fiscal.label }}</label>
+                        <label class="custom-toggle">
+                            {{ form_empresa.incentivo_fiscal }}
+                            <span class="custom-toggle-slider rounded-circle"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group text-center">
+                        <label for="{{ form_empresa.incentivo_cultural.auto_id }}" class="w-100">{{ form_empresa.incentivo_cultural.label }}</label>
+                        <label class="custom-toggle">
+                            {{ form_empresa.incentivo_cultural }}
+                            <span class="custom-toggle-slider rounded-circle"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-header">
+            <h3>Endereço</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        {{ form_endereco.cep.label_tag}}
+                        {{ form_endereco.cep }}
+                        {% for error in form_endereco.cep.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        {{ form_endereco.tipo_logradouro.label_tag}}
+                        {{ form_endereco.tipo_logradouro }}
+                        {% for error in form_endereco.tipo_logradouro.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form_endereco.logradouro.label_tag}}
+                        {{ form_endereco.logradouro }}
+                        {% for error in form_endereco.logradouro.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        {{ form_endereco.numero.label_tag}}
+                        {{ form_endereco.numero }}
+                        {% for error in form_endereco.numero.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        {{ form_endereco.complemento.label_tag}}
+                        {{ form_endereco.complemento }}
+                        {% for error in form_endereco.complemento.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        {{ form_endereco.tipo_bairro.label_tag}}
+                        {{ form_endereco.tipo_bairro }}
+                        {% for error in form_endereco.tipo_bairro.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="form-group">
+                        {{ form_endereco.bairro.label_tag}}
+                        {{ form_endereco.bairro }}
+                        {% for error in form_endereco.bairro.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        {{ form_endereco.codigo_pais.label_tag}}
+                        {{ form_endereco.codigo_pais }}
+                        {% for error in form_endereco.codigo_pais.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        {{ form_endereco.descricao_pais.label_tag}}
+                        {{ form_endereco.descricao_pais }}
+                        {% for error in form_endereco.descricao_pais.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        {{ form_endereco.codigo_cidade.label_tag}}
+                        {{ form_endereco.codigo_cidade }}
+                        {% for error in form_endereco.codigo_cidade.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form_endereco.descricao_cidade.label_tag}}
+                        {{ form_endereco.descricao_cidade }}
+                        {% for error in form_endereco.descricao_cidade.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        {{ form_endereco.estado.label_tag}}
+                        {{ form_endereco.estado }}
+                        {% for error in form_endereco.estado.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-header d-flex justify-content-between">
+            <h3>Telefones</h3>
+            <button type="button" id="btn_add_telefone" data-selector=".telefones" data-type="telefone" class="btn btn-sm btn-info"><i class="fas fa-plus"></i></button>
+        </div>
+        <div class="card-body">
+            {{ formset_telefone.management_form }}
+            <div class="row">
+                {% for form in formset_telefone %}
+                    {% for hidden in form.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
+                    <div class="col-sm-12 col-md-6 col-lg-4 telefones">
+                        <div class="card bg-primary">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12 d-flex justify-content-end">
+                                        <small class="text-white font-weight-bold mr-3">Deletar?</small>
+                                        <label class="custom-toggle custom-toggle-white">
+                                            {{ form.DELETE }}
+                                            <span class="custom-toggle-slider rounded-circle" data-label-off="Não" data-label-on="Sim"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <div class="input-group">
+                                        {{ form.ddd }}
+                                        {{ form.numero }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="card-header">
+            <h3>NFS-e</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 d-flex">
+                    <div class="d-flex align-items-center mr-2">
+                        <label class="custom-toggle">
+                            {{ form_config_nfse.email_envio }}
+                            <span class="custom-toggle-slider rounded-circle"></span>
+                        </label>
+                    </div>
+                    <div>
+                        {{ form_config_nfse.email_envio.label_tag }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 d-flex">
+                    <div class="d-flex align-items-center mr-2">
+                        <label class="custom-toggle">
+                            {{ form_nfse.ativo }}
+                            <span class="custom-toggle-slider rounded-circle"></span>
+                        </label>
+                    </div>
+                    <div class="d-flex align-items-center mr-2">
+                        {{ form_nfse.ativo.label_tag }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form_nfse.tipo_contrato.label_tag }}
+                        {{ form_nfse.tipo_contrato }}
+                        {% for error in form_nfse.tipo_contrato.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Prefeitura</h5>
+                        </div>
+                        <div class="card-body">
+                            {% for field in form_prefeitura %}
+                                <div class="form-group">
+                                    {{ field.label_tag }}
+                                    {{ field }}
+                                    {% for error in field.errors %}
+                                        <p class="text-danger">{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>RPS</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                {{ form_rps.lote.label_tag }}
+                                {{ form_rps.lote }}
+                                {% for error in form_rps.lote.errors %}
+                                    <p class="text-danger">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between">
+                            <h5>Numeração</h5>
+                            <button type="button" id="btn_add_numeracao" data-selector=".numeracoes" data-type="numeracao" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i></button>
+                        </div>
+                        <div class="card-body">
+                            {{ formset_numeracao.management_form }}
+                            {% for form in formset_numeracao %}
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+                                <div class="numeracoes d-flex justify-content-between pt-1 pb-1">
+                                    <div class="input-group">
+                                        {{ form.numero }}
+                                        {{ form.serie }}
+                                    </div>
+                                    <div class="w-auto d-flex flex-column justify-content-center ml-2">
+                                        <small>Deletar?</small>
+                                        <label class="custom-toggle">
+                                            {{ form.DELETE }}
+                                            <span class="custom-toggle-slider rounded-circle"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-6">
+                    <a href="{% url 'core:empresas' %}" class="btn btn-default">Voltar</a>
+                </div>
+                <div class="col-6 text-right">
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/components/mask/jquery.mask.min.js' %}"></script>
+<script>
+    function organizaFormularios(selector, type) {
+        let number = 0;
+        $(selector).each(function () {
+            $(this).find('textarea, input').each(function () {
+                var name = $(this).attr('name').replace(/[0-9]+/g, number);
+                var id = 'id_' + name;
+                $(this).attr({
+                    'name': name,
+                    'id': id
+                });
+            });
+            number++;
+        });
+        $('#id_' + type + '-TOTAL_FORMS').val($(selector).length);
+    }
+
+    function clonaFormulario(selector, type) {
+        let nome = type;
+        let newElement = $(selector + ':first').clone();
+
+        newElement.insertAfter(selector + ':last');
+        newElement.last().find('textarea, input').val('');
+
+        organizaFormularios(selector, type);
+    };
+    
+    function aplicarMascaraTelefone(){
+        $('.telefone').mask('00009-0000', {reverse: true});
+    }
+
+    $('#{{ form_endereco.cep.auto_id }}').on('blur', function () {
+        let cep = $(this).val();
+        if (cep !== '') {
+            cep = cep.replace('-', '')
+            $.ajax({
+                url: `https://viacep.com.br/ws/${cep}/json/`,
+                dataType: 'json',
+                beforeSend: () => {
+                    $('input[name^=endereco]').prop('disabled', true);
+                },
+                success: data => {
+                    if (data.logradouro !== '') $('#{{ form_endereco.logradouro.auto_id }}').val(data.logradouro);
+                    if (data.bairro !== '') $('#{{ form_endereco.bairro.auto_id }}').val(data.bairro);
+                    if (data.localidade !== '') $('#{{ form_endereco.descricao_cidade.auto_id }}').val(data.localidade);
+                    if (data.uf !== '') $('#{{ form_endereco.estado.auto_id }}').val(data.uf);
+                    if (data.ibge !== '') $('#{{ form_endereco.codigo_cidade.auto_id }}').val(data.ibge)
+                },
+                complete: () => {
+                    $('input[name^=endereco]').prop('disabled', false);
+                }
+            });
+        }
+    });
+    
+    $('.cep').mask('00000000');
+    $('.cnpj').mask('00.000.000/0000-00');
+
+    $('#btn_add_telefone, #btn_add_numeracao').on('click', function(e){
+        e.preventDefault();
+        let btn = $(this);
+        clonaFormulario(btn.data('selector'), btn.data('type'));
+        aplicarMascaraTelefone();
+    })
+
+    aplicarMascaraTelefone();
+
+</script>
+{% endblock %}
