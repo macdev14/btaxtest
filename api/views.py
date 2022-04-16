@@ -24,7 +24,7 @@ from pybitrix24 import Bitrix24
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
-
+import datetime
 
 @csrf_exempt
 def token_redirect(request):
@@ -44,7 +44,11 @@ def token_redirect(request):
             print(":")
             print(pst_rq[key])
             if 'properties' in key:
-                payload[k] = pst_rq[key]
+                if k == "titulo_data_vencimento" and pst_rq[key]:
+                    date_time = datetime.strptime(pst_rq[key], "%d/%m/%Y").strftime('%Y-%m-%d')
+                    payload[k] = date_time
+                else:
+                    payload[k] = pst_rq[key]
         headers = {'Content-Type': 'application/json', 'Authorization': 'Token '+request.GET['user_token']}
         print(headers)
         print("PAYLOAD!!!!")
