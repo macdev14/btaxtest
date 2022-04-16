@@ -60,14 +60,21 @@ def install_robot(token, account_id, bx24, bitrix_userid, domain="dev.btax24.com
                     'Name': 'CPF ou CNPJ do Sacado',
                     'Type': 'string',
                     #'Default': ''
-                    'Default': '{{sacado cpf cnpj}}'
+                    'Default': '{{CPF ou CNPJ}}'
                 },
 
                  'sacado_email': {
                     'Name': 'E-mail do Sacado',
                     'Type': 'string',
                     #'Default': ''
-                    'Default': '{{sacado email}}'
+                    'Default': '{{Endereço de E-mail Sacado}}'
+                },
+                
+                 'sacado_endereco_bairro': {
+                    'Name': 'Bairro do endereço do Sacado',
+                    'Type': 'string',
+                    #'Default': ''
+                    'Default': '{{endereço logradouro}}'
                 },
 
                  'sacado_endereco_logradouro': {
