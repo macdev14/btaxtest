@@ -1,5 +1,6 @@
+from http.client import HTTPResponse
 import json, requests
-from django.shortcuts import reverse
+from django.shortcuts import reverse, redirect
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -28,6 +29,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def token_redirect(request):
+    data_response = {}
     if 'user_token' in request.GET:
         print('TOKEN')
         print(request.GET['user_token'])
@@ -48,7 +50,11 @@ def token_redirect(request):
         print(payload)
         url = request.build_absolute_uri(reverse('api:cobrancas-emitir'))
         print(url)
-        requests.post(url, data=json.dumps(payload), headers=headers)
+        r = requests.post(url, data=json.dumps(payload), headers=headers)
+        print(r.json())
+        data_response['message'] = 'Testando..'
+        status_code = status_code = status.HTTP_200_OK
+        return Response(data_response, status=status_code)
    
 
 class TesteList(APIView):
