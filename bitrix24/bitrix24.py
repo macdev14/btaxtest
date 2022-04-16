@@ -192,7 +192,8 @@ def install_robot(token, account_id, bx24, bitrix_userid, domain="dev.btax24.com
 
         'CODE': 'btax',
         'HANDLER': str(handler),
-        'AUTH_USER_ID': 'Bearer '+str(token),
+        #'AUTH_USER_ID': 'Bearer '+str(token),
+        'AUTH_USER_ID': bitrix_userid,
         'NAME': 'Btax',
         'PROPERTIES': properties,    
         'RETURN_PROPERTIES': return_properties
@@ -357,7 +358,8 @@ def atualizar_robot(token, account_id, bx24, domain="dev.btax24.com"):
 
         'CODE': 'btax',
         'HANDLER': str(handler),
-        'AUTH_USER_ID': str(token),
+        #'AUTH_USER_ID': str(token),
+        'AUTH_USER_ID': bitrix_userid,
         'NAME': 'Btax',
         'PROPERTIES': properties,    
         'RETURN_PROPERTIES': return_properties
