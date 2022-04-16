@@ -27,10 +27,8 @@ from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 
 
 
-@api_view(('GET', 'POST'))
-@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
 def token_redirect(request):
-    data_response = {}
+    #data_response = {}
     if 'user_token' in request.GET:
         print('TOKEN')
         print(request.GET['user_token'])
@@ -53,9 +51,9 @@ def token_redirect(request):
         print(url)
         r = requests.post(url, data=json.dumps(payload), headers=headers)
         print(r.json())
-        data_response['message'] = 'Testando..'
-        status_code = status_code = status.HTTP_200_OK
-        return Response(data_response, status=status_code)
+        #data_response['message'] = 'Testando..'
+        #status_code = status_code = status.HTTP_200_OK
+        return redirect(reverse('core:home'))
    
 
 class TesteList(APIView):
