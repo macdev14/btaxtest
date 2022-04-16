@@ -74,14 +74,14 @@ def install_robot(token, account_id, bx24, bitrix_userid, domain="dev.btax24.com
                     'Name': 'Bairro do endereço do Sacado',
                     'Type': 'string',
                     #'Default': ''
-                    'Default': '{{endereço logradouro}}'
+                    'Default': '{{Endereço}}'
                 },
 
                  'sacado_endereco_logradouro': {
                     'Name': 'Logradouro do endereço do Sacado',
                     'Type': 'string',
                     #'Default': ''
-                    'Default': '{{endereço logradouro}}'
+                    'Default': '{{Logradouro do Endereço do Sacado}}'
                 },
 
                 'sacado_endereco_numero': {
