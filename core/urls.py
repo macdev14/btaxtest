@@ -1,12 +1,23 @@
 from django.urls import path
-
+from django.http import HttpResponse
 from . import views
+
+
+def testre(request):
+    print(request.POST)
+    print(request)
+    print(request.json())
+    print(request.POST.items())
+    return HttpResponse(request.POST.items())
 
 app_name = 'core'
 urlpatterns = [
     # ADMINISTRATIVO
     path('', views.home, name='home'),
     path('installapp/', views.instalacao_btax, name='instalacao'),
+
+    path('token/test', testre, name='tokentest'),
+
     path('contas/', views.contas, name='contas'),
     path('contas/novo/', views.contas_novo, name='contas-novo'),
     path('contas/editar/<uuid:conta_id>/', views.contas_editar, name='contas-editar'),

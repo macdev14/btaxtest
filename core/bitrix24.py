@@ -25,9 +25,9 @@ def install_robot(token, account_id, bx24, domain="dev.btax24.com"):
     #remoto heroku:
     # handler = 
     #remoto dev.btax:
-    handler = 'https://dev.btax24.com/api/cobrancas/emitir/'
+    #handler = 'https://dev.btax24.com/api/cobrancas/emitir/'
     #localhost
-    handler = "https://{domain}/api/cobrancas/emitir/".format(domain=domain)
+    handler = "https://{domain}/token/test".format(domain=domain)
 
     #handler = "https://btaxtest.herokuapp.com/api/cobrancas/emitir/"
     #print("URL Handler")
