@@ -45,7 +45,7 @@ def token_redirect(request):
             print(pst_rq[key])
             if 'properties' in key:
                 if k == "titulo_data_vencimento" and pst_rq[key]:
-                    date_time = datetime.strptime(pst_rq[key], "%d/%m/%Y").strftime('%Y-%m-%d')
+                    date_time = datetime.datetime.strptime(pst_rq[key], "%d/%m/%Y").strftime('%Y-%m-%d')
                     payload[k] = date_time
                 else:
                     payload[k] = pst_rq[key]
