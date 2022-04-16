@@ -160,7 +160,7 @@ def install_robot(token, account_id, bx24, bitrix_userid, domain="dev.btax24.com
                     'Description': 'Campo que pode ser informado com um valor para controle interno.',
                     'Type': 'string',
                     #'Default': ''
-                    'Default': '{{numero documento}}'
+                    'Default': '{{ID Controle Interno}}'
                 },
 
                 'titulo_data_vencimento': {
