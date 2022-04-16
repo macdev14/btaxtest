@@ -6,6 +6,7 @@ app_name = 'core'
 urlpatterns = [
     # ADMINISTRATIVO
     path('', views.home, name='home'),
+    path('installapp/', views.instalacao_btax, name='instalacao'),
     path('contas/', views.contas, name='contas'),
     path('contas/novo/', views.contas_novo, name='contas-novo'),
     path('contas/editar/<uuid:conta_id>/', views.contas_editar, name='contas-editar'),
