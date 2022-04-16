@@ -22,12 +22,13 @@ from tecnospeed import plugboletos
 from bitrix24 import bitrix24
 from pybitrix24 import Bitrix24
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view, renderer_classes
+from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 
 
 
-
-
-@csrf_exempt
+@api_view(('GET',))
+@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
 def token_redirect(request):
     data_response = {}
     if 'user_token' in request.GET:
