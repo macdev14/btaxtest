@@ -53,7 +53,7 @@ def install_robot(token, account_id, bx24, bitrix_userid, domain="dev.btax24.com
                     'Name': 'Template de Boleto Cadastrado',
                     'Type': 'select',
                     'Options': dict_options,
-                    'Default': list(dict_options.keys())[0]
+                    'Default': list(dict_options.keys())[0] or ''
                 },
 
                 'sacado_cpf_cnpj': {
