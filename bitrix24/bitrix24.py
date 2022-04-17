@@ -406,7 +406,7 @@ def update_robot(token, account_id, bx24, bitrix_userid,  domain="dev.btax24.com
 
         return_properties = {
                     'id': {
-                        'Name': 'id',
+                        'Name': 'ID Boleto',
                         'Type': 'string',
                         'Default': ''
                     },
