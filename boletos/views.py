@@ -95,5 +95,4 @@ def templates_boletos_excluir(request, template_boleto_id):
     template_boleto['deletado'] = True
     querys.update_obj(TemplateBoleto.COLLECTION_NAME, template_boleto['_id'], template_boleto)
     token = Token.objects.get(user=request.user)
-    update_robot(token, conta.id, bx24, request.META['HTTP_HOST'])
     return HttpResponseRedirect(reverse('boletos:templates'))

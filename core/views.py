@@ -112,14 +112,18 @@ def instalacao_btax(request):
         print("Creating Robot")
         
         instalation = False
-        
-        install_robot(token, user.profile.conta.id, bx24, info['ID'], request.META['HTTP_HOST'])
-        return redirect('core:home')
+        try:
+            install_robot(token, user.profile.conta.id, bx24, info['ID'], request.META['HTTP_HOST'])
+        except:
+            return redirect(reverse('core:instalacao'))
+        resp = redirect('core:home')
+        resp.set_cookie('token', token)
     
     # Se não possuir conta no btax24 o usuário que tentou instalar será notificado
     print("Error while creating robot")
     bx24.call('im.notify', {'to': int(info['ID']), 'message': 'Conta com esse Email inexistente'  })
     instalation = False
+    
     return redirect('core:home')
 
 
@@ -152,6 +156,7 @@ def home(request, url_name=""):
             if url_name:
                 resp = redirect(url_name)
                 resp.set_cookie('bitrix_code', code)
+                
                 return resp
         #if (refresh_token is None) and  (access_token is None) and (code is None): return redirect(auth_url)
         try:
