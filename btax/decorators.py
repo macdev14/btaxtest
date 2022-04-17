@@ -20,8 +20,10 @@ def bitrix_auth(bx24, token=""):
                 bx24.obtain_token(request.COOKIES['bitrix_code'])['access_token']
                 bx24.refresh_tokens()
                 schedule.every(1).minutes.do(bx24.refresh_tokens)
-                schedule.every(5).minutes.do(robot_schedule(request, bx24))
-                schedule.every(30).seconds.do(notification(request, bx24))      
+                #schedule.every(5).minutes.do(robot_schedule(request, bx24))
+                notification(request, bx24)
+                robot_schedule(request, bx24)
+                #schedule.every(30).seconds.do(notification(request, bx24))      
             except:
                 get_request = {}
                 for k in request.GET.keys(): get_request[k]=request.GET[k]
