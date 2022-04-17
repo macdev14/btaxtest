@@ -20,26 +20,18 @@ from .envia_email import EnviaEmail
 from mongodb import querys
 from .models_mongodb import ServicoMongo, mongo_to_dict
 from boletos.models import TemplateBoleto
-from bitrix24.bitrix24 import install_robot
+from bitrix24.bitrix24 import *
 from pybitrix24 import Bitrix24
 import schedule
-
-client_secret_local= "QLwJT6k15YjxJX085UWCOFaqrs4JrQaNKnhhmtu3M3Djg2klcy"
-client_id_local = "local.625425573ccf01.19175085"
-
-# remoto:
-client_id = "local.62542020d85557.44615100"
-
-client_secret = "8MlsoRMTipPgHzU5ejSfGC6WZWxGm8Cik7nSHaBsLL1V5syQ2r"
-
-domain = 'beytrix.bitrix24.com.br'
+from btax.settings import BITRIX_LOCAL, CLIENT_SECRET_LOCAL, CLIENT_ID_LOCAL, CLIENT_ID, CLIENT_SECRET, DOMAIN
+from btax.decorators import bitrix_auth
 
 #remoto:
-BX24_CONSTANT = Bitrix24(domain, client_id, client_secret)
+bx24 = Bitrix24(DOMAIN, CLIENT_ID, CLIENT_SECRET)
 
-bx24 = BX24_CONSTANT
 #local:
-#bx24 = Bitrix24(domain, client_id_local, client_secret_local)
+if BITRIX_LOCAL:
+    bx24 = Bitrix24(DOMAIN, CLIENT_ID_LOCAL, CLIENT_SECRET_LOCAL)
 
 
 print(bx24.build_authorization_url())
@@ -49,9 +41,8 @@ print(bx24.build_authorization_url())
 
 
 
-b24, code, data, access_token, refresh_token = None, None, None, None, None
-app_id = client_id
-app_secret = client_secret
+code, data, access_token, refresh_token = None, None, None, None
+
 auth_url = bx24.build_authorization_url()
 instalation = False
 
@@ -71,7 +62,7 @@ def schedule_refresh():
 # gerar token adicionar no robot
 
 
-
+@bitrix_auth(bx24)
 def instalacao_btax(request):
     # Obter variaveis globais para modificacao e leitura
     global refresh_token, access_token, code, auth_url, bx24, instalation
@@ -133,8 +124,10 @@ def instalacao_btax(request):
 
 
 
+
+
 @login_required
-def home(request):
+def home(request, url_name=""):
     global refresh_token, access_token, code, auth_url, bx24, instalation
     
     try:
@@ -156,7 +149,10 @@ def home(request):
     if request.method == "GET":
         if "code" in request.GET:
             code = request.GET["code"]
-            
+            if url_name:
+                resp = redirect(url_name)
+                resp.set_cookie('bitrix_code', code)
+                return resp
         #if (refresh_token is None) and  (access_token is None) and (code is None): return redirect(auth_url)
         try:
             tokens = bx24.obtain_tokens(code)
@@ -182,15 +178,19 @@ def home(request):
 
         if instalation:
             instalation = False
-            return redirect('core:instalacao')
-            
-        return render(request, 'core/home.html')
+            resp = redirect('core:instalacao')
+            resp.set_cookie('bitrix_code', code)
+            return resp
+        resp = render(request, 'core/home.html')
+        resp.set_cookie('bitrix_code', code)
+        return resp
 
 
 
 
 @login_required
 @only_administrators
+
 def contas(request):
     contas = Conta.objects.filter(is_deletado=False)
 

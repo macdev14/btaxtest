@@ -162,5 +162,14 @@ REST_FRAMEWORK = {
 }
 
 
+#  bitrix24
+BITRIX_LOCAL = os.environ['BITRIX_LOCAL'] or False
+DOMAIN = 'beytrix.bitrix24.com.br'
+CLIENT_SECRET = "8MlsoRMTipPgHzU5ejSfGC6WZWxGm8Cik7nSHaBsLL1V5syQ2r"
+CLIENT_ID = "local.62542020d85557.44615100"
+CLIENT_ID_LOCAL = "local.625425573ccf01.19175085"
+CLIENT_SECRET_LOCAL = "QLwJT6k15YjxJX085UWCOFaqrs4JrQaNKnhhmtu3M3Djg2klcy"
+
+
 # django-cors-headers
 CORS_ORIGIN_ALLOW_ALL = True
