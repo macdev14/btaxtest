@@ -127,7 +127,9 @@ class CobrancaEmitir(APIView):
                 status=status.HTTP_201_CREATED,
             )
         bitrix24_user = bx24.call('user.current')['result']['ID']
-        bx24.call('im.notify', {'to': int(bitrix24_user), 'message': str(serializer.errors)  })    
+        print(serializer.errors['_erros'])
+        erros = [ serializer.errors['_erros'][i] for i in serializer.errors['_erros']]
+        bx24.call('im.notify', {'to': int(bitrix24_user), 'message': str(erros)  })    
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response({'mensagem': 'requisição recebida'})
 
