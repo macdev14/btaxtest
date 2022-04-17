@@ -208,7 +208,7 @@ def install_robot(token, account_id, bx24, bitrix_userid, domain="dev.btax24.com
     print(tst)
      
 
-def atualizar_robot(token, account_id, bx24, domain="dev.btax24.com"):
+def atualizar_robot(token, account_id, bitrix_userid, bx24, domain="dev.btax24.com"):
     templates_boletos = querys.filtra_objs(TemplateBoleto.COLLECTION_NAME, {'conta_id': str(account_id), 'deletado': False })
     
     handler = 'https://dev.btax24.com/api/cobrancas/emitir/'
@@ -225,42 +225,42 @@ def atualizar_robot(token, account_id, bx24, domain="dev.btax24.com"):
         dict_options[ str(id_boleto.get('_id'))] =  str(id_boleto.get('descricao'))
     
     
-    return_properties = {
-            'id': {
-                     'Name': 'id',
-                     'Type': 'string',
-                     'Default': ''
-                 },
-        }
-
+    
     properties = {
            
               'template_boleto_id': {
                     'Name': 'Template de Boleto Cadastrado',
                     'Type': 'select',
                     'Options': dict_options,
-                    'Default': ''
+                    'Default': list(dict_options.keys())[0] or ''
                 },
 
                 'sacado_cpf_cnpj': {
                     'Name': 'CPF ou CNPJ do Sacado',
                     'Type': 'string',
                     #'Default': ''
-                    'Default': '{{sacado cpf cnpj}}'
+                    'Default': '{{CPF ou CNPJ}}'
                 },
 
                  'sacado_email': {
                     'Name': 'E-mail do Sacado',
                     'Type': 'string',
                     #'Default': ''
-                    'Default': '{{sacado email}}'
+                    'Default': '{{Endereço de E-mail Sacado}}'
+                },
+                
+                 'sacado_endereco_bairro': {
+                    'Name': 'Bairro do endereço do Sacado',
+                    'Type': 'string',
+                    #'Default': ''
+                    'Default': '{{Bairro do Sacado}}'
                 },
 
                  'sacado_endereco_logradouro': {
                     'Name': 'Logradouro do endereço do Sacado',
                     'Type': 'string',
                     #'Default': ''
-                    'Default': '{{endereço logradouro}}'
+                    'Default': '{{Logradouro do Endereço do Sacado}}'
                 },
 
                 'sacado_endereco_numero': {
@@ -339,7 +339,7 @@ def atualizar_robot(token, account_id, bx24, domain="dev.btax24.com"):
                     'Description': 'Campo que pode ser informado com um valor para controle interno.',
                     'Type': 'string',
                     #'Default': ''
-                    'Default': '{{numero documento}}'
+                    'Default': '{{ID}}'
                 },
 
                 'titulo_data_vencimento': {
@@ -347,18 +347,31 @@ def atualizar_robot(token, account_id, bx24, domain="dev.btax24.com"):
                     'Description': 'Data de vencimento do título no formato dd/mm/aaaa.',
                     'Type': 'date',
                     #'Default': ''
-                    'Default': '{{data vencimento}}'
+                    'Default': '{{Data de Vencimento do Titulo}}'
                 },    
             
               
                 
         }
 
+    return_properties = {
+                'id': {
+                     'Name': 'id',
+                     'Type': 'string',
+                     'Default': ''
+                 },
+            }
+    
+    #properties[0][2] = dict_options
+    print("changed!!")
+    #print(list(properties))
+    #properties[0]['template_boleto_id']['Options'] = dict_options
+    print(properties['template_boleto_id'])
     params = {
 
         'CODE': 'btax',
         'HANDLER': str(handler),
-        #'AUTH_USER_ID': str(token),
+        #'AUTH_USER_ID': 'Bearer '+str(token),
         'AUTH_USER_ID': bitrix_userid,
         'NAME': 'Btax',
         'PROPERTIES': properties,    
@@ -366,8 +379,9 @@ def atualizar_robot(token, account_id, bx24, domain="dev.btax24.com"):
 
     }
 
-    
-    
+    update_robo = bx24.call('bizproc.robot.add', params)
+    print(update_robo)
+    print("Update Robot")
 '''
 
 

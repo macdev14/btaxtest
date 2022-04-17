@@ -35,8 +35,9 @@ client_secret = "8MlsoRMTipPgHzU5ejSfGC6WZWxGm8Cik7nSHaBsLL1V5syQ2r"
 domain = 'beytrix.bitrix24.com.br'
 
 #remoto:
-bx24 = Bitrix24(domain, client_id, client_secret)
+BX24_CONSTANT = Bitrix24(domain, client_id, client_secret)
 
+bx24 = BX24_CONSTANT
 #local:
 #bx24 = Bitrix24(domain, client_id_local, client_secret_local)
 
