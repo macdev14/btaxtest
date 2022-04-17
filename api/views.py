@@ -26,6 +26,18 @@ from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 import datetime
 
+
+from btax.settings import BITRIX_LOCAL, CLIENT_SECRET_LOCAL, CLIENT_ID_LOCAL, CLIENT_ID, CLIENT_SECRET, DOMAIN
+from btax.decorators import bitrix_auth
+
+#remoto:
+bx24 = Bitrix24(DOMAIN, CLIENT_ID, CLIENT_SECRET)
+
+#local:
+if BITRIX_LOCAL:
+    bx24 = Bitrix24(DOMAIN, CLIENT_ID_LOCAL, CLIENT_SECRET_LOCAL)
+
+
 @csrf_exempt
 def token_redirect(request):
     #data_response = {}
@@ -51,13 +63,13 @@ def token_redirect(request):
                     payload[k] = pst_rq[key]
         headers = {'Content-Type': 'application/json', 'Authorization': 'Token '+request.GET['user_token']}
         print(headers)
-        print("PAYLOAD!!!!")
+        print("PAYLOAD")
         print(payload)
         url = request.build_absolute_uri(reverse('api:cobrancas-emitir'))
         print(url)
         r = requests.post(url, data=json.dumps(payload), headers=headers)
         print(r.json())
-        print('RAN')
+       
         #response = dict(r.json())
         # if not "id" in response:   
         #     bx24.call('im.notify', {'to': int(bitrix_user), 'message': 'Conta com esse Email inexistente'  })
@@ -114,6 +126,8 @@ class CobrancaEmitir(APIView):
                 },
                 status=status.HTTP_201_CREATED,
             )
+        bitrix24_user = bx24.call('user.current')['result']['ID']
+        bx24.call('im.notify', {'to': int(bitrix24_user), 'message': str(serializer.errors)  })    
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response({'mensagem': 'requisição recebida'})
 

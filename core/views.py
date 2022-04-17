@@ -23,6 +23,7 @@ from boletos.models import TemplateBoleto
 from bitrix24.bitrix24 import *
 from pybitrix24 import Bitrix24
 import schedule
+
 from btax.settings import BITRIX_LOCAL, CLIENT_SECRET_LOCAL, CLIENT_ID_LOCAL, CLIENT_ID, CLIENT_SECRET, DOMAIN
 from btax.decorators import bitrix_auth
 
