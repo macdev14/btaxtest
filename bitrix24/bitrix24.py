@@ -379,7 +379,7 @@ def atualizar_robot(token, account_id, bitrix_userid, bx24, domain="dev.btax24.c
 
     }
 
-    update_robo = bx24.call('bizproc.robot.add', params)
+    update_robo = bx24.call('bizproc.robot.update', params)
     print(update_robo)
     print("Update Robot")
 '''
