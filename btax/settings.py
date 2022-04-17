@@ -163,7 +163,7 @@ REST_FRAMEWORK = {
 
 
 #  bitrix24
-BITRIX_LOCAL = os.environ['BITRIX_LOCAL'] or False
+BITRIX_LOCAL = False if not 'BITRIX_LOCAL' in os.environ else os.environ['BITRIX_LOCAL']
 DOMAIN = 'beytrix.bitrix24.com.br'
 CLIENT_SECRET = "8MlsoRMTipPgHzU5ejSfGC6WZWxGm8Cik7nSHaBsLL1V5syQ2r"
 CLIENT_ID = "local.62542020d85557.44615100"
