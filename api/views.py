@@ -102,7 +102,6 @@ class TesteList(APIView):
 class CobrancaEmitir(APIView):
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
-
     def post(self, request, format=None):
         print('DATA:', flush=True)
         print(request.data, flush=True)
@@ -126,11 +125,19 @@ class CobrancaEmitir(APIView):
                 },
                 status=status.HTTP_201_CREATED,
             )
-        bitrix24_user = bx24.call('user.current')['result']['ID']
+        try: bitrix24_user = bx24.call('user.current')['result']['ID']
+        except:
+            pass 
+            #resp = redirect(reverse('core:home', kwargs={'url_name': 'cobrancas-emitir' }))
+            #resp.set_cookie('DADOS_COBRANCAS')
+            #return resp
+
         print(serializer.errors['_erros'])
         erros = [ serializer.errors['_erros'][i] for i in serializer.errors['_erros']]
-        bx24.call('im.notify', {'to': int(bitrix24_user), 'message': str(erros)  })    
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        #bx24.call('im.notify', {'to': int(bitrix24_user), 'message': str(erros)  })
+        resp = Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        resp.set_cookie('NOTIFICACAO_BITRIX', erros)
+        return resp
         return Response({'mensagem': 'requisição recebida'})
 
 class CobrancaConsulta(APIView):
