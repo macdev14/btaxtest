@@ -5,10 +5,13 @@ from bitrix24.bitrix24 import *
 
 def robot_schedule(request, bx24):
     if request.COOKIES['token']: update_robot(request.COOKIES['token'],request.user.profile.conta.id, bx24, request.META['HTTP_HOST'])
-
-def notification(bx24, erros):
-    bitrix24_user = bx24.call('user.current')['result']['ID']
-    bx24.call('im.notify', {'to': int(bitrix24_user), 'message': str(erros)  })
+        
+def notification(request, bx24):
+    erros = request.COOKIES['NOTIFICACAO_BITRIX']
+    if erros:
+        bitrix24_user = bx24.call('user.current')['result']['ID']
+        bx24.call('im.notify', {'to': int(bitrix24_user), 'message': str(erros)  })
+        request.delete_cookie('NOTIFICACAO_BITRIX')
 def bitrix_auth(bx24, token=""):
     def other_function(function):
         @wraps(function)
@@ -18,8 +21,7 @@ def bitrix_auth(bx24, token=""):
                 bx24.refresh_tokens()
                 schedule.every(1).minutes.do(bx24.refresh_tokens)
                 schedule.every(5).minutes.do(robot_schedule(request, bx24))
-                if request.COOKIES['NOTIFICACAO_BITRIX'] : notification(bx24, request.COOKIES['NOTIFICACAO_BITRIX'])
-                request.delete_cookie('NOTIFICACAO_BITRIX')
+                schedule.every(30).seconds.do(notification(request, bx24))      
             except:
                 get_request = {}
                 for k in request.GET.keys(): get_request[k]=request.GET[k]
