@@ -35,7 +35,7 @@ class CobrancaSerializer(serializers.Serializer):
     )
     sacado_endereco_cep = serializers.CharField(
         min_length=1,
-        max_length=8,
+        max_length=9,
     )
     sacado_endereco_cidade = serializers.CharField(
         min_length=1,
