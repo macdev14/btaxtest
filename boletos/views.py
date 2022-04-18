@@ -22,19 +22,26 @@ bx24 = Bitrix24(DOMAIN, CLIENT_ID, CLIENT_SECRET)
 #local:
 #bx24 = Bitrix24(DOMAIN, CLIENT_ID_LOCAL, CLIENT_SECRET_LOCAL)
 
+# with bitrix_auth(bx24) as response:
+#     response.delete_cookie('token')
+#     response.delete_cookie('NOTIFICACAO_BITRIX')
 
 @login_required
-@bitrix_auth(bx24)
+#@bitrix_auth(bx24)
 def templates_boletos(request):
     templates_boletos = querys.filtra_objs(TemplateBoleto.COLLECTION_NAME, {'conta_id': str(request.user.profile.conta.id), 'deletado': False })
-    return render(request, 'boletos/templates/lista.html', 
+    resp =  render(request, 'boletos/templates/lista.html', 
         {
             'templates_boletos': templates_boletos
         }
     )
+    # if 'delete_cookies' in request.GET: 
+    #     ##resp.delete_cookie('token') 
+    #     resp.delete_cookie('NOTIFICACAO_BITRIX')
+    return resp
 
 @login_required
-@bitrix_auth(bx24)
+#@bitrix_auth(bx24)
 def templates_boletos_novo(request):
     global bx24
     conta = request.user.profile.conta
@@ -47,22 +54,30 @@ def templates_boletos_novo(request):
             template = TemplateBoleto(conta_id=str(conta.id), **cleaned_data)
             querys.inserir_obj(TemplateBoleto.COLLECTION_NAME, template.dict_data())
             token = Token.objects.get(user=request.user)
-            update_robot(token, conta.id, bx24, request.META['HTTP_HOST'])
-            return HttpResponseRedirect(reverse('boletos:templates'))
+            #update_robot(token, conta.id, bx24, request.META['HTTP_HOST'])
+            resp = HttpResponseRedirect(reverse('core:update-btax'))
+            resp.set_cookie('token', token)
+            resp.set_cookie('VIEW_REDIRECT', 'core:update-btax')
+            return resp
         else:
             print('errors template form:', form.errors, flush=True)
 
     else:
         form = TemplateBoletoForm()
 
-    return render(request, 'boletos/templates/cadastro.html',
+     
+    resp = render(request, 'boletos/templates/cadastro.html',
         {
             'form': form,
         }
     )
+    # if 'delete_cookies' in request.GET: 
+    #     #resp.delete_cookie('token') 
+    #     resp.delete_cookie('NOTIFICACAO_BITRIX')
+    return resp
 
 @login_required
-@bitrix_auth(bx24)
+#@bitrix_auth(bx24)
 def templates_boletos_editar(request, template_boleto_id):
     conta = request.user.profile.conta
     template_boleto = querys.get_obj(TemplateBoleto.COLLECTION_NAME, {'_id': ObjectId(template_boleto_id), 'conta_id': str(conta.id)})
@@ -73,26 +88,40 @@ def templates_boletos_editar(request, template_boleto_id):
             template = TemplateBoleto(_id=template_boleto['_id'], conta_id=str(conta.id), **cleaned_data)
             id_retorno = querys.update_obj(TemplateBoleto.COLLECTION_NAME, template._id, template.dict_data())
             token = Token.objects.get(user=request.user)
-            update_robot(token, conta.id, bx24, request.META['HTTP_HOST'])
-            return HttpResponseRedirect(reverse('boletos:templates'))
+            #update_robot(token, conta.id, bx24, request.META['HTTP_HOST'])
+            resp = HttpResponseRedirect(reverse('core:update-btax'))
+            resp.set_cookie('token', token)
+            resp.set_cookie('VIEW_REDIRECT', 'core:update-btax')
+            return resp
         else:
             print('errors template form:', form.errors, flush=True)
 
     else:
         form = TemplateBoletoForm(initial=template_boleto)
-
-    return render(request, 'boletos/templates/cadastro.html',
+    
+    resp = render(request, 'boletos/templates/cadastro.html',
         {
             'form': form,
         }
     )
+    # if 'delete_cookies' in request.GET:
+    #     #resp.delete_cookie('token') 
+    #     resp.delete_cookie('NOTIFICACAO_BITRIX')
+    return resp
 
 @login_required
-@bitrix_auth(bx24)
+#@bitrix_auth(bx24)
 def templates_boletos_excluir(request, template_boleto_id):
     conta = request.user.profile.conta
     template_boleto = querys.get_obj(TemplateBoleto.COLLECTION_NAME, {'_id': ObjectId(template_boleto_id), 'conta_id': str(conta.id)})
     template_boleto['deletado'] = True
     querys.update_obj(TemplateBoleto.COLLECTION_NAME, template_boleto['_id'], template_boleto)
     token = Token.objects.get(user=request.user)
-    return HttpResponseRedirect(reverse('boletos:templates'))
+    resp = HttpResponseRedirect(reverse('core:update-btax'))
+    resp.set_cookie('VIEW_REDIRECT', 'core:update-btax')
+    # if 'delete_cookies' in request.GET: 
+    #     #resp.delete_cookie('token') 
+    #     resp.delete_cookie('NOTIFICACAO_BITRIX')
+    resp.set_cookie('token', token)
+    
+    return resp

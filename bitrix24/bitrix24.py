@@ -248,16 +248,17 @@ def install_robot(token, account_id, bx24, bitrix_userid,  domain="dev.btax24.co
 
         }
 
-        try:
-            add_robo = bx24.call('bizproc.robot.add', params)
-            print("Robot")
-            print(add_robo)
-            tst = bx24.call('bizproc.robot.list')
-            print(tst)
-        except:
-            raise Exception("Invalid tokens while creating robot")
+       
+        add_robo = bx24.call('bizproc.robot.add', params)
+        print("Robot")
+        if 'error' in add_robo: raise Exception(add_robo)
+        print(add_robo)
+        tst = bx24.call('bizproc.robot.list')
+        print(tst)
+        
 
 def update_robot(token, account_id, bx24, bitrix_userid,  domain="dev.btax24.com"):
+        
         templates_boletos = querys.filtra_objs(TemplateBoleto.COLLECTION_NAME, {'conta_id': str(account_id), 'deletado': False })
         
         handler = 'https://dev.btax24.com/api/cobrancas/emitir/'
@@ -275,7 +276,7 @@ def update_robot(token, account_id, bx24, bitrix_userid,  domain="dev.btax24.com
             dict_options[ str(id_boleto.get('_id'))] =  str(id_boleto.get('descricao'))
         
         
-        
+        bx24.refresh_tokens()
         properties = {
             
                 'template_boleto_id': {
@@ -423,17 +424,28 @@ def update_robot(token, account_id, bx24, bitrix_userid,  domain="dev.btax24.com
             'HANDLER': str(handler),
             #'AUTH_USER_ID': 'Bearer '+str(token),
             'AUTH_USER_ID': bitrix_userid,
-            'NAME': 'Btax',
-            'PROPERTIES': properties,    
-            'RETURN_PROPERTIES': return_properties
+            #'NAME': 'Btax',
+            #'PROPERTIES': properties
+            'FIELDS': {
+                 
+                    'Name': 'Btax',
+                    'Type': 'select',
+                    'Options': dict_options,
+                    'PROPERTIES': properties
+                  
+
+             },    
+            #'RETURN_PROPERTIES': return_properties
 
         }
-        try:
-            update_robo = bx24.call('bizproc.robot.update', params)
-            print(update_robo)
-            print("Update Robot")
-        except:
-            raise Exception("Invalid tokens while updating robots")
+        print(token)
+        bx24.refresh_tokens()
+        update_robo = bx24.call('bizproc.robot.update', params)
+        print(update_robo)
+        if 'error' in update_robo: raise Exception(update_robo['error_description'])
+      
+        print("Update Robot")
+        
 '''
 
 

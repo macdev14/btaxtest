@@ -125,9 +125,7 @@ class CobrancaEmitir(APIView):
                 },
                 status=status.HTTP_201_CREATED,
             )
-        try: bitrix24_user = bx24.call('user.current')['result']['ID']
-        except:
-            pass 
+        
             #resp = redirect(reverse('core:home', kwargs={'url_name': 'cobrancas-emitir' }))
             #resp.set_cookie('DADOS_COBRANCAS')
             #return resp

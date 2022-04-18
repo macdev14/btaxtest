@@ -5,8 +5,10 @@ from . import views
 app_name = 'core'
 urlpatterns = [
     # ADMINISTRATIVO
-    path('', views.home, name='home'),
+   
+    path('updateapp/', views.update_btax, name='update-btax'),
     path('installapp/', views.instalacao_btax, name='instalacao'),
+ 
     path('contas/', views.contas, name='contas'),
     path('contas/novo/', views.contas_novo, name='contas-novo'),
     path('contas/editar/<uuid:conta_id>/', views.contas_editar, name='contas-editar'),
@@ -23,4 +25,7 @@ urlpatterns = [
     path('servicos/novo/', views.servicos_novo, name='servicos-novo'),
     path('servicos/editar/<slug:servico_id>/', views.servicos_editar, name='servicos-editar'),
     path('servicos/excluir/<slug:servico_id>/', views.servicos_excluir, name='servicos-excluir'),
+
+    path('', views.home, name='home'),
+    #path('<str:url_name>', views.home, name='home-url'),
 ]
