@@ -131,11 +131,13 @@ class CobrancaEmitir(APIView):
             #return resp
 
         print(serializer.errors)
-        #error_dict = {}
-        #erros = [ error_dict[i] =  for i in serializer.errors]
+        errors = "Campos incorretos:"
+         
+        for i in serializer.errors['_dados']['_erros']:
+            errors + " "+ i 
         #bx24.call('im.notify', {'to': int(bitrix24_user), 'message': str(erros)  })
         resp = Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        resp.set_cookie('NOTIFICACAO_BITRIX', serializer.errors)
+        resp.set_cookie('NOTIFICACAO_BITRIX', errors)
         return resp
         return Response({'mensagem': 'requisição recebida'})
 
