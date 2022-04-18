@@ -129,13 +129,10 @@ class CobrancaEmitir(APIView):
             #resp = redirect(reverse('core:home', kwargs={'url_name': 'cobrancas-emitir' }))
             #resp.set_cookie('DADOS_COBRANCAS')
             #return resp
-
+        print("errors")
         print(serializer.errors.keys())
         errors = "Campos incorretos:"
         json.loads(serializer.errors)
-        for i in dict(serializer.errors):
-            print(serializer.errors[i])
-            print('DICT PRINT')
         #bx24.call('im.notify', {'to': int(bitrix24_user), 'message': str(erros)  })
         resp = Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         resp.set_cookie('NOTIFICACAO_BITRIX', errors)
