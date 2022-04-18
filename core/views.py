@@ -184,6 +184,7 @@ def update_btax(request):
         #bx24.call('im.notify', {'to': int(info['ID']), 'message': 'Conta com esse Email inexistente'  })
         if 'NOTIFICACAO_BITRIX' in request.COOKIES and request.COOKIES['NOTIFICACAO_BITRIX']:
             bx24.call('im.notify', {'to': int(info['ID']), 'message': request.COOKIES['NOTIFICACAO_BITRIX']  })
+            request.delete_cookie('NOTIFICACAO_BITRIX')
     except:
         resp = redirect('core:home')
         resp.set_cookie('VIEW_REDIRECT', 'core:update-btax')
