@@ -133,7 +133,7 @@ class CobrancaEmitir(APIView):
         print(serializer.errors)
         errors = "Campos incorretos:"
          
-        for i in serializer.errors['_dados']['_erros']:
+        for i in dict(serializer.errors)['_dados']['_erros']['_erro']:
             errors + " "+ i 
         #bx24.call('im.notify', {'to': int(bitrix24_user), 'message': str(erros)  })
         resp = Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
