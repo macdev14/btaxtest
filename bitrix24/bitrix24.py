@@ -224,7 +224,7 @@ def install_robot(token, account_id, bx24, bitrix_userid,  domain="dev.btax24.co
             }
 
         return_properties = {
-                    'id': {
+                    'sacado_endereco_numero': {
                         'Name': 'ID Boleto',
                         'Type': 'string',
                         'Default': ''
@@ -285,6 +285,12 @@ def update_robot(token, account_id, bx24, bitrix_userid,  domain="dev.btax24.com
                         'Options': dict_options,
                         'Default': list(dict_options.keys())[0] or ''
                     },
+
+                # 'id_boleto': {
+                #         'Name': 'ID do Boleto',
+                #         'Type': 'string',
+                #         'Default': ''
+                #     },
 
                     'sacado_cpf_cnpj': {
                         'Name': 'CPF ou CNPJ do Sacado',
@@ -406,7 +412,7 @@ def update_robot(token, account_id, bx24, bitrix_userid,  domain="dev.btax24.com
             }
 
         return_properties = {
-                    'id': {
+                    'sacado_endereco_numero': {
                         'Name': 'ID Boleto',
                         'Type': 'string',
                         'Default': ''
