@@ -26,7 +26,7 @@ from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 import datetime
 import json
-
+from django.http import JsonResponse
 from btax.settings import BITRIX_LOCAL, CLIENT_SECRET_LOCAL, CLIENT_ID_LOCAL, CLIENT_ID, CLIENT_SECRET, DOMAIN
 from btax.decorators import bitrix_auth
 
@@ -69,6 +69,7 @@ def token_redirect(request):
         print(url)
         r = requests.post(url, data=json.dumps(payload), headers=headers)
         print(r.json())
+        return JsonResponse(r.json())
        
         #response = dict(r.json())
         # if not "id" in response:   
