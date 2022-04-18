@@ -227,7 +227,8 @@ def install_robot(token, account_id, bx24, bitrix_userid,  domain="dev.btax24.co
                     'id': {
                         'Name': 'ID Boleto',
                         'Type': 'string',
-                        'Default': ''
+                        'Default': '',
+                        'Multiple' : 'N',
                     },
                 }
         
@@ -243,7 +244,9 @@ def install_robot(token, account_id, bx24, bitrix_userid,  domain="dev.btax24.co
             #'AUTH_USER_ID': 'Bearer '+str(token),
             'AUTH_USER_ID': bitrix_userid,
             'NAME': 'Btax',
-            'PROPERTIES': properties,    
+           
+            'PROPERTIES': properties,
+            'USE_SUBSCRIPTION': 'Y',     
             'RETURN_PROPERTIES': return_properties
 
         }
@@ -430,6 +433,7 @@ def update_robot(token, account_id, bx24, bitrix_userid,  domain="dev.btax24.com
             'HANDLER': str(handler),
             #'AUTH_USER_ID': 'Bearer '+str(token),
             'AUTH_USER_ID': bitrix_userid,
+            'USE_SUBSCRIPTION': 'Y',
             #'NAME': 'Btax',
             #'PROPERTIES': properties
             'FIELDS': {
