@@ -68,6 +68,7 @@ def token_redirect(request):
         url = request.build_absolute_uri(reverse('api:cobrancas-emitir'))
         print(url)
         r = requests.post(url, data=json.dumps(payload), headers=headers)
+        print("JSON RESPONSE")
         print(r.json())
         return JsonResponse(r.json())
        
