@@ -217,6 +217,13 @@ class Conta(models.Model):
         null=True,
     )
 
+    id_cedente = models.CharField(
+        'ID Usuário TechnoSpeed',
+        max_length=50,
+        null=True,
+        blank=True
+    )
+
     is_deletado = models.BooleanField(
         'Deletado?',
         default=False,

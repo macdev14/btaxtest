@@ -9,9 +9,12 @@ def robot_schedule(request, bx24):
 def notification(request, bx24):
     erros = request.COOKIES['NOTIFICACAO_BITRIX']
     if erros:
-        bitrix24_user = bx24.call('user.current')['result']['ID']
-        bx24.call('im.notify', {'to': int(bitrix24_user), 'message': str(erros)  })
-        request.delete_cookie('NOTIFICACAO_BITRIX')
+        try:
+            bitrix24_user = bx24.call('user.current')['result']['ID']
+            bx24.call('im.notify', {'to': int(bitrix24_user), 'message': str(erros)  })
+            request.delete_cookie('NOTIFICACAO_BITRIX')
+        except:
+            pass
 def bitrix_auth(bx24, token=""):
     def other_function(function):
         @wraps(function)
@@ -27,8 +30,9 @@ def bitrix_auth(bx24, token=""):
             except:
                 get_request = {}
                 for k in request.GET.keys(): get_request[k]=request.GET[k]
-                try:redirect(reverse(request.resolver_match.view_name, kwargs=get_request, args=[1]))
-                except: redirect(reverse(request.resolver_match.view_name, kwargs=get_request))
+                if not request.POST:
+                    try:redirect(reverse(request.resolver_match.view_name, kwargs=get_request, args=[1]))
+                    except: redirect(reverse(request.resolver_match.view_name, kwargs=get_request))
                 
               
             print(request)

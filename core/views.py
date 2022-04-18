@@ -1,4 +1,5 @@
-import json
+import json, urllib
+from wsgiref import headers
 from bson.objectid import ObjectId
 
 from django.shortcuts import render, reverse, get_object_or_404, redirect
@@ -6,9 +7,9 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, Http40
 from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
 from django.forms import modelformset_factory
-
+from unidecode import unidecode
 from rest_framework.authtoken.models import Token
-
+from urllib.parse import unquote
 from autenticacao.models import User
 from autenticacao import gerador_senha
 from .models import Conta, Profile, Telefone, Empresa
@@ -24,7 +25,7 @@ from bitrix24.bitrix24 import *
 from pybitrix24 import Bitrix24
 import schedule
 
-from btax.settings import BITRIX_LOCAL, CLIENT_SECRET_LOCAL, CLIENT_ID_LOCAL, CLIENT_ID, CLIENT_SECRET, DOMAIN
+from btax.settings import BITRIX_LOCAL, CLIENT_SECRET_LOCAL, CLIENT_ID_LOCAL, CLIENT_ID, CLIENT_SECRET, DOMAIN, TS_PLUGBOLETO_BASE_URL, TS_TOKEN, TS_CNPJ
 from btax.decorators import bitrix_auth
 
 #remoto:
@@ -210,7 +211,48 @@ def contas(request):
 @only_administrators
 def contas_novo(request):
     if request.method == 'POST':
-        form = ContasForm(request.POST)
+        data = request.POST
+        ''' 
+        print(request.POST['endereco_cidade'])
+        
+        print(dict(request.POST))
+        url_man = 'https://servicodados.ibge.gov.br/api/v1/localidades/municipios/{municipio}'.format(municipio=data['endereco_cidade'].replace(' ','-'))
+        url_mun = '' + unquote(url_man, encoding="latin-1")
+        mun_resp = requests.get(unidecode(url_mun))
+        print(mun_resp.url)
+        print(mun_resp.json())
+        d_id = mun_resp.json()['id']
+        print(d_id)
+            
+        techno_url = TS_PLUGBOLETO_BASE_URL+'cedente'
+        headers={'Content-Type': 'application/json', 'cnpj-sh': TS_CNPJ, 'token-sh': TS_TOKEN}
+        params = {
+                'CedenteRazaoSocial': str(data['nome']), 
+                'CedenteCPFCNPJ': str(data['cpf_cnpj']), 
+                'CedenteEnderecoLogradouro': str(data['endereco_logradouro']),
+                'CedenteEnderecoNumero': str(data['endereco_numero']),
+                'CedenteEnderecoComplemento': str(data['endereco_complemento']),
+                'CedenteEnderecoBairro': str(data['endereco_bairro']),
+                'CedenteEnderecoCEP': str(data['endereco_cep']),
+                'CedenteEnderecoCidadeIBGE': d_id,
+                'CedenteTelefone': str(data['contato_telefone']),
+                'CedenteEmail': str(data['contato_email'])
+
+            }
+        cedente_post = requests.post(url=techno_url, headers=headers, params=params)
+        print(cedente_post.json())
+        data['id_cedente'] = cedente_post.json()['_dados']['id']
+        '''
+
+
+
+        form = ContasForm(data)
+       
+        #print(request.POST.json())
+
+
+
+        #return print([ i for i in request.POST.items()])
         if form.is_valid():
             conta = form.save()
 
@@ -227,6 +269,8 @@ def contas_novo(request):
 
             EnviaEmail(conta.contato_email, usuario.id, conta.nome).start()
 
+
+            
             return HttpResponseRedirect(reverse('core:contas'))
         else:
             print(form.errors )
