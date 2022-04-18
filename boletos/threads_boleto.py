@@ -83,4 +83,5 @@ class GeraBoletoThread(Thread):
                 boleto.situacao = Boleto.FALHA
                 boleto.save()
         else:
-            print('Erro')
+            return resposta
+            #print('Erro')

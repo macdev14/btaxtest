@@ -118,7 +118,8 @@ class CobrancaEmitir(APIView):
         if serializer.is_valid():
             cobranca = serializer.save()
             cobranca.save()
-            GeraBoletoThread(cobranca).start()
+            response_boleto = GeraBoletoThread(cobranca).start()
+            print(response_boleto)
             return Response(
                 {
                     'id': str(cobranca._id)
@@ -129,11 +130,12 @@ class CobrancaEmitir(APIView):
             #resp = redirect(reverse('core:home', kwargs={'url_name': 'cobrancas-emitir' }))
             #resp.set_cookie('DADOS_COBRANCAS')
             #return resp
-        print("errors")
-        print(serializer.errors.keys())
-        errors = "Campos incorretos:"
-        json.loads(serializer.errors)
-        #bx24.call('im.notify', {'to': int(bitrix24_user), 'message': str(erros)  })
+        #print("errors")
+        errors = "Campos incorretos: " + str([ str(i+' ') for i in serializer.errors.values() ] )
+        print(serializer.errors.values())
+       
+        
+     
         resp = Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         resp.set_cookie('NOTIFICACAO_BITRIX', errors)
         return resp
