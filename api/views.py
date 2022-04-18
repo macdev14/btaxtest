@@ -119,6 +119,7 @@ class CobrancaEmitir(APIView):
             cobranca = serializer.save()
             cobranca.save()
             response_boleto = GeraBoletoThread(cobranca).start()
+            print("response boleto: ")
             print(response_boleto)
             return Response(
                 {
