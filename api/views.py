@@ -25,7 +25,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 import datetime
-
+import json
 
 from btax.settings import BITRIX_LOCAL, CLIENT_SECRET_LOCAL, CLIENT_ID_LOCAL, CLIENT_ID, CLIENT_SECRET, DOMAIN
 from btax.decorators import bitrix_auth
@@ -130,11 +130,12 @@ class CobrancaEmitir(APIView):
             #resp.set_cookie('DADOS_COBRANCAS')
             #return resp
 
-        print(serializer.errors)
+        print(serializer.errors.keys())
         errors = "Campos incorretos:"
-         
+        json.loads(serializer.errors)
         for i in dict(serializer.errors):
             print(serializer.errors[i])
+            print('DICT PRINT')
         #bx24.call('im.notify', {'to': int(bitrix24_user), 'message': str(erros)  })
         resp = Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         resp.set_cookie('NOTIFICACAO_BITRIX', errors)
