@@ -82,6 +82,7 @@ class GeraBoletoThread(Thread):
             elif len(resposta['_dados']['_falha']) > 0:
                 boleto.situacao = Boleto.FALHA
                 boleto.save()
+                return resposta
         else:
-            return resposta
-            #print('Erro')
+            
+            print('Erro')
