@@ -133,6 +133,7 @@ class CobrancaEmitir(APIView):
             #return resp
         #print("errors")
         errors = "Campos incorretos: " + str([ str(i+' ') for i in serializer.errors.values() ] )
+        print("Follow errors!!!!")
         print(serializer.errors.values())
        
         
