@@ -225,7 +225,7 @@ def install_robot(token, account_id, bx24, bitrix_userid,  domain="dev.btax24.co
 
         return_properties = {
                     'id': {
-                        'Name': 'id',
+                        'Name': 'ID Boleto',
                         'Type': 'string',
                         'Default': ''
                     },
@@ -431,8 +431,8 @@ def update_robot(token, account_id, bx24, bitrix_userid,  domain="dev.btax24.com
                     'Name': 'Btax',
                     'Type': 'select',
                     'Options': dict_options,
-                    'PROPERTIES': properties
-                  
+                    'PROPERTIES': properties,
+                    'RETURN_PROPERTIES': return_properties
 
              },    
             #'RETURN_PROPERTIES': return_properties

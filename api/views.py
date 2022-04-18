@@ -118,9 +118,8 @@ class CobrancaEmitir(APIView):
         if serializer.is_valid():
             cobranca = serializer.save()
             cobranca.save()
-            response_boleto = GeraBoletoThread(cobranca).start()
-            print("response boleto: ")
-            print(response_boleto)
+            GeraBoletoThread(cobranca).start()
+            
             return Response(
                 {
                     'id': str(cobranca._id)
