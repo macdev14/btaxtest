@@ -90,9 +90,10 @@ def token_redirect(request):
         obj = {}
         obj["properties[id]"] = new['id']
         # retornar resposta
+        json_obj = json.dumps(obj)
         print("object json: ")
-        print(obj.json())
-        return JsonResponse(obj.json())
+        print(json_obj)
+        return JsonResponse(json_obj)
        
         #response = dict(r.json())
         # if not "id" in response:   
