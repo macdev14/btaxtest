@@ -40,37 +40,59 @@ if BITRIX_LOCAL:
 
 @csrf_exempt
 def token_redirect(request):
-    #data_response = {}
+
+    ''' funcao para obter token e postar na url /emissao/cobranca '''
+
     if 'user_token' in request.GET:
+        #  para verificar entrada
         print('TOKEN')
         print(request.GET['user_token'])
         print(request.POST.dict())
+
         bitrix_user = request.GET['bitrix_user'] if 'bitrix_user' in request.GET else None
+        
+        # para verificar id do usuario
         print("bitrix user id: "+ str(bitrix_user) )
         print("DATA: ")
+        # criar payload e header
         payload = {}
         pst_rq = request.POST.dict()
         for key in pst_rq:
             print(key[key.find("[")+1:key.rfind("]")])
+            # definir chaves retirar [] do string
             k = key[key.find("[")+1:key.rfind("]")]
-            print(":")
-            print(pst_rq[key])
+            # print(":")
+            # print(pst_rq[key])
+            ''' se houver propriedades na chave original verificar se a chave nova eh data se for convertar data '''
             if 'properties' in key:
                 if k == "titulo_data_vencimento" and pst_rq[key]:
                     date_time = datetime.datetime.strptime(pst_rq[key], "%d/%m/%Y").strftime('%Y-%m-%d')
                     payload[k] = date_time
                 else:
                     payload[k] = pst_rq[key]
+        
+        # definir headers
         headers = {'Content-Type': 'application/json', 'Authorization': 'Token '+request.GET['user_token']}
+        # mostrar headers
         print(headers)
+        # mostrar payload
         print("PAYLOAD")
         print(payload)
+        # gerar url p/ requisicao
         url = request.build_absolute_uri(reverse('api:cobrancas-emitir'))
         print(url)
+        # realizar requisicao
         r = requests.post(url, data=json.dumps(payload), headers=headers)
         print("JSON RESPONSE")
+        # mostrar resposta
         print(r.json())
-        return JsonResponse(r.json())
+        new = r.json()
+        obj = {}
+        obj["properties[id]"] = new['id']
+        # retornar resposta
+        print("object json: ")
+        print(obj.json())
+        return JsonResponse(obj.json())
        
         #response = dict(r.json())
         # if not "id" in response:   
@@ -129,10 +151,7 @@ class CobrancaEmitir(APIView):
                 status=status.HTTP_201_CREATED,
             )
         
-            #resp = redirect(reverse('core:home', kwargs={'url_name': 'cobrancas-emitir' }))
-            #resp.set_cookie('DADOS_COBRANCAS')
-            #return resp
-        #print("errors")
+        # gerar notificacao
         errors = "Campos incorretos: " + str([ str(i+' ') for i in serializer.errors.values() ] )
         print("Follow errors!!!!")
         print(serializer.errors.values())

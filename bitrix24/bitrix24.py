@@ -10,91 +10,44 @@ def send_notification(bitrix_user_id, message):
     return response.status_code == 200
 
 
-
-
-
-
-'''
-
-
-        BOLETO
-    # 'cobranca_id': {
-                        'Name': 'cobranca_id',
-                        'Type': 'string',
-                        'Default': ''
-                    },
-
-                    'boleto_id': {
-                        'Name': 'boleto_id',
-                        'Type': 'string',
-                        'Default': ''
-                    },
-
-                    'situacao': {
-                        'Name': 'situacao',
-                        'Type': 'string',
-                        'Default': ''
-                    },
-
-                    'boleto_url': {
-                        'Name': 'boleto_url',
-                        'Type': 'string',
-                        'Default': ''
-                    },
-
-                    'boleto_linha_digitavel': {
-                        'Name': 'boleto_linha_digitavel',
-                        'Type': 'string',
-                        'Default': ''
-                    },
-
-                    'boleto_codigo_barras': {
-                        'Name': 'boleto_codigo_barras',
-                        'Type': 'string',
-                        'Default': ''
-                    },
-
-
-
-
-    '''
+''' INSTALAR ROBO  '''
 
 
 def install_robot(token, account_id, bx24, bitrix_userid,  domain="dev.btax24.com"):
+        
+        # se for local defina como url remoto
+
         if 'localhost' in domain or '127.0.0.1' in domain: domain="btaxtest.herokuapp.com"
+        
+        # obter templates de boleto
+
         templates_boletos = querys.filtra_objs(TemplateBoleto.COLLECTION_NAME, {'conta_id': str(account_id), 'deletado': False })
         print('USER TOKEN:')
         print(token)
-        #def dict_append()
+       
         
-        
+        # adicionar a um dicionario
         dict_options = {}
         for id_boleto in templates_boletos:
             dict_options[ str(id_boleto.get('_id'))] =  str(id_boleto.get('descricao'))
         
-        #print("templates boletos")
-        #print(dict_options)
-        #print("USER DETAILS")
-        #print(bx24.call('user.current'))
-        #print("User options")
-        #print(bx24.call('user.option.get'))
-        #remoto heroku:
-        # handler = 
-        #remoto dev.btax:
-        #handler = 'https://dev.btax24.com/token/redirect/'
-        #localhost
+      
+        # criar url
         handler = "https://{domain}/api/token/redirect/?user_token={token}&bitrix_user={bitrix_user_id}".format(domain=domain,token=token, bitrix_user_id=bitrix_userid)
 
         #handler = "https://btaxtest.herokuapp.com/api/cobrancas/emitir/"
         print("URL Handler")
         print(handler)
 
-    #{"HANDLER_URL": "http://localhost:8000/api/cobrancas/emitir/"}
+    
         try:
+            # deletar robo antigo
             bx24.call('bizproc.robot.delete', {'CODE': 'btax' })
         except Exception as e:
+            # mostrar erro
             raise Exception("Invalid tokens while deleting robots")
-
+        
+        # definir propriedades
         properties = {
             
                 'template_boleto_id': {
@@ -222,7 +175,7 @@ def install_robot(token, account_id, bx24, bitrix_userid,  domain="dev.btax24.co
                 
                     
             }
-
+        # definir propriedades de retorno
         return_properties = {
                     'id': {
                         'Name': 'ID Boleto',
@@ -232,16 +185,15 @@ def install_robot(token, account_id, bx24, bitrix_userid,  domain="dev.btax24.co
                     },
                 }
         
-        #properties[0][2] = dict_options
+       
         print("changed!!")
-        #print(list(properties))
-        #properties[0]['template_boleto_id']['Options'] = dict_options
+       
         print(properties['template_boleto_id'])
         params = {
 
             'CODE': 'btax',
             'HANDLER': str(handler),
-            #'AUTH_USER_ID': 'Bearer '+str(token),
+            
             'AUTH_USER_ID': bitrix_userid,
             'NAME': 'Btax',
            
@@ -251,35 +203,47 @@ def install_robot(token, account_id, bx24, bitrix_userid,  domain="dev.btax24.co
 
         }
 
-       
+        # adicionar o robo
         add_robo = bx24.call('bizproc.robot.add', params)
         print("Robot")
+        # verificar se possui erro
         if 'error' in add_robo: raise Exception(add_robo)
         print(add_robo)
+        #listar o robo
         tst = bx24.call('bizproc.robot.list')
         print(tst)
         
 
+
+''' ATUALIZAR ROBO  '''
+
+
+
 def update_robot(token, account_id, bx24, bitrix_userid,  domain="dev.btax24.com"):
-        
+        # obter templates de boleto
         templates_boletos = querys.filtra_objs(TemplateBoleto.COLLECTION_NAME, {'conta_id': str(account_id), 'deletado': False })
         
+        ''' criar url '''
         handler = 'https://dev.btax24.com/api/cobrancas/emitir/'
-        #localhost
+        
+        # se localhost definir remoto
         if 'localhost' in domain or '127.0.0.1' in domain: domain="btaxtest.herokuapp.com"
+        
+        # criar url
         handler = "https://{domain}/api/cobrancas/emitir/?user_token={token}".format(domain=domain,token=str(token))
         print("HANDLER: ")
         print(handler)
-        #handler = "https://btaxtest.herokuapp.com/api/cobrancas/emitir/"
-        #def dict_append()
-        
-        
+       
+        # guardar no dicionario os boletos
         dict_options = {}
         for id_boleto in templates_boletos:
             dict_options[ str(id_boleto.get('_id'))] =  str(id_boleto.get('descricao'))
         
         
-        bx24.refresh_tokens()
+        #bx24.refresh_tokens()
+        
+        # definir propriedades
+
         properties = {
             
                 'template_boleto_id': {
@@ -413,7 +377,7 @@ def update_robot(token, account_id, bx24, bitrix_userid,  domain="dev.btax24.com
                 
                     
             }
-
+        # definir propriedades de retorno
         return_properties = {
                     'id': {
                         'Name': 'ID Boleto',
@@ -422,10 +386,9 @@ def update_robot(token, account_id, bx24, bitrix_userid,  domain="dev.btax24.com
                     },
                 }
         
-        #properties[0][2] = dict_options
+      
         print("changed!!")
-        #print(list(properties))
-        #properties[0]['template_boleto_id']['Options'] = dict_options
+        
         print(properties['template_boleto_id'])
         params = {
 
@@ -449,13 +412,20 @@ def update_robot(token, account_id, bx24, bitrix_userid,  domain="dev.btax24.com
 
         }
         print(token)
-        bx24.refresh_tokens()
+        #bx24.refresh_tokens()
+
+        # atualizar o robo
+
         update_robo = bx24.call('bizproc.robot.update', params)
         print(update_robo)
+        # verificar se possui erro
         if 'error' in update_robo: raise Exception(update_robo['error_description'])
       
         print("Update Robot")
-        
+
+
+
+
 '''
 
 
