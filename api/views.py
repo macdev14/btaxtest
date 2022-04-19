@@ -93,7 +93,7 @@ def token_redirect(request):
         json_obj = json.dumps(obj)
         print("object json: ")
         print(json_obj)
-        return JsonResponse(json_obj)
+        return JsonResponse(json_obj.json())
        
         #response = dict(r.json())
         # if not "id" in response:   
