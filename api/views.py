@@ -154,7 +154,7 @@ class CobrancaEmitir(APIView):
             )
         
         # gerar notificacao
-        errors = "Campos incorretos: " + str([ str(i+' ') for i in serializer.errors.values() ] )
+        errors = "Campos incorretos: " #+ str([ str(i+' ') for i in serializer.errors.values() ] )
         print("Follow errors!!!!")
         print(serializer.errors.values())
        
