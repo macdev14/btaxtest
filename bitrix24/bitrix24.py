@@ -200,7 +200,7 @@ def install_robot(token, account_id, bx24, bitrix_userid,  domain="dev.btax24.co
                         'Name': 'Valor do título',
                         'Type': 'double',
                         #'Default': ''
-                        'Default': '{{Valor}}'
+                        'Default': '{{Valor do Titulo}}'
                     },
 
                     'titulo_numero_documento': {
@@ -390,7 +390,7 @@ def update_robot(token, account_id, bx24, bitrix_userid,  domain="dev.btax24.com
                         'Name': 'Valor do título',
                         'Type': 'double',
                         #'Default': ''
-                        'Default': '{{Valor}}'
+                        'Default': '{{Valor do Titulo}}'
                     },
 
                     'titulo_numero_documento': {

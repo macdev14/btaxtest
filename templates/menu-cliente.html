@@ -38,7 +38,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if 'boletos' in request.resolver_match.url_name %}active{% endif %}" href="#">
+                    <a class="nav-link {% if 'boletos' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'boletos:boletos-gerados' %}">
                         <span class="sidenav-mini-icon">T</span>
                         <span class="sidenav-normal">Boletos Gerados</span>
                     </a>

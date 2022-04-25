@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
 
 from .forms import TemplateBoletoForm
-from .models import TemplateBoleto
+from .models import TemplateBoleto, Boleto
 from mongodb import querys
 from rest_framework.authtoken.models import Token
 from bitrix24.bitrix24 import update_robot
@@ -25,6 +25,27 @@ bx24 = Bitrix24(DOMAIN, CLIENT_ID, CLIENT_SECRET)
 # with bitrix_auth(bx24) as response:
 #     response.delete_cookie('token')
 #     response.delete_cookie('NOTIFICACAO_BITRIX')
+
+def consultar_boleto(request):
+   pass
+
+@login_required
+def boletos_gerados(request):
+    print(str(request.user.profile.conta.cpf_cnpj))
+    boletos = list(querys.filtra_objs(Boleto.COLLECTION_NAME, {'cedente_cpf_cnpj': str(request.user.profile.conta.cpf_cnpj) }  ))
+    #boletos_gerados = {}
+    for result_object in boletos:
+         print(result_object)
+         #boletos_gerados[str(result_object.get('_id'))] = result_object
+    resp =  render(request, 'boletos/templates/lista.html', 
+        {
+            'boletos_gerados': boletos
+        }
+    )
+    # if 'delete_cookies' in request.GET: 
+    #     ##resp.delete_cookie('token') 
+    #     resp.delete_cookie('NOTIFICACAO_BITRIX')
+    return resp
 
 @login_required
 #@bitrix_auth(bx24)

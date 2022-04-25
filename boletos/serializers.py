@@ -152,7 +152,7 @@ class BoletoSerializer(serializers.Serializer):
     titulo_valor = serializers.CharField()
     titulo_local_pagamento = serializers.CharField()
     cobranca_id = serializers.CharField(allow_blank=True)
-    situacao = serializers.ChoiceField(choices=SITUACOES, allow_blank=True)
+    situacao = serializers.ChoiceField(choices=SITUACOES, allow_blank=False)
 
     def create(self, validated_data):
         return Boleto(**validated_data)

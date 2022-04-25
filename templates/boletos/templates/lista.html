@@ -1,13 +1,22 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Templates de Boleto{% endblock %}
+{% block title %}
+
+
+{% if templates_boletos %} Templates de Boleto  {% elif boletos_gerados %} Boletos Gerados  {%endif%}
+
+
+
+{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'vendor/sweetalert2/dist/sweetalert2.min.css' %}">
 {% endblock %}
 
-{% block page_title %}Templates de Boleto{% endblock %}
+{% block page_title %}
+{% if templates_boletos %} Templates de Boleto  {% elif boletos_gerados %} Boletos Gerados  {%endif%}
+{% endblock %}
 {% block breadcrumb %}
     <li class="breadcrumb-item"><a href="{% url 'core:home' %}"><i class="fas fa-home"></i></a></li>
     <li class="breadcrumb-item active" aria-current="page">Templates de Boleto</a></li>
@@ -24,11 +33,27 @@
     <div class="table-responsive">
         <table id="tb-templates-boleto" class="table">
             <thead class="thead-light">
+                {% if templates_boletos %} 
+                
                 <tr>
                     <th>ID</th>
                     <th>Descrição</th>
                     <th scope="col"></th>
                 </tr>
+            
+                {% elif boletos_gerados %} 
+                
+                <tr>
+                    <th>ID</th>
+                    <th>CPF / CNPJ Cedente</th>
+                    <th>CPF / CNPJ Sacado</th>
+                    <th>Situação</th>
+                    <th scope="col"></th>
+                </tr>
+                
+                {%endif%}
+
+
             </thead>
             <tbody>
                 {% include 'boletos/templates/lista-conteudo.html' %}
