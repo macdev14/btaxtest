@@ -147,7 +147,7 @@ def obter_pdf(cedente_cpf_cnpj, protocolo, id_integracao):
     
     s3.Object(BUCKET_NAME, PREFIX + 'boleto-{id_integracao}.pdf').put(Body=binary_data)
     try:
-        with open(f"static/assets/boletos/boleto-{id_integracao}.pdf", "wb") as f:
+        with open(f"static/assets/boletos/boleto_{id_integracao}.pdf", "wb") as f:
             f.write(response.content)
     except:
         pass
