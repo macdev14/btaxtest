@@ -143,9 +143,9 @@ def obter_pdf(cedente_cpf_cnpj, protocolo, id_integracao):
     aws_secret_access_key=AWS_SECRET_ACCESS_KEY
 )
     BUCKET_NAME = 'btax'
-    PREFIX = 'assets/boletos/'
+    PREFIX = 'boletos/'
     
-    s3.Object(BUCKET_NAME, PREFIX + 'boleto-{id_integracao}.pdf').put(Body=binary_data)
+    s3.Object(BUCKET_NAME, PREFIX + f'boleto_{id_integracao}.pdf').put(Body=binary_data)
     try:
         with open(f"static/assets/boletos/boleto_{id_integracao}.pdf", "wb") as f:
             f.write(response.content)
