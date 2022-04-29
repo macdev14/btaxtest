@@ -174,5 +174,22 @@ CLIENT_SECRET_LOCAL = "QLwJT6k15YjxJX085UWCOFaqrs4JrQaNKnhhmtu3M3Djg2klcy"
 TS_PLUGBOLETO_BASE_URL = os.environ['TS_PLUGBOLETO_BASE_URL']
 TS_TOKEN = os.environ['TS_TOKEN']
 TS_CNPJ = os.environ['TS_CNPJ']
+
 # django-cors-headers
 CORS_ORIGIN_ALLOW_ALL = True
+
+# aws
+AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
+AWS_URL = os.environ['AWS_URL']
+AWS_S3_REGION_NAME = 'sa-east-1'
+
+STATIC_ROOT = AWS_URL + '/static/'
+STATIC_URL = AWS_URL + '/static/'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+MEDIA_URL = AWS_URL + '/media/'
+MEDIA_ROOT = AWS_URL + '/media/'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
