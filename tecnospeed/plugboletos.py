@@ -1,3 +1,4 @@
+from asyncio import sleep
 import os
 import requests
 
@@ -84,3 +85,56 @@ def consulta_boleto(cedente_cpf_cnpj, id_integracao):
     }
     response = requests.get(f'{URL}/boletos', params={'idintegracao': id_integracao}, headers=headers)
     return response.json()
+
+
+def solicitar_pdf(cedente_cpf_cnpj, id_integracao):
+    #print('test')
+    headers = {
+        'Content-Type': 'application/json',
+        'cnpj-sh': CNPJ,
+        'token-sh': TOKEN,
+        'cnpj-cedente': cedente_cpf_cnpj,
+    }
+    params = {
+        "TipoImpressao" : "0",
+        "Boletos" : [
+            id_integracao,
+]
+    }
+
+    response = requests.post(f'{URL}/boletos/impressao/lote', json=params, headers=headers)
+   
+    resp_json = response.json()
+    # print(resp_json)    
+
+    # if '_dados' in resp_json and resp_json['_dados']:
+    #     while resp_json['_dados']['situacao'] == 'PROCESSANDO':
+    #         #sleep(5)
+    #         response = requests.post(f'{URL}/boletos/impressao/lote', json=params, headers=headers)
+    #         resp_json = response.json()
+    #         print(resp_json)
+
+    if '_dados' in resp_json and  'protocolo' in resp_json['_dados'] and resp_json['_dados']['protocolo']:
+       
+        return resp_json['_dados']['protocolo']
+        
+    else:
+        return resp_json['_mensagem']
+    # finally: 
+    #     return resp_json['_status']
+
+def obter_pdf(cedente_cpf_cnpj, protocolo, id_integracao):
+    headers = {
+        'Content-Type': 'application/json',
+        'cnpj-sh': CNPJ,
+        'token-sh': TOKEN,
+        'cnpj-cedente': cedente_cpf_cnpj,
+    }
+    response = requests.get(f'{URL}/boletos/impressao/lote/{protocolo}', headers=headers)
+    #print(response.content)
+    with open(f"static/assets/boletos/boleto-{id_integracao}.pdf", "wb") as f:
+        f.write(response.content)
+    return True
+
+
+

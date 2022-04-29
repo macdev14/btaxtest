@@ -32,7 +32,7 @@ def consultar_boleto(request):
 @login_required
 def boletos_gerados(request):
     print(str(request.user.profile.conta.cpf_cnpj))
-    boletos = list(querys.filtra_objs(Boleto.COLLECTION_NAME, {'cedente_cpf_cnpj': str(request.user.profile.conta.cpf_cnpj) }  ))
+    boletos = list(querys.filtra_objs(Boleto.COLLECTION_NAME, {'cedente_cpf_cnpj': str(request.user.profile.conta.cpf_cnpj), 'situacao' : 'SALVO' }  ))
     #boletos_gerados = {}
     for result_object in boletos:
          print(result_object)

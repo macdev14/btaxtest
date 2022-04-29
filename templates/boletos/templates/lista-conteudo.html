@@ -1,5 +1,5 @@
 {% load core_tags %}
-
+{% load static %}
 {% if templates_boletos %}
 
 {% for tb in templates_boletos %}
@@ -33,6 +33,14 @@
             <td>{{ boleto.cedente_cpf_cnpj }}</td>
             <td>{{ boleto.sacado_cpf_cnpj }}</td>
             <td>{{ boleto.situacao }}</td>
+            {% if boleto.id_integracao %}
+            <td class="text-right">
+                {% with "boletos/boleto-"|add:boleto.id_integracao|add:".pdf" as boleto_url %}
+               
+                <a href="{% static boleto_url %}" class="btn-primary"><i class="fas fa-barcode"></i></a>
+                {% endwith %}
+            </td>
+            {%endif%}
             <td class="text-right">
                 <a href="#" data-url="{% url 'boletos:templates-excluir' b_id %}" class="btn-excluir"><i class="fas fa-trash"></i></a>
             </td>
