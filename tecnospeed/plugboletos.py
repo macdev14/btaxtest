@@ -1,7 +1,8 @@
 from asyncio import sleep
 import os
 import requests
-
+import boto3
+from btax.settings import *
 CNPJ = os.environ['TS_CNPJ']
 TOKEN = os.environ['TS_TOKEN']
 URL = os.environ['TS_PLUGBOLETO_BASE_URL']
@@ -130,10 +131,26 @@ def obter_pdf(cedente_cpf_cnpj, protocolo, id_integracao):
         'token-sh': TOKEN,
         'cnpj-cedente': cedente_cpf_cnpj,
     }
+    
     response = requests.get(f'{URL}/boletos/impressao/lote/{protocolo}', headers=headers)
     #print(response.content)
-    with open(f"static/assets/boletos/boleto-{id_integracao}.pdf", "wb") as f:
-        f.write(response.content)
+    binary_data = response.content
+
+    s3 = boto3.resource(
+    's3',
+    region_name='us-east-1',
+    aws_access_key_id=AWS_ACCESS_KEY_ID,
+    aws_secret_access_key=AWS_SECRET_ACCESS_KEY
+)
+    BUCKET_NAME = 'btax'
+    PREFIX = 'assets/boletos/'
+    
+    s3.Object(BUCKET_NAME, PREFIX + 'boleto-{id_integracao}.pdf').put(Body=binary_data)
+    try:
+        with open(f"static/assets/boletos/boleto-{id_integracao}.pdf", "wb") as f:
+            f.write(response.content)
+    except:
+        pass
     return True
 
 
