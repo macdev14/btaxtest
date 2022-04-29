@@ -3,3 +3,4 @@ media/*
 *.sqlite3
 bitrix24/bx24_class.py
 /bitrix24/bx24_class.py
+static/assets/boletos/*
