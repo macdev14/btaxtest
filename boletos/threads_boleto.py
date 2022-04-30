@@ -82,7 +82,9 @@ class GeraBoletoThread(Thread):
                 #if 'FALHA' in protocolo: boleto.situacao = Boleto.FALHA
                 boleto.save()
                 protocolo = plugboletos.solicitar_pdf(cedente_cpf_cnpj,boleto.id_integracao)
+                print(protocolo)
                 sleep(0.5)
+                
                 pdf_boleto = plugboletos.obter_pdf(cedente_cpf_cnpj, protocolo, boleto.id_integracao)
             elif len(resposta['_dados']['_falha']) > 0:
                 boleto.situacao = Boleto.FALHA
