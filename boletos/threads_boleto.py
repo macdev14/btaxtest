@@ -1,6 +1,7 @@
 import datetime, re
 
 from threading import Thread
+from time import sleep
 from boletos.serializers import BoletoSerializer
 
 from tecnospeed import plugboletos
@@ -78,12 +79,11 @@ class GeraBoletoThread(Thread):
             if len(resposta['_dados']['_sucesso']) > 0:
                 boleto.situacao = getattr(boleto, resposta['_dados']['_sucesso'][0]['situacao'])
                 boleto.id_integracao = resposta['_dados']['_sucesso'][0]['idintegracao']
-                protocolo = plugboletos.solicitar_pdf(cedente_cpf_cnpj,boleto.id_integracao)
-                print(protocolo)
-                if 'FALHA' in protocolo: boleto.situacao = Boleto.FALHA
-                
-                else: pdf_boleto = plugboletos.obter_pdf(cedente_cpf_cnpj, protocolo, boleto.id_integracao)
+                #if 'FALHA' in protocolo: boleto.situacao = Boleto.FALHA
                 boleto.save()
+                protocolo = plugboletos.solicitar_pdf(cedente_cpf_cnpj,boleto.id_integracao)
+                sleep(0.5)
+                pdf_boleto = plugboletos.obter_pdf(cedente_cpf_cnpj, protocolo, boleto.id_integracao)
             elif len(resposta['_dados']['_falha']) > 0:
                 boleto.situacao = Boleto.FALHA
                 boleto.save()
