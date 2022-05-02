@@ -152,6 +152,7 @@ def solicitar_pdf(cedente_cpf_cnpj, id_integracao):
         return obter_pdf(cedente_cpf_cnpj, resp_json['_dados']['protocolo'], id_integracao)
         
     else:
+        print(resp_json['_mensagem'])
         return resp_json['_mensagem']
     # finally: 
     #     return resp_json['_status']
