@@ -74,6 +74,8 @@ class GeraBoletoThread(Thread):
         boleto.save()
         boleto_dict = boleto.dict_data()
         resposta = plugboletos.inclusao_boleto(**{k: boleto_dict[k] for k in boleto_dict.keys() if not k in ['cobranca_id', 'id_integracao', '_id', 'mensagem_falha']})
+        print('RESPOSTA THREAD')
+        
         print(resposta)
         if resposta['_status'] == 'sucesso':
             if len(resposta['_dados']['_sucesso']) > 0:
@@ -81,7 +83,7 @@ class GeraBoletoThread(Thread):
                 boleto.id_integracao = resposta['_dados']['_sucesso'][0]['idintegracao']
                 #if 'FALHA' in protocolo: boleto.situacao = Boleto.FALHA
                 boleto.save()
-                plugboletos.solicitar_pdf(cedente_cpf_cnpj,boleto.id_integracao)
+               
                 
                 # sleep(0.5)
                 
