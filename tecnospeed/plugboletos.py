@@ -30,7 +30,7 @@ def obter_pdf(cedente_cpf_cnpj, protocolo, id_integracao):
     }
     
     response = requests.get(f'{URL}/boletos/impressao/lote/{protocolo}', headers=headers)
-    #print(response.content)
+    print(response.content)
     binary_data = response.content
 
     s3 = boto3.resource(
