@@ -161,7 +161,7 @@ def inclusao_boleto(cedente_cpf_cnpj, cedente_conta_numero, cedente_conta_numero
     response = requests.post(f'{URL}/boletos/lote', json=boleto, headers=headers)
     resposta = response.json()
     try:
-    
+        sleep(0.5)
         print('ran') 
         id_integracao = resposta['_dados']['_sucesso'][0]['idintegracao']
         solicitar = solicitar_pdf(cedente_cpf_cnpj, id_integracao)
