@@ -79,11 +79,13 @@ def solicitar_pdf(cedente_cpf_cnpj, id_integracao):
     #         resp_json = response.json()
     #         print(resp_json)
 
-    if '_dados' in resp_json and  'protocolo' in resp_json['_dados'] and resp_json['_dados']['protocolo']:
-       
-        return obter_pdf(cedente_cpf_cnpj, resp_json['_dados']['protocolo'], id_integracao)
+    try:
+        protocolo = resp_json['_dados']['protocolo']
+        return obter_pdf(cedente_cpf_cnpj, protocolo, id_integracao)
+         
         
-    else:
+    except Exception as e:
+        print(e)
         print(resp_json['_mensagem'])
         return resp_json['_mensagem']
     # finally: 
@@ -158,10 +160,13 @@ def inclusao_boleto(cedente_cpf_cnpj, cedente_conta_numero, cedente_conta_numero
 
     response = requests.post(f'{URL}/boletos/lote', json=boleto, headers=headers)
     resposta = response.json()
-    if '_dados' in resposta and '_sucesso' in resposta['_dados']:
+    try:
+    
         print('ran') 
         id_integracao = resposta['_dados']['_sucesso'][0]['idintegracao']
-        solicitar_pdf(cedente_cpf_cnpj, id_integracao)
+        solicitar = solicitar_pdf(cedente_cpf_cnpj, id_integracao)
+    except Exception as e:
+        print(e)
     return response.json()
 
 
