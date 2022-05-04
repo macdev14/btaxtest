@@ -21,14 +21,15 @@ def consulta_boleto(cedente_cpf_cnpj, id_integracao):
 
 
 
-def obter_pdf(cedente_cpf_cnpj, protocolo, id_integracao):
+async def obter_pdf(cedente_cpf_cnpj, protocolo, id_integracao):
     headers = {
         'Content-Type': 'application/json',
         'cnpj-sh': CNPJ,
         'token-sh': TOKEN,
         'cnpj-cedente': cedente_cpf_cnpj,
     }
-    
+    print('protocolo: '+ str(protocolo))
+    await asyncio.sleep(1)
     response = requests.get(f'{URL}/boletos/impressao/lote/{protocolo}', headers=headers)
     print(response.content)
     binary_data = response.content
@@ -81,7 +82,7 @@ async def solicitar_pdf(cedente_cpf_cnpj, id_integracao):
 
     try:
         protocolo = resp_json['_dados']['protocolo']
-        return obter_pdf(cedente_cpf_cnpj, protocolo, id_integracao)
+        return await obter_pdf(cedente_cpf_cnpj, protocolo, id_integracao)
          
         
     except Exception as e:
