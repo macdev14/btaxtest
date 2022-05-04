@@ -52,7 +52,7 @@ def obter_pdf(cedente_cpf_cnpj, protocolo, id_integracao):
 
 
 
-def solicitar_pdf(cedente_cpf_cnpj, id_integracao):
+async def solicitar_pdf(cedente_cpf_cnpj, id_integracao):
     #print('test')
     headers = {
         'Content-Type': 'application/json',
