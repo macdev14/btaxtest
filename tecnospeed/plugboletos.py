@@ -2,7 +2,7 @@ from asyncio import sleep
 import os
 import requests
 import boto3
-
+import asyncio
 from btax.settings import *
 CNPJ = os.environ['TS_CNPJ']
 TOKEN = os.environ['TS_TOKEN']
@@ -66,7 +66,7 @@ def solicitar_pdf(cedente_cpf_cnpj, id_integracao):
             id_integracao,
 ]
     }
-
+    asyncio.sleep(1)
     response = requests.post(f'{URL}/boletos/impressao/lote', json=params, headers=headers)
    
     resp_json = response.json()
@@ -161,10 +161,11 @@ def inclusao_boleto(cedente_cpf_cnpj, cedente_conta_numero, cedente_conta_numero
     response = requests.post(f'{URL}/boletos/lote', json=boleto, headers=headers)
     resposta = response.json()
     try:
-        sleep(0.5)
-        print('ran') 
+        # sleep(0.5)
+        # print('ran') 
         id_integracao = resposta['_dados']['_sucesso'][0]['idintegracao']
-        solicitar = solicitar_pdf(cedente_cpf_cnpj, id_integracao)
+        asyncio.run(solicitar_pdf(cedente_cpf_cnpj, id_integracao))
+        
     except Exception as e:
         print(e)
     return response.json()
