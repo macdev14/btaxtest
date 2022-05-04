@@ -4,3 +4,4 @@ media/*
 bitrix24/bx24_class.py
 /bitrix24/bx24_class.py
 static/assets/boletos/*
+.DS_Store
