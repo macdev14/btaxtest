@@ -66,7 +66,7 @@ async def solicitar_pdf(cedente_cpf_cnpj, id_integracao):
             id_integracao,
 ]
     }
-    asyncio.sleep(1)
+    await asyncio.sleep(1)
     response = requests.post(f'{URL}/boletos/impressao/lote', json=params, headers=headers)
    
     resp_json = response.json()
