@@ -21,6 +21,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-_r-ih4p-*&82+gn=!rr(13@72^%q1_k9&8h3ne$1eo79$l4=h^'
 
+AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
+AWS_URL = os.environ['AWS_URL']
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ['DEBUG'] if 'DEBUG' in os.environ else False
 
@@ -179,10 +184,7 @@ TS_CNPJ = '01001001000113'
 CORS_ORIGIN_ALLOW_ALL = True
 
 # aws
-AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
-AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
-AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
-AWS_URL = os.environ['AWS_URL']
+
 AWS_S3_REGION_NAME = 'sa-east-1'
 
 STATIC_ROOT = AWS_URL + '/static/'
