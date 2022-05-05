@@ -171,7 +171,7 @@ CLIENT_ID_LOCAL = "local.625425573ccf01.19175085"
 CLIENT_SECRET_LOCAL = "QLwJT6k15YjxJX085UWCOFaqrs4JrQaNKnhhmtu3M3Djg2klcy"
 
 #technospeed
-TS_PLUGBOLETO_BASE_URL = os.environ['TS_PLUGBOLETO_BASE_URL']
+TS_PLUGBOLETO_BASE_URL = 'https://homologacao.plugboleto.com.br/api/v1/'
 TS_TOKEN = os.environ['TS_TOKEN']
 TS_CNPJ = os.environ['TS_CNPJ']
 
