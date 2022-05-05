@@ -172,8 +172,8 @@ CLIENT_SECRET_LOCAL = "QLwJT6k15YjxJX085UWCOFaqrs4JrQaNKnhhmtu3M3Djg2klcy"
 
 #technospeed
 TS_PLUGBOLETO_BASE_URL = 'https://homologacao.plugboleto.com.br/api/v1/'
-TS_TOKEN = os.environ['TS_TOKEN']
-TS_CNPJ = os.environ['TS_CNPJ']
+TS_TOKEN = 'f22b97c0c9a3d41ac0a3875aba69e5aa'
+TS_CNPJ = '01001001000113'
 
 # django-cors-headers
 CORS_ORIGIN_ALLOW_ALL = True
