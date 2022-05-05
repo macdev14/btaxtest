@@ -78,6 +78,7 @@ def token_redirect(request):
         # mostrar payload
         print("PAYLOAD")
         print(payload)
+        print(payload['titulo_numero_documento'])
         # gerar url p/ requisicao
         url = request.build_absolute_uri(reverse('api:cobrancas-emitir'))
         print(url)
@@ -88,6 +89,9 @@ def token_redirect(request):
         print(r.json())
         new = r.json()
         obj = {}
+       
+
+
         obj["properties[id]"] = new['id']
         # retornar resposta
         json_obj = json.dumps(obj)

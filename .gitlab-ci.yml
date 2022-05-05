@@ -19,7 +19,7 @@ test-prod:
   after_script:
     - source /home/ubuntu/env/btax/bin/predeactivate
   only:
-    - main
+    - master
 
 deploy-prod:
   stage: deploy
@@ -36,7 +36,7 @@ deploy-prod:
   after_script:
     - source /home/ubuntu/env/btax/bin/predeactivate
   only:
-    - main
+    - master
 
 test-dev:
   stage: test

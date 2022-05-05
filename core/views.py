@@ -24,7 +24,7 @@ from boletos.models import TemplateBoleto
 from bitrix24.bitrix24 import *
 from pybitrix24 import Bitrix24
 import schedule
-
+from django.templatetags.static import static
 from btax.settings import BITRIX_LOCAL, CLIENT_SECRET_LOCAL, CLIENT_ID_LOCAL, CLIENT_ID, CLIENT_SECRET, DOMAIN, TS_PLUGBOLETO_BASE_URL, TS_TOKEN, TS_CNPJ
 from btax.decorators import bitrix_auth
 
@@ -184,6 +184,8 @@ def update_btax(request):
         #bx24.call('im.notify', {'to': int(info['ID']), 'message': 'Conta com esse Email inexistente'  })
         if 'NOTIFICACAO_BITRIX' in request.COOKIES and request.COOKIES['NOTIFICACAO_BITRIX']:
             bx24.call('im.notify', {'to': int(info['ID']), 'message': request.COOKIES['NOTIFICACAO_BITRIX']  })
+        if 'id_integracao' in request.COOKIES and request.COOKIES['id_integracao']:
+            bx24.call('crm.deal.update', {'id': 4758, 'fields':{  "UF_CRM_1643650856094":  static(f'/boletos/boleto_{request.COOKIES["id_integracao"]}.pdf' )   }	  })
             
     except:
         resp = redirect('core:home')
