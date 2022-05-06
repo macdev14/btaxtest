@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 from pathlib import Path
+from pickle import TRUE
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +28,7 @@ AWS_URL = os.environ['AWS_URL']
 AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
 AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
 AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
-
+AWS_PRELOAD_METADATA = True
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ['DEBUG'] if 'DEBUG' in os.environ else False
