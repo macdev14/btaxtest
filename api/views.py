@@ -27,7 +27,7 @@ from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 import datetime
 import json
 from django.http import JsonResponse
-from btax.settings import BITRIX_LOCAL, CLIENT_SECRET_LOCAL, CLIENT_ID_LOCAL, CLIENT_ID, CLIENT_SECRET, DOMAIN
+from btax.settings import CLIENT_ID, CLIENT_SECRET, DOMAIN
 from btax.decorators import bitrix_auth
 
 #remoto:
