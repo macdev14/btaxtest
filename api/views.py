@@ -34,8 +34,8 @@ from btax.decorators import bitrix_auth
 bx24 = Bitrix24(DOMAIN, CLIENT_ID, CLIENT_SECRET)
 
 #local:
-if BITRIX_LOCAL:
-    bx24 = Bitrix24(DOMAIN, CLIENT_ID_LOCAL, CLIENT_SECRET_LOCAL)
+# if BITRIX_LOCAL:
+#     bx24 = Bitrix24(DOMAIN, CLIENT_ID_LOCAL, CLIENT_SECRET_LOCAL)
 
 
 @csrf_exempt
