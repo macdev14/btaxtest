@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+
+
+{% if templates_boletos %} Templates de Boleto  {% elif boletos_gerados %} Boletos Gerados  {%endif%}
+
+
+
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'vendor/sweetalert2/dist/sweetalert2.min.css' %}">
+{% endblock %}
+
+{% block page_title %}
+{% if templates_boletos %} Templates de Boleto  {% elif boletos_gerados %} Boletos Gerados  {%endif%}
+{% endblock %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'core:home' %}"><i class="fas fa-home"></i></a></li>
+    <li class="breadcrumb-item active" aria-current="page">Templates de Boleto</a></li>
+{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-header border-0">
+        <div class="row">
+            <div class="col-12 text-right">
+                <a href="{% url 'boletos:templates-novo' %}" class="btn btn-primary">Novo</a>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table id="tb-templates-boleto" class="table">
+            <thead class="thead-light">
+                {% if templates_boletos %} 
+                
+                <tr>
+                    <th>ID</th>
+                    <th>Descrição</th>
+                    <th scope="col"></th>
+                </tr>
+            
+                {% elif boletos_gerados %} 
+                
+                <tr>
+                    <th>ID</th>
+                    <th>CPF / CNPJ Cedente</th>
+                    <th>CPF / CNPJ Sacado</th>
+                    <th>Situação</th>
+                    <th scope="col"></th>
+                </tr>
+                
+                {%endif%}
+
+
+            </thead>
+            <tbody>
+                {% include 'boletos/templates/lista-conteudo.html' %}
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer"></div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $('#tb-templates-boleto').on('click', '.btn-excluir', function(e){
+        e.preventDefault();
+        let btn = $(this);
+        Swal.fire({
+            title: 'Confirmar exclusão?',
+            text: 'Isso irá excluir o template!',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#5E72E4',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim, quero excluir!',
+            cancelButtonText: 'Não!'
+        }).then((result) => {
+            if(result.value) {
+                $.ajax({
+                    url: btn.data('url'),
+                    type: 'get',
+                    success: (data) => {
+                        $('#tb-servicos tbody').html(data.html_lista);
+                        Swal.fire(
+                            'Feito!',
+                            'Template excluído com sucesso!',
+                            'success'
+                        );
+                    },
+                    error: () => {
+                        Swal.fire(
+                            'Ops!',
+                            'Houve um erro ao tentar excluir o template.',
+                            'error'
+                        );
+                    }
+                })
+            }
+        })
+    })
+</script>
+{% endblock %}

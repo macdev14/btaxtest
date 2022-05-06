@@ -1,0 +1,15 @@
+{% for empresa in empresas %}
+    <tr>
+        <td><a href="{% url 'core:empresas-editar' empresa.id %}">{{ empresa.nome_fantasia }}</a></td>
+        <td>{{ empresa.razao_social }}</td>
+        <td class="text-right">
+            <a href="#" data-url="{% url 'core:empresas-excluir' empresa.id %}" class="btn-excluir">
+                <i class="fas fa-trash"></i>
+            </a>
+        </td>
+    </tr>
+{% empty %}
+    <tr>
+        <td colspan="4" class="text-center">Nenhuma empresa encontrada</td>
+    </tr>
+{% endfor %}

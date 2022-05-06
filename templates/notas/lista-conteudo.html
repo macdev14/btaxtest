@@ -1,0 +1,16 @@
+{% load core_tags %}
+{% for nota in notas %}
+    <tr>
+        {% retorna_id nota as nota_id %}
+        <td>{{ nota_id }}</td>
+        <td>{{ nota.numeroNfse }}</td>
+        <td>{{ nota.status }}</td>
+        <td>{{ nota.tomador.razaoSocial }}</td>
+        <td class="text-right">
+        </td>
+    </tr>
+{% empty %}
+    <tr>
+        <td colspan="5" class="text-center">Nenhuma nota encontrada</td>
+    </tr>
+{% endfor %}

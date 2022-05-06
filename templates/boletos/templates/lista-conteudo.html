@@ -1,0 +1,52 @@
+{% load core_tags %}
+{% load static %}
+{% if templates_boletos %}
+
+{% for tb in templates_boletos %}
+
+    <tr>
+        <td>
+            {% retorna_id tb as tb_id %}
+            <a href="{% url 'boletos:templates-editar' tb_id %}">{{ tb_id }}</a>
+        </td>
+        <td>{{ tb.descricao }}</td>
+        <td class="text-right">
+            <a href="#" data-url="{% url 'boletos:templates-excluir' tb_id %}" class="btn-excluir"><i class="fas fa-trash"></i></a>
+        </td>
+    </tr>
+{% empty %}
+    <tr>
+        <td colspan="4" class="text-center">Nenhum template encontrado</td>
+    </tr>
+{% endfor %}
+
+{% elif boletos_gerados %}
+
+
+    {% for boleto in boletos_gerados %}
+    
+        <tr>
+            <td>
+                {% retorna_id boleto as b_id %}
+                <a href="{% url 'boletos:templates-editar' b_id %}">{{ b_id }}</a>
+            </td>
+            <td>{{ boleto.cedente_cpf_cnpj }}</td>
+            <td>{{ boleto.sacado_cpf_cnpj }}</td>
+            <td>{{ boleto.situacao }}</td>
+            {% if boleto.id_integracao %}
+            <td class="text-right">
+                {% with "boletos/boleto_"|add:boleto.id_integracao|add:".pdf" as boleto_url %}
+               
+                <a href="{% static boleto_url %}" class="btn-primary"><i class="fas fa-barcode"></i></a>
+                {% endwith %}
+            </td>
+            {%endif%}
+            <td class="text-right">
+                <a href="#" data-url="{% url 'boletos:templates-excluir' b_id %}" class="btn-excluir"><i class="fas fa-trash"></i></a>
+            </td>
+        </tr>
+   
+    {% endfor %}
+
+
+{% endif %}

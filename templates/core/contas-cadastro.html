@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Contas{% endblock %}
+
+{% block page_title %}Contas{% endblock %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'core:home' %}"><i class="fas fa-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'core:contas' %}">Contas</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Cadastro</a></li>
+{% endblock %}
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+    <div class="card">
+        <div class="card-header">
+            <h3>Cadastro de Conta</h3>
+        </div>
+        <div class="card-body">
+            {% for error in form.non_field_errors %}
+                <p class="text-danger">{{ error }}</p>
+            {% endfor %}
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label for="{{ form.tipo_pessoa.auto_id }}" class="form-control-label w-100">{{ form.tipo_pessoa.label }}</label>
+                        
+                        {% for f in form.tipo_pessoa %}
+                        <div class="form-check form-check-inline">
+                            {{ f.tag }}
+                            <label for="{{ form.tipo_pessoa.auto_id }}_{{ forloop.counter0 }}" class="form-check-label">{{ f.choice_label }}</label>
+                        </div>
+                        {% endfor %}
+                        {% for error in form.tipo_pessoa.errors %}
+                            <span class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label for="{{ form.regime_tributario.auto_id }}" class="form-control-label w-100">{{ form.regime_tributario.label }}</label>
+                        {% for f in form.regime_tributario %}
+                            <div class="form-check form-check-inline">
+                                {{ f.tag }}
+                                <label for="{{ form.regime_tributario.auto_id }}_{{ forloop.counter0 }}" class="form-check-label">{{ f.choice_label }}</label>
+                            </div>
+                        {% endfor %}
+                        
+                    </div>
+                    {% for error in form.regime_tributario.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="{{ form.nome.auto_id }}" class="form-control-label">{{ form.nome.label }}</label>
+                        {{ form.nome }}
+                        {% for error in form.nome.errors %}
+                            <span class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="{{ form.razao_social.auto_id }}" class="form-control-label">{{ form.razao_social.label }}</label>
+                        {{ form.razao_social }}
+                        {% for error in form.razao_social.errors %}
+                            <span class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label for="{{ form.cpf_cnpj.auto_id }}" class="form-control-label">{{ form.cpf_cnpj.label }}</label>
+                        {{ form.cpf_cnpj }}
+                        {% for error in form.cpf_cnpj.errors %}
+                            <span class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label for="{{ form.rg_ie.auto_id }}" class="form-control-label">{{ form.rg_ie.label }}</label>
+                        {{ form.rg_ie }}
+                        {% for error in form.rg_ie.errors %}
+                            <span class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label for="{{ form.im.auto_id }}" class="form-control-label">{{ form.im.label }}</label>
+                        {{ form.im }}
+                        {% for error in form.im.errors %}
+                            <span class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label for="{{ form.cnae.auto_id }}" class="form-control-label">{{ form.cnae.label }}</label>
+                        {{ form.cnae }}
+                        {% for error in form.cnae.errors %}
+                            <span class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label for="{{ form.endereco_cep.auto_id }}" class="form-control-label">{{ form.endereco_cep.label }}</label>
+                        {{ form.endereco_cep }}
+                        {% for error in form.endereco_cep.errors %}
+                            <span class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="form-group">
+                        <label for="{{ form.endereco_logradouro.auto_id }}" class="form-control-label">{{ form.endereco_logradouro.label }}</label>
+                        {{ form.endereco_logradouro }}
+                        {% for error in form.endereco_logradouro.errors %}
+                            <span class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label for="{{ form.endereco_numero.auto_id }}" class="form-control-label">{{ form.endereco_numero.label }}</label>
+                        {{ form.endereco_numero }}
+                        {% for error in form.endereco_numero.errors %}
+                            <span class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label for="{{ form.endereco_complemento.auto_id }}" class="form-control-label">{{ form.endereco_complemento.label }}</label>
+                        {{ form.endereco_complemento }}
+                        {% for error in form.endereco_complemento.errors %}
+                            <span class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5">
+                    <div class="form-group">
+                        <label for="{{ form.endereco_bairro.auto_id }}" class="form-control-label">{{ form.endereco_bairro.label }}</label>
+                        {{ form.endereco_bairro }}
+                        {% for error in form.endereco_bairro.errors %}
+                            <span class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="form-group">
+                        <label for="{{ form.endereco_cidade.auto_id }}" class="form-control-label">{{ form.endereco_cidade.label }}</label>
+                        {{ form.endereco_cidade }}
+                        {% for error in form.endereco_cidade.errors %}
+                            <span class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label for="{{ form.endereco_uf.auto_id }}" class="form-control-label">{{ form.endereco_uf.label }}</label>
+                        {{ form.endereco_uf }}
+                        {% for error in form.endereco_uf.errors %}
+                            <span class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label for="{{ form.contato_nome.auto_id }}" class="form-control-label">{{ form.contato_nome.label }}</label>
+                        {{ form.contato_nome }}
+                        {% for error in form.contato_nome.errors %}
+                            <span class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label for="{{ form.contato_telefone.auto_id }}" class="form-control-label">{{ form.contato_telefone.label }}</label>
+                        {{ form.contato_telefone }}
+                        {% for error in form.contato_telefone.errors %}
+                            <span class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="{{ form.contato_email.auto_id }}" class="form-control-label">{{ form.contato_email.label }}</label>
+                        {{ form.contato_email }}
+                        {% for error in form.contato_email.errors %}
+                            <span class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-6">
+                    <a href="{% url 'core:contas' %}" class="btn btn-default">Voltar</a>
+                </div>
+                <div class="col-6 text-right">
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/components/mask/jquery.mask.min.js' %}"></script>
+<script>
+    function maskApply(){
+        $('#{{ form.endereco_cep.auto_id }}').mask('00000-000');
+        $('.telefone').mask('(00) 00000-0000');
+        
+        let value = $('input[id^={{ form.tipo_pessoa.auto_id }}]:checked').val()
+        if (value == 'J') {
+            $('#{{ form.cpf_cnpj.auto_id }}').mask('00.000.000/0000-00');
+        } else {
+            $('#{{ form.cpf_cnpj.auto_id }}').mask('000.000.000-00');
+        }
+    }
+    $('#{{ form.endereco_cep.auto_id }}').on('blur', function(){
+        let cep = $(this).val();
+        if (cep !== ''){
+            cep = cep.replace('-', '')
+            $.ajax({
+                url: `https://viacep.com.br/ws/${cep}/json/`,
+                dataType: 'json',
+                beforeSend: () => {
+                    $('input[name^=endereco]').prop('disabled', true);
+                },
+                success: data => {
+                    if (data.logradouro !== '') $('#{{ form.endereco_logradouro.auto_id }}').val(data.logradouro);
+                    if (data.bairro !== '') $('#{{ form.endereco_bairro.auto_id }}').val(data.bairro);
+                    if (data.localidade !== '') $('#{{ form.endereco_cidade.auto_id }}').val(data.localidade);
+                    if (data.uf !== '') $('#{{ form.endereco_uf.auto_id }}').val(data.uf);
+                },
+                complete: () => {
+                    $('input[name^=endereco]').prop('disabled', false);
+                }
+            });
+        }
+    });
+
+    $('input[id^={{ form.tipo_pessoa.auto_id }}]').on('change', function(){
+        let value = $('input[id^={{ form.tipo_pessoa.auto_id }}]:checked').val()
+        if (value === 'J'){
+            $('input[type=radio].pj').prop({'disabled': false, 'required': true});
+            $('input[type=text].pj').prop({'disabled': false, 'required': true}).val('');
+        } else {
+            $('input[type=radio].pj').prop({'disabled': true, 'required': false, 'checked': false});
+            $('input[type=text].pj').prop({'disabled': true, 'required': false, 'checked': false}).val('');
+        }
+        maskApply();
+    })
+
+    maskApply();
+</script>
+{% endblock %}
