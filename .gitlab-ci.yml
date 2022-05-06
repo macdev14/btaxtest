@@ -53,7 +53,7 @@ test-dev:
   after_script:
     - source /home/ubuntu/env/btax_dev/bin/predeactivate
   only:
-    - development
+    - development-btax
 
 deploy-dev:
   stage: deploy
@@ -70,4 +70,4 @@ deploy-dev:
   after_script:
     - source /home/ubuntu/env/btax_dev/bin/predeactivate
   only:
-    - development
+    - development-btax
