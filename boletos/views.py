@@ -13,7 +13,7 @@ from mongodb import querys
 from rest_framework.authtoken.models import Token
 from bitrix24.bitrix24 import update_robot
 from pybitrix24 import Bitrix24
-from btax.settings import CLIENT_SECRET_LOCAL, CLIENT_ID_LOCAL, CLIENT_ID, CLIENT_SECRET, DOMAIN
+from btax.settings import CLIENT_ID, CLIENT_SECRET, DOMAIN
 from functools import wraps
 from btax.decorators import bitrix_auth
 
