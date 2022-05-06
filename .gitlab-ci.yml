@@ -32,7 +32,7 @@ deploy-prod:
     - python manage.py collectstatic --no-input
     - python manage.py migrate
   script:
-    - sudo supervisorctl restart btax
+    - supervisorctl restart btax
   after_script:
     - source /home/ubuntu/env/btax/bin/predeactivate
   only:
