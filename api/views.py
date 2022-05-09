@@ -30,6 +30,7 @@ from django.http import JsonResponse
 from btax.settings import CLIENT_ID, CLIENT_SECRET, DOMAIN
 from btax.decorators import bitrix_auth
 from btax.config import bx24
+from django.templatetags.static import static
 #remoto:
 
 
@@ -79,14 +80,25 @@ def token_redirect(request):
         print("PAYLOAD")
         print(payload)
         print(payload['titulo_numero_documento'])
-       
+        id_negocio =payload['titulo_numero_documento']
+        PREFIX = 'boletos/'
+        url_boleto_payload = static('assets/'+PREFIX+f'boleto_{id_negocio}.pdf')
+        payload_boleto = {
+            'id_negocio' : id_negocio,
+            'url_boleto': url_boleto_payload
+        }
         
         # gerar url p/ requisicao
         url = request.build_absolute_uri(reverse('api:cobrancas-emitir'))
         print(url)
+
+        url_boleto = request.build_absolute_uri(reverse('core:boleto-url-update'))
+        print(url_boleto)
+
         # realizar requisicao
         r = requests.post(url, data=json.dumps(payload), headers=headers)
         print("JSON RESPONSE")
+        boleto_ = requests.post(url_boleto, data=json.dumps(payload_boleto), headers=headers)
         # mostrar resposta
         print(r.json())
         new = r.json()

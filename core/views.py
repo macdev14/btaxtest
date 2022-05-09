@@ -64,7 +64,26 @@ def schedule_refresh():
 
 # gerar token adicionar no robot
 
-
+def boleto_url_update(request):
+    if request.POST:
+        id_negocio = request.POST['id_negocio'] 
+        url_boleto = request.POST['url_boleto']
+        request.set_cookie('id_negocio', id_negocio)
+        request.set_cookie('url_boleto', url_boleto)
+        res = bx24.call('crm.deal.update', { 'id': id_negocio,  'fields':{'UF_CRM_1643650856094': url_boleto }} )
+        if 'error' in res:
+            resp = redirect('core:home')
+            resp.set_cookie('VIEW_REDIRECT', 'core:boleto-url-update')
+            return resp
+    if 'id_negocio' in request.COOKIES and 'url_boleto' in request.COOKIES and request.COOKIES['id_negocio'] and request.COOKIES['url_boleto']:
+        res = bx24.call('crm.deal.update', { 'id': request.COOKIES['id_negocio'],  'fields':{'UF_CRM_1643650856094': request.COOKIES['url_boleto'] }} )
+        print(res)
+        if 'error' in res:
+            resp = redirect('core:home')
+            resp.set_cookie('VIEW_REDIRECT', 'core:boleto-url-update')
+            return resp
+    return redirect('core:home')
+    
 #@bitrix_auth(bx24)
 def instalacao_btax(request):
     # Obter variaveis globais para modificacao e leitura

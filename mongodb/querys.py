@@ -59,3 +59,8 @@ def delete_varios_objs(collection_name, query):
     collection = get_collection(collection_name)
     qtde = collection.delete_many(query)
     return qtde
+
+def update_varios_objs(collection_name, query, query_update):
+    collection = get_collection(collection_name)
+    qtde = collection.update_many(query, query_update)
+    return qtde

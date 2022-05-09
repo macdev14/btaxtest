@@ -40,6 +40,7 @@ def consultar_boleto(request):
 def boletos_gerados(request):
     print(str(request.user.profile.conta.cpf_cnpj))
     boletos = list(querys.filtra_objs(Boleto.COLLECTION_NAME, {'cedente_cpf_cnpj': str(request.user.profile.conta.cpf_cnpj), 'situacao' : 'SALVO' }  ))
+    querys.update_varios_objs(Boleto.COLLECTION_NAME, {'cedente_cpf_cnpj': str(request.user.profile.conta.cpf_cnpj), 'situacao' : 'SALVO' }, { '$set':{ 'situacao' : 'FALHA' } })
     #boletos_gerados = {}
     for result_object in boletos:
          print(result_object)
@@ -53,6 +54,9 @@ def boletos_gerados(request):
     #     ##resp.delete_cookie('token') 
     #     resp.delete_cookie('NOTIFICACAO_BITRIX')
     return resp
+
+
+
 
 @login_required
 #@bitrix_auth(bx24)
@@ -147,6 +151,24 @@ def templates_boletos_excluir(request, template_boleto_id):
     token = Token.objects.get(user=request.user)
     resp = HttpResponseRedirect(reverse('core:update-btax'))
     resp.set_cookie('VIEW_REDIRECT', 'core:update-btax')
+    # if 'delete_cookies' in request.GET: 
+    #     #resp.delete_cookie('token') 
+    #     resp.delete_cookie('NOTIFICACAO_BITRIX')
+    resp.set_cookie('token', token)
+    
+    return resp
+
+
+@login_required
+#@bitrix_auth(bx24)
+def boletos_excluir(request, boleto_id):
+    conta = request.user.profile.conta
+    boleto = querys.get_obj(Boleto.COLLECTION_NAME, { 'cedente_cpf_cnpj': str(request.user.profile.conta.cpf_cnpj), 'situacao' : 'SALVO' })
+    boleto['situacao'] = 'FALHA'
+    querys.update_obj(Boleto.COLLECTION_NAME, boleto['_id'], boleto)
+    token = Token.objects.get(user=request.user)
+    resp = HttpResponseRedirect(reverse('boletos:boletos-gerados'))
+    resp.set_cookie('VIEW_REDIRECT', 'boletos:boletos-gerados')
     # if 'delete_cookies' in request.GET: 
     #     #resp.delete_cookie('token') 
     #     resp.delete_cookie('NOTIFICACAO_BITRIX')

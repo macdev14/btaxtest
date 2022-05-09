@@ -45,8 +45,8 @@ async def obter_pdf(cedente_cpf_cnpj, protocolo, id_integracao,id_negocio=0):
 )
     BUCKET_NAME = 'btax'
     PREFIX = 'boletos/'
-    url_boleto = static('assets/'+PREFIX+f'boleto_{id_integracao}.pdf')
-    s3.Object(BUCKET_NAME, PREFIX + f'boleto_{id_integracao}.pdf').put(Body=binary_data)
+    url_boleto = static('assets/'+PREFIX+f'boleto_{id_negocio}.pdf')
+    s3.Object(BUCKET_NAME, PREFIX + f'boleto_{id_negocio}.pdf').put(Body=binary_data)
     print('url do boleto:', str(url_boleto))
     print('id_negocio:', str(id_negocio))
    
@@ -57,7 +57,7 @@ async def obter_pdf(cedente_cpf_cnpj, protocolo, id_integracao,id_negocio=0):
             f.write(response.content)
     except:
         pass
-    await update_deal(id_negocio,url_boleto)
+    #await update_deal(id_negocio,url_boleto)
     return True
 
 

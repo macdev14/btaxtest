@@ -8,6 +8,8 @@ urlpatterns = [
    
     path('updateapp/', views.update_btax, name='update-btax'),
     path('installapp/', views.instalacao_btax, name='instalacao'),
+
+    path('updateboleto/', views.boleto_url_update, name='boleto-url-update'),
  
     path('contas/', views.contas, name='contas'),
     path('contas/novo/', views.contas_novo, name='contas-novo'),
