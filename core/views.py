@@ -26,7 +26,7 @@ from pybitrix24 import Bitrix24
 import schedule
 from django.templatetags.static import static
 from btax.settings import CLIENT_ID, CLIENT_SECRET, DOMAIN, TS_PLUGBOLETO_BASE_URL, TS_TOKEN, TS_CNPJ
-from btax.config import bx24
+# from btax.config import bx24
 
 from django.urls import resolve
 
@@ -73,25 +73,28 @@ def schedule_refresh():
 
 # gerar token adicionar no robot
 @csrf_exempt
-def boleto_url_update(request, id_negocio):
-    if 'id_negocio' in request.COOKIES and not id_negocio: id_negocio = request.COOKIES['id_negocio']
-    print('ran')
-    print('negocio'+str(id_negocio))
-    
-    resp = redirect(auth_url)
-    if 'bitrix_code' in request.COOKIES and request.COOKIES['bitrix_code']:
-        bx24.obtain_tokens(request.COOKIES['bitrix_code'])
-    bx24.refresh_tokens()
-    PREFIX = 'boletos/'
-    url_boleto = static('assets/'+PREFIX+f'boleto_{id_negocio}.pdf')
-    res = bx24.call('crm.deal.update', { 'id': id_negocio,  'fields':{'UF_CRM_1643650856094': url_boleto }} )
-    print(res)
-    if 'error' in res:
-            # resp = redirect('core:home')
-        resp.set_cookie('VIEW_REDIRECT', 'core:boleto-url-update')
-        return resp
+def boleto_url_update(request):
+    resp = redirect(reverse('core:home'))
+    if 'id_negocio' in request.COOKIES:
+        id_negocio = request.COOKIES['id_negocio']
+        print('ran')
+        print('negocio'+str(id_negocio))
+     
+        #resp.set_cookie('id_negocio', id_negocio)
+        
+        # if 'bitrix_code' in request.COOKIES and request.COOKIES['bitrix_code'] or code:
+        #     bx24.obtain_tokens(request.COOKIES['bitrix_code'] or code)
+        # bx24.refresh_tokens()
+        PREFIX = 'boletos/'
+        url_boleto = static('assets/'+PREFIX+f'boleto_{id_negocio}.pdf')
+        res = bx24.call('crm.deal.update', { 'id': id_negocio,  'fields':{'UF_CRM_1643650856094': url_boleto }} )
+        print(res)
+        if 'error' in res:
+                # resp = redirect('core:home')
+            resp.set_cookie('VIEW_REDIRECT', 'core:boleto-url-update')
+            return resp
 
-    resp = redirect('core:home')
+    
    
      
   
@@ -254,13 +257,15 @@ def home(request,  url_name="", **kwargs):
     print(kwargs)
     print("url name: ")
     print(url_name)
+
     #if 'code' in request.GET:
     if 'code' in request.GET: code = request.GET['code'] 
-    try: 
-        bx24.obtain_tokens(code)['access_token'] if 'access_token' in bx24.obtain_tokens(code) else redirect(auth_url)
-        bx24.refresh_tokens()
-        print("inside kwargs: ")
-        print(kwargs)
+   
+    if 'error' in bx24.obtain_tokens(code): return redirect(auth_url)
+    bx24.obtain_tokens(code)['access_token'] if 'access_token' in bx24.obtain_tokens(code) else redirect(auth_url)
+    bx24.refresh_tokens()
+    print("inside kwargs: ")
+    print(kwargs)
             # if kwargs.get('url_name'):
             #     print(url_name)
             #     #resp = kwargs.get('url_name')
@@ -272,9 +277,7 @@ def home(request,  url_name="", **kwargs):
            
         
         
-    except Exception as e:
-        print(e) 
-        return redirect(auth_url)
+    
         
 
     if instalation:

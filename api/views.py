@@ -117,7 +117,7 @@ def token_redirect(request):
         print(json_obj)
         #return JsonResponse(json_obj)
 
-        resp = redirect('core:boleto-url-update', id_negocio=id_negocio)
+        resp = redirect('core:boleto-url-update')
         resp.set_cookie('id_negocio', id_negocio)
         return resp
         #response = dict(r.json())
