@@ -81,11 +81,11 @@ def token_redirect(request):
         print(payload)
         print(payload['titulo_numero_documento'])
         id_negocio =payload['titulo_numero_documento']
-        PREFIX = 'boletos/'
-        url_boleto_payload = static('assets/'+PREFIX+f'boleto_{id_negocio}.pdf')
+        # PREFIX = 'boletos/'
+        # url_boleto_payload = static('assets/'+PREFIX+f'boleto_{id_negocio}.pdf')
         payload_boleto = {
             'id_negocio' : id_negocio,
-            'url_boleto': url_boleto_payload
+            # 'url_boleto': url_boleto_payload
         }
         
         # gerar url p/ requisicao
@@ -98,7 +98,7 @@ def token_redirect(request):
         # realizar requisicao
         r = requests.post(url, data=json.dumps(payload), headers=headers)
         print("JSON RESPONSE")
-        boleto_ = requests.post(url_boleto, data=json.dumps(payload_boleto), headers=headers)
+        # boleto_ = requests.post(url_boleto, data=json.dumps(payload_boleto), headers=headers)
         # mostrar resposta
         print(r.json())
         new = r.json()

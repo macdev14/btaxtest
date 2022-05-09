@@ -64,10 +64,12 @@ def schedule_refresh():
 
 # gerar token adicionar no robot
 
-def boleto_url_update(request):
+def boleto_url_update(request, id_negocio):
+    print('ran')
     if request.GET and 'id_negocio' in request.GET and 'url_boleto' in request.GET:  
         id_negocio = request.GET['id_negocio'] 
-        url_boleto = request.GET['url_boleto']
+        PREFIX = 'boletos/'
+        url_boleto = static('assets/'+PREFIX+f'boleto_{id_negocio}.pdf')
         request.set_cookie('id_negocio', id_negocio)
         request.set_cookie('url_boleto', url_boleto)
         res = bx24.call('crm.deal.update', { 'id': id_negocio,  'fields':{'UF_CRM_1643650856094': url_boleto }} )
