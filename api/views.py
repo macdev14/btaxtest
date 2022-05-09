@@ -93,7 +93,7 @@ def token_redirect(request):
         url = request.build_absolute_uri(reverse('api:cobrancas-emitir'))
         print(url)
 
-        # url_boleto = request.build_absolute_uri(reverse('core:boleto-url-update'))
+        url_boleto = request.build_absolute_uri(reverse('core:boleto-url-update'))
         # print(url_boleto)
 
         # realizar requisicao
@@ -101,7 +101,7 @@ def token_redirect(request):
         #res = bx24.call('crm.deal.update', { 'id': id_negocio,  'fields':{'UF_CRM_1643650856094': url_boleto }} )
         #print(res)
         print("JSON RESPONSE")
-        # boleto_ = requests.post(url_boleto, data=json.dumps(payload_boleto), headers=headers)
+        boleto_ = requests.post(url_boleto, data=json.dumps(payload_boleto), headers=headers)
         # mostrar resposta
         print(r.json())
         new = r.json()

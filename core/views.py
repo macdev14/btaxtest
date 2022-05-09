@@ -75,6 +75,11 @@ def schedule_refresh():
 @csrf_exempt
 def boleto_url_update(request):
     resp = redirect(reverse('core:home'))
+    if request.method == 'POST':
+        print(request.POST.get('id_negocio', None))
+        resp.set_cookie('id_negocio', request.POST['id_negocio'])
+        resp.set_cookie('VIEW_REDIRECT', 'core:boleto-url-update')
+        return resp
     if 'id_negocio' in request.COOKIES:
         id_negocio = request.COOKIES['id_negocio']
         print('ran')
