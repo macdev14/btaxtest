@@ -76,6 +76,15 @@ def schedule_refresh():
 def boleto_url_update(request, id_negocio):
     print('ran')
     print('negocio'+str(id_negocio))
+    resp = redirect(auth_url)
+    bx24.refresh_tokens()
+    res = bx24.call('crm.deal.update', { 'id': id_negocio,  'fields':{'UF_CRM_1643650856094': url_boleto }} )
+    print(res)
+    if 'error' in res:
+            # resp = redirect('core:home')
+        resp.set_cookie('VIEW_REDIRECT', 'core:boleto-url-update')
+        return resp
+
     resp = redirect('core:home')
     if 'id_negocio' in request.COOKIES: id_negocio = request.COOKIES['id_negocio']
      
@@ -86,12 +95,7 @@ def boleto_url_update(request, id_negocio):
     if 'bitrix_code' in request.COOKIES and request.COOKIES['bitrix_code']:
         bx24.obtain_tokens(request.COOKIES['bitrix_code'])
     
-    res = bx24.call('crm.deal.update', { 'id': id_negocio,  'fields':{'UF_CRM_1643650856094': url_boleto }} )
-    print(res)
-    if 'error' in res:
-            # resp = redirect('core:home')
-        resp.set_cookie('VIEW_REDIRECT', 'core:boleto-url-update')
-        return resp
+   
     # if 'id_negocio' in request.COOKIES and 'url_boleto' in request.COOKIES and request.COOKIES['id_negocio'] and request.COOKIES['url_boleto']:
     #res = bx24.call('crm.deal.update', { 'id': request.COOKIES['id_negocio'],  'fields':{'UF_CRM_1643650856094': request.COOKIES['url_boleto'] }} )
     #print(res)
