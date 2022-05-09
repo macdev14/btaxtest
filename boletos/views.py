@@ -30,6 +30,12 @@ from btax.config import bx24
 def consultar_boleto(request):
    pass
 
+
+# def url_boleto(request):
+#     resp = HttpResponseRedirect(reverse('core:update-btax'))
+#     #resp.set_cookie('token', token)
+#     resp.set_cookie('VIEW_REDIRECT', 'core:url-boleto-btax')
+
 @login_required
 def boletos_gerados(request):
     print(str(request.user.profile.conta.cpf_cnpj))
