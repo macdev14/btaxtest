@@ -23,9 +23,11 @@
 {% elif boletos_gerados %}
 
 
-    {% for boleto in boletos_gerados %}
-    
-        <tr>
+    {% for boleto in boletos_gerados|dictsort:'titulo_numero_documento' %}
+   
+   
+    {% ifchanged %}
+    <tr>
             <td>
                 {% retorna_id boleto as b_id %}
                 <a href="{% url 'boletos:templates-editar' b_id %}">{{ b_id }}</a>
@@ -39,13 +41,21 @@
                
                 <a href="{% static boleto_url %}" class="btn-primary"><i class="fas fa-barcode"></i></a>
                 {% endwith %}
+
             </td>
             {%endif%}
             <td class="text-right">
                 <a href="{% url 'boletos:boletos-excluir' b_id %}"  ><i class="fas fa-trash"></i></a>
             </td>
+            <td class="text-right">
+               <form action="{% url 'core:boleto-url-update'%}">
+                   <input type="hidden"name="id_negocio" value="{{ boleto.titulo_numero_documento }}" />
+                   <button type="submit" ><i class="fas fa-atom"></i></button>
+               </form> 
+            </td>
         </tr>
-   
+
+        {% endifchanged %}  
     {% endfor %}
 
 

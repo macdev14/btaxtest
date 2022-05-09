@@ -18,6 +18,11 @@ def filtra_objs(collection_name, query):
     collection = get_collection(collection_name)
     return collection.find(query)
 
+def distinct_objs(collection_name, field ,query):
+    collection = get_collection(collection_name)
+    return collection.distinct(field, query)
+
+
 def get_obj(collection_name, query, fields=None):
     collection = get_collection(collection_name)
     return collection.find_one(query, fields)
