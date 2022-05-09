@@ -77,12 +77,15 @@ def boleto_url_update(request, id_negocio):
     print('ran')
     print('negocio'+str(id_negocio))
     resp = redirect('core:home')
-    # if 'id_negocio' in request.COOKIES: id_negocio = request.COOKIES['id_negocio']
+    if 'id_negocio' in request.COOKIES: id_negocio = request.COOKIES['id_negocio']
      
     PREFIX = 'boletos/'
     url_boleto = static('assets/'+PREFIX+f'boleto_{id_negocio}.pdf')
     # resp.set_cookie('id_negocio', id_negocio)
     # resp.set_cookie('url_boleto', url_boleto)
+    if 'bitrix_code' in request.COOKIES and request.COOKIES['bitrix_code']:
+        bx24.obtain_tokens(request.COOKIES['bitrix_code'])
+    
     res = bx24.call('crm.deal.update', { 'id': id_negocio,  'fields':{'UF_CRM_1643650856094': url_boleto }} )
     print(res)
     if 'error' in res:
