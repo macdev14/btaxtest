@@ -98,8 +98,8 @@ def token_redirect(request):
 
         # realizar requisicao
         r = requests.post(url, data=json.dumps(payload), headers=headers)
-        res = bx24.call('crm.deal.update', { 'id': id_negocio,  'fields':{'UF_CRM_1643650856094': url_boleto }} )
-        print(res)
+        #res = bx24.call('crm.deal.update', { 'id': id_negocio,  'fields':{'UF_CRM_1643650856094': url_boleto }} )
+        #print(res)
         print("JSON RESPONSE")
         # boleto_ = requests.post(url_boleto, data=json.dumps(payload_boleto), headers=headers)
         # mostrar resposta
