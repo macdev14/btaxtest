@@ -75,14 +75,14 @@ def schedule_refresh():
 @csrf_exempt
 def boleto_url_update(request, id_negocio):
     print('ran')
-    print(id_negocio)
+    print('negocio'+str(id_negocio))
     resp = redirect('core:home')
-    if 'id_negocio' in request.COOKIES: id_negocio = request.COOKIES['id_negocio']
+    # if 'id_negocio' in request.COOKIES: id_negocio = request.COOKIES['id_negocio']
      
     PREFIX = 'boletos/'
     url_boleto = static('assets/'+PREFIX+f'boleto_{id_negocio}.pdf')
-    resp.set_cookie('id_negocio', id_negocio)
-    resp.set_cookie('url_boleto', url_boleto)
+    # resp.set_cookie('id_negocio', id_negocio)
+    # resp.set_cookie('url_boleto', url_boleto)
     res = bx24.call('crm.deal.update', { 'id': id_negocio,  'fields':{'UF_CRM_1643650856094': url_boleto }} )
     print(res)
     if 'error' in res:
@@ -93,8 +93,8 @@ def boleto_url_update(request, id_negocio):
     #res = bx24.call('crm.deal.update', { 'id': request.COOKIES['id_negocio'],  'fields':{'UF_CRM_1643650856094': request.COOKIES['url_boleto'] }} )
     #print(res)
         
-    resp.delete_cookie('id_negocio', id_negocio)
-    resp.delete_cookie('url_boleto', url_boleto)
+    # resp.delete_cookie('id_negocio', id_negocio)
+    # resp.delete_cookie('url_boleto', url_boleto)
     return resp
     
 #@bitrix_auth(bx24)
