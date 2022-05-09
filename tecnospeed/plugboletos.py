@@ -1,6 +1,6 @@
 from asyncio import sleep
 import os
-from turtle import update
+#from turtle import update
 import requests
 import boto3
 import asyncio
