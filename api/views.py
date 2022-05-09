@@ -113,7 +113,7 @@ def token_redirect(request):
         print("object json: ")
         print(json_obj)
         #return JsonResponse(json_obj)
-        return redirect(reverse('core:boleto-url-update', kwargs=payload_boleto))
+        return redirect('core:boleto-url-update', id_negocio=id_negocio)
         #response = dict(r.json())
         # if not "id" in response:   
         #     bx24.call('im.notify', {'to': int(bitrix_user), 'message': 'Conta com esse Email inexistente'  })
