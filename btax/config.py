@@ -20,7 +20,3 @@ bx24 = Bitrix24(DOMAIN, CLIENT_ID, CLIENT_SECRET)
 #         pass
 # asyncio.run(ref())
 
-async def update_deal(id_negocio, url_boleto):
-    while 'error' in update:
-        await asyncio.sleep(1)
-        update = bx24.call('crm.deal.update', { 'id': id_negocio,  'fields':{'UF_CRM_1643650856094': url_boleto }} )
