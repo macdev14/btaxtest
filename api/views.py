@@ -92,8 +92,8 @@ def token_redirect(request):
         url = request.build_absolute_uri(reverse('api:cobrancas-emitir'))
         print(url)
 
-        url_boleto = request.build_absolute_uri(reverse('core:boleto-url-update'))
-        print(url_boleto)
+        # url_boleto = request.build_absolute_uri(reverse('core:boleto-url-update'))
+        # print(url_boleto)
 
         # realizar requisicao
         r = requests.post(url, data=json.dumps(payload), headers=headers)
