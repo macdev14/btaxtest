@@ -33,7 +33,7 @@ from django.urls import resolve
 #from btax.decorators import bitrix_auth
 
 #remoto:
-# bx24 = Bitrix24(DOMAIN, CLIENT_ID, CLIENT_SECRET)
+bx24 = Bitrix24(DOMAIN, CLIENT_ID, CLIENT_SECRET)
 
 #local:
 # if BITRIX_LOCAL:
@@ -77,8 +77,10 @@ def boleto_url_update(request, id_negocio):
     if 'id_negocio' in request.COOKIES and not id_negocio: id_negocio = request.COOKIES['id_negocio']
     print('ran')
     print('negocio'+str(id_negocio))
-
+    
     resp = redirect(auth_url)
+    if 'bitrix_code' in request.COOKIES and request.COOKIES['bitrix_code']:
+        bx24.obtain_tokens(request.COOKIES['bitrix_code'])
     bx24.refresh_tokens()
     PREFIX = 'boletos/'
     url_boleto = static('assets/'+PREFIX+f'boleto_{id_negocio}.pdf')
@@ -95,8 +97,7 @@ def boleto_url_update(request, id_negocio):
   
     # resp.set_cookie('id_negocio', id_negocio)
     # resp.set_cookie('url_boleto', url_boleto)
-    if 'bitrix_code' in request.COOKIES and request.COOKIES['bitrix_code']:
-        bx24.obtain_tokens(request.COOKIES['bitrix_code'])
+   
     
    
     # if 'id_negocio' in request.COOKIES and 'url_boleto' in request.COOKIES and request.COOKIES['id_negocio'] and request.COOKIES['url_boleto']:
