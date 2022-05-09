@@ -26,10 +26,11 @@ from pybitrix24 import Bitrix24
 import schedule
 from django.templatetags.static import static
 from btax.settings import CLIENT_ID, CLIENT_SECRET, DOMAIN, TS_PLUGBOLETO_BASE_URL, TS_TOKEN, TS_CNPJ
-from btax.decorators import bitrix_auth
+from btax.config import bx24
+#from btax.decorators import bitrix_auth
 
 #remoto:
-bx24 = Bitrix24(DOMAIN, CLIENT_ID, CLIENT_SECRET)
+# bx24 = Bitrix24(DOMAIN, CLIENT_ID, CLIENT_SECRET)
 
 #local:
 # if BITRIX_LOCAL:

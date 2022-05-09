@@ -27,11 +27,11 @@ from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 import datetime
 import json
 from django.http import JsonResponse
-from btax.settings import BITRIX_LOCAL, CLIENT_SECRET_LOCAL, CLIENT_ID_LOCAL, CLIENT_ID, CLIENT_SECRET, DOMAIN
+from btax.settings import CLIENT_ID, CLIENT_SECRET, DOMAIN
 from btax.decorators import bitrix_auth
-
+from btax.config import bx24
 #remoto:
-bx24 = Bitrix24(DOMAIN, CLIENT_ID, CLIENT_SECRET)
+
 
 #local:
 # if BITRIX_LOCAL:
@@ -42,7 +42,7 @@ bx24 = Bitrix24(DOMAIN, CLIENT_ID, CLIENT_SECRET)
 def token_redirect(request):
 
     ''' funcao para obter token e postar na url /emissao/cobranca '''
-
+    
     if 'user_token' in request.GET:
         #  para verificar entrada
         print('TOKEN')
@@ -79,6 +79,8 @@ def token_redirect(request):
         print("PAYLOAD")
         print(payload)
         print(payload['titulo_numero_documento'])
+       
+        
         # gerar url p/ requisicao
         url = request.build_absolute_uri(reverse('api:cobrancas-emitir'))
         print(url)

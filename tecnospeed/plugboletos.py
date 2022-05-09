@@ -4,6 +4,8 @@ import requests
 import boto3
 import asyncio
 from btax.settings import *
+from btax.config import bx24
+from django.templatetags.static import static
 CNPJ = os.environ['TS_CNPJ']
 TOKEN = os.environ['TS_TOKEN']
 URL = os.environ['TS_PLUGBOLETO_BASE_URL']
@@ -21,7 +23,7 @@ def consulta_boleto(cedente_cpf_cnpj, id_integracao):
 
 
 
-async def obter_pdf(cedente_cpf_cnpj, protocolo, id_integracao):
+async def obter_pdf(cedente_cpf_cnpj, protocolo, id_integracao,id_negocio=0):
     headers = {
         'Content-Type': 'application/json',
         'cnpj-sh': CNPJ,
@@ -42,18 +44,21 @@ async def obter_pdf(cedente_cpf_cnpj, protocolo, id_integracao):
 )
     BUCKET_NAME = 'btax'
     PREFIX = 'boletos/'
-    
+    url_boleto = static('assets/'+PREFIX+f'boleto_{id_integracao}.pdf')
     s3.Object(BUCKET_NAME, PREFIX + f'boleto_{id_integracao}.pdf').put(Body=binary_data)
+    print('url do boleto:', str(url_boleto))
+    bx24.call('crm.deal.update', { 'id': id_negocio,  'fields':{'UF_CRM_1643650856094': url_boleto }} )
     try:
         with open(f"static/assets/boletos/boleto_{id_integracao}.pdf", "wb") as f:
             f.write(response.content)
     except:
         pass
+    
     return True
 
 
 
-async def solicitar_pdf(cedente_cpf_cnpj, id_integracao):
+async def solicitar_pdf(cedente_cpf_cnpj, id_integracao, id_negocio):
     #print('test')
     headers = {
         'Content-Type': 'application/json',
@@ -82,7 +87,7 @@ async def solicitar_pdf(cedente_cpf_cnpj, id_integracao):
 
     try:
         protocolo = resp_json['_dados']['protocolo']
-        return await obter_pdf(cedente_cpf_cnpj, protocolo, id_integracao)
+        return await obter_pdf(cedente_cpf_cnpj, protocolo, id_integracao, id_negocio)
          
         
     except Exception as e:
@@ -165,7 +170,7 @@ def inclusao_boleto(cedente_cpf_cnpj, cedente_conta_numero, cedente_conta_numero
         # sleep(0.5)
         # print('ran') 
         id_integracao = resposta['_dados']['_sucesso'][0]['idintegracao']
-        asyncio.run(solicitar_pdf(cedente_cpf_cnpj, id_integracao))
+        asyncio.run(solicitar_pdf(cedente_cpf_cnpj, id_integracao, titulo_numero_documento))
         
     except Exception as e:
         print(e)
