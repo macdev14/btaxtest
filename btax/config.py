@@ -4,7 +4,10 @@ from pybitrix24 import Bitrix24
 import asyncio
 #remoto:
 bx24 = Bitrix24(DOMAIN, CLIENT_ID, CLIENT_SECRET)
-
+try:
+    print(bx24.refresh_tokens())
+except:
+    pass
 async def ref():
    try:
         await asyncio.sleep(5)
