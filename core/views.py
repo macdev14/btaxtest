@@ -27,6 +27,9 @@ import schedule
 from django.templatetags.static import static
 from btax.settings import CLIENT_ID, CLIENT_SECRET, DOMAIN, TS_PLUGBOLETO_BASE_URL, TS_TOKEN, TS_CNPJ
 from btax.config import bx24
+
+from django.urls import resolve
+
 #from btax.decorators import bitrix_auth
 
 #remoto:
@@ -41,8 +44,14 @@ print(bx24.build_authorization_url())
 #auth_id = "0c275462005ad5dd001942f700000318a0ab0798e2b501426e7cd42c5bf6a01bd507e3"
 
 
-
-
+# async def auth_bitrix(request):
+    
+#     v = bx24.call('crm.user.current')
+#     if 'error' in v:
+#         current_url = resolve(request.path_info).url_name
+#         resp = redirect('core:home')
+#         resp.set_cookie('VIEW_REDIRECT', current_url)
+#         return resp
 
 code, data, access_token, refresh_token = None, None, None, None
 
