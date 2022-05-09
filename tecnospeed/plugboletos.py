@@ -49,7 +49,7 @@ async def obter_pdf(cedente_cpf_cnpj, protocolo, id_integracao,id_negocio=0):
     s3.Object(BUCKET_NAME, PREFIX + f'boleto_{id_integracao}.pdf').put(Body=binary_data)
     print('url do boleto:', str(url_boleto))
     print('id_negocio:', str(id_negocio))
-    asyncio.run(update_deal(id_negocio,url_boleto))
+   
     #update = bx24.call('crm.deal.update', { 'id': id_negocio,  'fields':{'UF_CRM_1643650856094': url_boleto }} )
     
     try:
@@ -57,7 +57,7 @@ async def obter_pdf(cedente_cpf_cnpj, protocolo, id_integracao,id_negocio=0):
             f.write(response.content)
     except:
         pass
-    
+    await update_deal(id_negocio,url_boleto)
     return True
 
 
