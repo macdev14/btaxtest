@@ -6,6 +6,15 @@
             <span class="nav-link-text">Dashboard</span>
         </a>
     </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'core:instalacao' %}">
+            <i class="ni ni-atom text-primary"></i>
+           
+            <span class="nav-link-text">Instalar<br>Automação Bitrix24</span>
+        </a>
+    </li>
+
     <li class="nav-item">
         <a class="nav-link {% if 'empresas' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'core:empresas' %}">
             <i class="far fa-building text-primary"></i>
