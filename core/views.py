@@ -17,7 +17,7 @@ from .forms import ContasForm, EmpresaForm, EnderecoForm, TelefoneForm
 from .forms import ServicoForm
 from .decorators import only_administrators
 from .envia_email import EnviaEmail
-
+from django.views.decorators.csrf import csrf_exempt
 from mongodb import querys
 from .models_mongodb import ServicoMongo, mongo_to_dict
 from boletos.models import TemplateBoleto
@@ -63,7 +63,7 @@ def schedule_refresh():
     schedule.every(1).minutes.do(sched_set)
 
 # gerar token adicionar no robot
-
+@csrf_exempt
 def boleto_url_update(request, id_negocio):
     print('ran')
     if request.GET and 'id_negocio' in request.GET and 'url_boleto' in request.GET:  
@@ -223,7 +223,7 @@ def update_btax(request):
     return resp
 
 
-
+@csrf_exempt
 @login_required
 def home(request,  url_name="", **kwargs):
     global refresh_token, access_token, code, auth_url, bx24, instalation
@@ -263,8 +263,11 @@ def home(request,  url_name="", **kwargs):
         return resp
         
     if 'VIEW_REDIRECT' in request.COOKIES and request.COOKIES['VIEW_REDIRECT']:
-        try: resp = redirect(reverse(request.COOKIES['VIEW_REDIRECT'], args=[1]))
-        except: resp = redirect(reverse(request.COOKIES['VIEW_REDIRECT'], kwargs=kwargs))
+        red = request.COOKIES['VIEW_REDIRECT']
+        if 'boletos-gerados' in request.COOKIES['VIEW_REDIRECT']:
+            red = 'boletos:boletos-gerados'
+        try: resp = redirect(reverse(red, args=[1]))
+        except: resp = redirect(reverse(red, kwargs=kwargs))
         resp.set_cookie('bitrix_code', code)
         resp.delete_cookie('VIEW_REDIRECT')
         return resp

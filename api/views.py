@@ -81,8 +81,9 @@ def token_redirect(request):
         print(payload)
         print(payload['titulo_numero_documento'])
         id_negocio =payload['titulo_numero_documento']
-        # PREFIX = 'boletos/'
-        # url_boleto_payload = static('assets/'+PREFIX+f'boleto_{id_negocio}.pdf')
+        PREFIX = 'boletos/'
+        url_boleto = static('assets/'+PREFIX+f'boleto_{id_negocio}.pdf')
+
         payload_boleto = {
             'id_negocio' : id_negocio,
             # 'url_boleto': url_boleto_payload
@@ -97,6 +98,8 @@ def token_redirect(request):
 
         # realizar requisicao
         r = requests.post(url, data=json.dumps(payload), headers=headers)
+        res = bx24.call('crm.deal.update', { 'id': id_negocio,  'fields':{'UF_CRM_1643650856094': url_boleto }} )
+        print(res)
         print("JSON RESPONSE")
         # boleto_ = requests.post(url_boleto, data=json.dumps(payload_boleto), headers=headers)
         # mostrar resposta
