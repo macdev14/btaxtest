@@ -75,8 +75,7 @@ def schedule_refresh():
 @csrf_exempt
 def boleto_url_update(request, id_negocio):
     print('ran')
-    if request.GET and 'id_negocio' in request.GET and 'url_boleto' in request.GET:  
-        id_negocio = request.GET['id_negocio'] 
+    if id_negocio:  
         PREFIX = 'boletos/'
         url_boleto = static('assets/'+PREFIX+f'boleto_{id_negocio}.pdf')
         request.set_cookie('id_negocio', id_negocio)
