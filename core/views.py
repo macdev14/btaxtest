@@ -256,7 +256,7 @@ def update_btax(request):
 
 
 @csrf_exempt
-@login_required
+# @login_required
 def home(request,  url_name="", **kwargs):
     global refresh_token, access_token, code, auth_url, bx24, instalation
     
