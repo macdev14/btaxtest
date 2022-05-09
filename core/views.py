@@ -76,8 +76,10 @@ def schedule_refresh():
 def boleto_url_update(request):
     resp = redirect(reverse('core:home'))
     if request.method == 'POST':
-        print(request.POST.get('id_negocio', None))
-        resp.set_cookie('id_negocio', request.POST['id_negocio'])
+        #print('body:')
+        print('again: ',json.loads(request.body) )
+        data_post = json.loads(request.body)
+        resp.set_cookie('id_negocio', data_post['id_negocio'])
         resp.set_cookie('VIEW_REDIRECT', 'core:boleto-url-update')
         return resp
     if 'id_negocio' in request.COOKIES:
