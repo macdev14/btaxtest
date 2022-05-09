@@ -35,7 +35,7 @@
             <td>{{ boleto.situacao }}</td>
             {% if boleto.id_integracao %}
             <td class="text-right">
-                {% with "boletos/boleto_"|add:boleto.id_integracao|add:".pdf" as boleto_url %}
+                {% with "boletos/boleto_"|add:boleto.titulo_numero_documento|add:".pdf" as boleto_url %}
                
                 <a href="{% static boleto_url %}" class="btn-primary"><i class="fas fa-barcode"></i></a>
                 {% endwith %}
