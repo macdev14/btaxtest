@@ -47,7 +47,8 @@ async def obter_pdf(cedente_cpf_cnpj, protocolo, id_integracao,id_negocio=0):
     url_boleto = static('assets/'+PREFIX+f'boleto_{id_integracao}.pdf')
     s3.Object(BUCKET_NAME, PREFIX + f'boleto_{id_integracao}.pdf').put(Body=binary_data)
     print('url do boleto:', str(url_boleto))
-    bx24.call('crm.deal.update', { 'id': id_negocio,  'fields':{'UF_CRM_1643650856094': url_boleto }} )
+    print('id_negocio:', str(id_negocio))
+    print(bx24.call('crm.deal.update', { 'id': id_negocio,  'fields':{'UF_CRM_1643650856094': url_boleto }} ))
     try:
         with open(f"static/assets/boletos/boleto_{id_integracao}.pdf", "wb") as f:
             f.write(response.content)
