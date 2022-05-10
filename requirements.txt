@@ -8,6 +8,7 @@ cryptography==36.0.1
 Deprecated==1.2.13
 Django==3.2.5
 django-cors-headers==3.11.0
+django-domainname==0.1.1
 django-oauth-toolkit==1.7.0
 django-storages==1.12.3
 djangorestframework==3.12.4
