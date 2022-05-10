@@ -2,7 +2,7 @@ from threading import Thread
 
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
-
+from django.core.mail import EmailMessage
 class EnviaEmail(Thread):
 
     def __init__(self, email, usuario_id, nome):
@@ -19,10 +19,10 @@ class EnviaEmail(Thread):
                 'usuario_id': self.usuario_id,
             }
         )
-        send_mail(
+        return send_mail(
             'Cadastro efetuado com sucesso no Bitrix24.tax',
             '',
-            'Bitrix24.tax <no-reply@bitrix24.tax>',
+            'lauro.pimentel@beytech.com.br',
             [self.email,],
             fail_silently=False,
             html_message=html_message,
