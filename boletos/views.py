@@ -37,7 +37,7 @@ def consultar_boleto(request):
 #     resp.set_cookie('VIEW_REDIRECT', 'core:url-boleto-btax')
 @login_required
 def boletos_delete_all(request):
-    querys.update_varios_objs(Boleto.COLLECTION_NAME, {'cedente_cpf_cnpj': str(request.user.profile.conta.cpf_cnpj), 'situacao' : 'SALVO' }, { '$set':{ 'situacao': 'FALHA'  }  }  )
+    p = querys.update_varios_objs(Boleto.COLLECTION_NAME, {'cedente_cpf_cnpj': str(request.user.profile.conta.cpf_cnpj), 'situacao' : 'SALVO' }, { '$set': {'situacao' : 'BAIXA' } }  )
     resp = HttpResponseRedirect(reverse('boletos:boletos-gerados'))
     return resp
 @login_required
@@ -168,7 +168,7 @@ def templates_boletos_excluir(request, template_boleto_id):
 def boletos_excluir(request, boleto_id):
     conta = request.user.profile.conta
     boleto = querys.get_obj(Boleto.COLLECTION_NAME, { 'cedente_cpf_cnpj': str(request.user.profile.conta.cpf_cnpj), 'situacao' : 'SALVO' })
-    boleto['situacao'] = 'FALHA'
+    boleto['situacao'] = 'BAIXA'
     querys.update_obj(Boleto.COLLECTION_NAME, boleto['_id'], boleto)
     token = Token.objects.get(user=request.user)
     resp = HttpResponseRedirect(reverse('boletos:boletos-gerados'))
