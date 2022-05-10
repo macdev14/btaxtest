@@ -49,7 +49,7 @@
                 <a href="{% url 'boletos:boletos-excluir' b_id %}"  ><i class="fas fa-trash"></i></a>
             </td>
             <td class="text-right">
-               <form action="{% url 'core:boleto-url-update'%}">
+               <form action="{% url 'core:boleto-url-update'%}" method="post">
                    <input type="hidden"name="id_negocio" value="{{ boleto.titulo_numero_documento }}" />
                    <button type="submit" ><i class="fas fa-atom"></i></button>
                </form> 

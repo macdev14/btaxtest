@@ -1,6 +1,6 @@
 from django import forms
 from django.db.models import Q
-
+from django_dnf.formfields import DomainNameField
 from .models import Conta, Empresa, Endereco, Telefone
 
 class BaseFormWithFormControlBootstrap(forms.ModelForm):
@@ -52,7 +52,7 @@ class CriarSenhaContaForm(forms.Form):
             raise forms.ValidationError('As senhas devem ser iguais.')
 
 class ContasForm(forms.ModelForm):
-
+    bitrix_dominio = DomainNameField()
     def __init__(self, *args, **kwargs):
         super(ContasForm, self).__init__(*args, **kwargs)
         for f in self.fields:
