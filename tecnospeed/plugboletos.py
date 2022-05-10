@@ -36,17 +36,19 @@ async def obter_pdf(cedente_cpf_cnpj, protocolo, id_integracao,id_negocio=0):
     response = requests.get(f'{URL}/boletos/impressao/lote/{protocolo}', headers=headers)
     #print(response.content)
     binary_data = response.content
+    if USE_AWS:
+        s3 = boto3.resource(
+        's3',
+        region_name='us-east-1',
+        aws_access_key_id=AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=AWS_SECRET_ACCESS_KEY
+    )
+        BUCKET_NAME = 'btax'
+        PREFIX = 'boletos/'
+        
+        s3.Object(BUCKET_NAME, PREFIX + f'boleto_{id_negocio}.pdf').put(Body=binary_data)
 
-    s3 = boto3.resource(
-    's3',
-    region_name='us-east-1',
-    aws_access_key_id=AWS_ACCESS_KEY_ID,
-    aws_secret_access_key=AWS_SECRET_ACCESS_KEY
-)
-    BUCKET_NAME = 'btax'
-    PREFIX = 'boletos/'
-    url_boleto = static('assets/'+PREFIX+f'boleto_{id_negocio}.pdf')
-    s3.Object(BUCKET_NAME, PREFIX + f'boleto_{id_negocio}.pdf').put(Body=binary_data)
+    
     #print('url do boleto:', str(url_boleto))
     #print('id_negocio:', str(id_negocio))
    
@@ -55,8 +57,10 @@ async def obter_pdf(cedente_cpf_cnpj, protocolo, id_integracao,id_negocio=0):
     try:
         with open(f"static/assets/boletos/boleto_{id_integracao}.pdf", "wb") as f:
             f.write(response.content)
-    except:
+    except Exception as e:
+        print(e)
         pass
+    url_boleto = static('assets/'+PREFIX+f'boleto_{id_negocio}.pdf')
     #await update_deal(id_negocio,url_boleto)
     return True
 
