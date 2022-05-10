@@ -29,7 +29,6 @@ deploy-prod:
     - source /home/ubuntu/env/btax/bin/activate
     - source /home/ubuntu/env/btax/bin/postactivate
     - cd /home/ubuntu/www/btax/
-    - python manage.py collectstatic --no-input
     - python manage.py migrate
   script:
     - supervisorctl restart btax
@@ -63,7 +62,6 @@ deploy-dev:
     - source /home/ubuntu/env/btax_dev/bin/activate
     - source /home/ubuntu/env/btax_dev/bin/postactivate
     - cd /home/ubuntu/www/btax_dev/
-    - python manage.py collectstatic --no-input
     - python manage.py migrate
   script:
     - sudo supervisorctl restart btax_dev
