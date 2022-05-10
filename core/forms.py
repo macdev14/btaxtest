@@ -93,6 +93,12 @@ class ContasForm(forms.ModelForm):
                     'class': 'cpf_cnpj',
                 }
             ),
+            'bitrix_dominio': forms.TextInput(
+                attrs={
+                    'class': 'required',
+                    'required':'true'
+                }
+            ),
             'razao_social': forms.TextInput(
                 attrs={
                     'class': 'pj',

@@ -12,9 +12,9 @@ from rest_framework.authtoken.models import Token
 from urllib.parse import unquote
 from autenticacao.models import User
 from autenticacao import gerador_senha
-from .models import Conta, Profile, Telefone, Empresa
-from .forms import ContasForm, EmpresaForm, EnderecoForm, TelefoneForm
-from .forms import ServicoForm
+from .models import *
+from .forms import  *
+#from .forms import ServicoForm
 from .decorators import only_administrators
 from .envia_email import EnviaEmail
 from django.views.decorators.csrf import csrf_exempt

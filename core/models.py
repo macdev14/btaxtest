@@ -116,6 +116,14 @@ class Conta(models.Model):
         blank=True,
     )
 
+    bitrix_dominio = models.CharField(
+        'Dominio Bitrix24',
+        max_length=100,
+        unique=True,
+        null=True,
+        blank=True,
+    )
+
     tipo_pessoa = models.CharField(
         'Tipo de Pessoa',
         choices=TIPO_PESSOA,

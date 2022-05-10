@@ -154,6 +154,13 @@ AUTH_USER_MODEL = 'autenticacao.User'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+EMAIL_USE_TLS = os.environ['EMAIL_USE_TLS']
+
+EMAIL_HOST = os.environ['EMAIL_HOST']
+EMAIL_PORT = os.environ['EMAIL_PORT']
+
+EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
 
 OAUTH2_PROVIDER = {
     # this is the list of available scopes
@@ -178,9 +185,9 @@ CLIENT_SECRET = os.environ['CLIENT_SECRET']
 CLIENT_ID = os.environ['CLIENT_ID']
 
 #technospeed
-TS_PLUGBOLETO_BASE_URL = 'https://homologacao.plugboleto.com.br/api/v1/'
-TS_TOKEN = 'f22b97c0c9a3d41ac0a3875aba69e5aa'
-TS_CNPJ = '01001001000113'
+TS_PLUGBOLETO_BASE_URL = os.environ['TS_PLUGBOLETO_BASE_URL']
+TS_TOKEN = os.environ['TS_TOKEN']
+TS_CNPJ = os.environ['TS_CNPJ']
 
 # django-cors-headers
 CORS_ORIGIN_ALLOW_ALL = True

@@ -51,7 +51,20 @@
                     {% endfor %}
                 </div>
             </div>
+
+            
             <div class="row">
+                <div class="col-lg-5">
+                    <div class="form-group">
+                        <label for="{{ form.bitrix_dominio.auto_id }}" class="form-control-label">{{ form.bitrix_dominio.label }}</label>
+                        {{ form.bitrix_dominio }}
+                        {% for error in form.bitrix_dominio.errors %}
+                            <span class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row"> 
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label for="{{ form.nome.auto_id }}" class="form-control-label">{{ form.nome.label }}</label>
@@ -71,6 +84,9 @@
                     </div>
                 </div>
             </div>
+               
+
+            
             <div class="row">
                 <div class="col-lg-3">
                     <div class="form-group">
