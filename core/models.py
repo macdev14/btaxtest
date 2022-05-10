@@ -2,7 +2,10 @@ import uuid, os
 from django.db import models
 
 from autenticacao.models import User
+<<<<<<< HEAD
 from django_dnf.fields import DomainNameField
+=======
+>>>>>>> debef6e (ls)
 
 def profile_foto_upload(self, filename):
     name, ext = os.path.splitext(filename)
@@ -117,7 +120,17 @@ class Conta(models.Model):
         blank=True,
     )
 
+<<<<<<< HEAD
     bitrix_dominio = DomainNameField('Dominio Bitrix', blank=True, null=True)
+=======
+    bitrix_dominio = models.CharField(
+        'Dominio Bitrix24',
+        max_length=100,
+        unique=True,
+        null=True,
+        blank=True,
+    )
+>>>>>>> debef6e (ls)
 
     tipo_pessoa = models.CharField(
         'Tipo de Pessoa',

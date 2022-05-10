@@ -26,7 +26,11 @@ from pybitrix24 import Bitrix24
 import schedule
 from django.templatetags.static import static
 from btax.settings import CLIENT_ID, CLIENT_SECRET, DOMAIN, TS_PLUGBOLETO_BASE_URL, TS_TOKEN, TS_CNPJ
+<<<<<<< HEAD
 from btax.config import bx24
+=======
+# from btax.config import bx24
+>>>>>>> debef6e (ls)
 
 from django.urls import resolve
 
@@ -35,7 +39,10 @@ from django.urls import resolve
 #remoto:
 bx24 = Bitrix24(DOMAIN, CLIENT_ID, CLIENT_SECRET)
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> debef6e (ls)
 #local:
 # if BITRIX_LOCAL:
 #     bx24 = Bitrix24(DOMAIN, CLIENT_ID_LOCAL, CLIENT_SECRET_LOCAL)
@@ -75,11 +82,20 @@ def schedule_refresh():
 # gerar token adicionar no robot
 @csrf_exempt
 def boleto_url_update(request):
+<<<<<<< HEAD
     resp = redirect(reverse('boletos:boletos-gerados'))
     if request.method == 'POST':
         #print('body:')
         
         resp.set_cookie('id_negocio', request.POST['id_negocio'])
+=======
+    resp = redirect(reverse('core:home'))
+    if request.method == 'POST':
+        #print('body:')
+        print('again: ',json.loads(request.body) )
+        data_post = json.loads(request.body)
+        resp.set_cookie('id_negocio', data_post['id_negocio'])
+>>>>>>> debef6e (ls)
         resp.set_cookie('VIEW_REDIRECT', 'core:boleto-url-update')
         return resp
     if 'id_negocio' in request.COOKIES:
