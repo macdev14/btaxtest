@@ -1,0 +1,16 @@
+{% load core_tags %}
+{% for servico in servicos %}
+    <tr>
+        <td>
+            {% retorna_id servico as servico_id %}
+            <a href="{% url 'core:servicos-editar' servico_id %}">{{ servico.discriminacao }}</a>
+        </td>
+        <td class="text-right">
+            <a href="#" data-url="{% url 'core:servicos-excluir' servico_id %}" class="btn-excluir"><i class="fas fa-trash"></i></a>
+        </td>
+    </tr>
+{% empty %}
+    <tr>
+        <td colspan="4" class="text-center">Nenhum serviço encontrado</td>
+    </tr>
+{% endfor %}

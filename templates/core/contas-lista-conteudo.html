@@ -1,0 +1,18 @@
+{% for conta in contas %}
+    <tr>
+        <td><a href="{% url 'core:contas-editar' conta.id %}">{{ conta.nome }}</a></td>
+        <td>{{ conta.razao_social|default:'-' }}</td>
+        <td>{{ conta.get_tipo_pessoa_display }}</td>
+        <td>{{ conta.profiles.first.usuario.get_token.key|default:'Token não gerado' }}</td>
+        <td class="text-right">
+            <a href="#" title="Criar novo token" data-url="{% url 'core:contas-atualizar-token' conta.id %}" class="btn-atualiza-token mr-2"><i class="fas fa-sync-alt"></i></a>
+            <a href="#" title="Excluir conta" data-url="{% url 'core:contas-excluir' conta.id %}" class="btn-excluir">
+                <i class="fas fa-trash"></i>
+            </a>
+        </td>
+    </tr>
+{% empty %}
+    <tr>
+        <td colspan="4" class="text-center">Nenhuma conta encontrada</td>
+    </tr>
+{% endfor %}

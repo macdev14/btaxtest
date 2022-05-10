@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Empresas{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'vendor/sweetalert2/dist/sweetalert2.min.css' %}">
+{% endblock %}
+
+{% block page_title %}Empresas{% endblock %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'core:home' %}"><i class="fas fa-home"></i></a></li>
+    <li class="breadcrumb-item active" aria-current="page">Empresas</a></li>
+{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-header border-0">
+        <div class="row">
+            <div class="col-6">
+                <h3>Empresas</h3>
+            </div>
+            <div class="col-6 text-right">
+                <a href="{% url 'core:empresas-novo' %}" class="btn btn-primary">Novo</a>
+            </div>
+        </div>
+    </div>
+    <div id="tb-empresas" class="table-responsive">
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th>Nome Fantasia</th>
+                    <th>Razão Social</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% include 'core/cliente/empresas-lista-conteudo.html' %}
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer"></div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $('#tb-empresas').on('click', '.btn-excluir', function(e){
+        e.preventDefault();
+        let btn = $(this);
+        Swal.fire({
+            title: 'Confirmar exclusão?',
+            text: 'Isso irá remover a empresa!',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#5E72E4',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim, quero excluir!',
+            cancelButtonText: 'Não!'
+        }).then((result) => {
+            if(result.value) {
+                $.ajax({
+                    url: btn.data('url'),
+                    type: 'get',
+                    success: (data) => {
+                        $('#tb-empresas tbody').html(data.html_lista);
+                        Swal.fire(
+                            'Feito!',
+                            'Empresa excluída com sucesso!',
+                            'success'
+                        );
+                    },
+                    error: () => {
+                        Swal.fire(
+                            'Ops!',
+                            'Houve um erro ao tentar excluir a empresa.',
+                            'error'
+                        );
+                    }
+                })
+            }
+        })
+    })
+</script>
+{% endblock %}

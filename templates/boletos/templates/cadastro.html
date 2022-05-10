@@ -1,0 +1,439 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Templates de Boletos{% endblock %}
+
+{% block page_title %}Cadastro de Templates de Boletos{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'core:home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item"><a href="{% url 'boletos:templates' %}">Templates Boletos</a></li>
+<li class="breadcrumb-item active" aria-current="page">Cadastro</a></li>
+{% endblock %}
+{% block content %}
+<form action="" method="post" novalidate>
+    {% csrf_token %}
+    {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+    <div class="card">
+        <div class="card-header">
+            <h3>Template de Boleto</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        {{ form.descricao.label_tag }}
+                        {{ form.descricao }}
+                        {% for error in form.descricao.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Cedente
+                        <small class="text-muted">Campos para referências a conta/convênio do Cedente (responsável pela <strong>emissão</strong> do boleto)</small>
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        {{ form.cedente_conta_codigo_banco.label_tag }}
+                        {{ form.cedente_conta_codigo_banco }}
+                        {% for error in form.cedente_conta_codigo_banco.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.cedente_conta_numero.label_tag }}
+                        {{ form.cedente_conta_numero }}
+                        {% for error in form.cedente_conta_numero.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.cedente_conta_numero_dv.label_tag }}
+                        {{ form.cedente_conta_numero_dv }}
+                        {% for error in form.cedente_conta_numero_dv.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.cedente_convenio_numero.label_tag }}
+                        {{ form.cedente_convenio_numero }}
+                        {% for error in form.cedente_convenio_numero.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3>Dados Básicos</h3>
+                    <small></small>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        {{ form.titulo_aceite.label_tag }}
+                        {{ form.titulo_aceite }}
+                        {% for error in form.titulo_aceite.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_doc_especie.label_tag }}
+                        {{ form.titulo_doc_especie }}
+                        {% for error in form.titulo_doc_especie.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_local_pagamento.label_tag }}
+                        {{ form.titulo_local_pagamento }}
+                        {% for error in form.titulo_local_pagamento.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>  
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3>Dados de Desconto</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        {{ form.titulo_cod_desconto.label_tag }}
+                        {{ form.titulo_cod_desconto }}
+                        {% for error in form.titulo_cod_desconto.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_prazo_desconto.label_tag }}
+                        {{ form.titulo_prazo_desconto }}
+                        {% for error in form.titulo_prazo_desconto.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_valor_desconto_taxa.label_tag }}
+                        {{ form.titulo_valor_desconto_taxa }}
+                        {% for error in form.titulo_valor_desconto_taxa.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_cod_desconto2.label_tag }}
+                        {{ form.titulo_cod_desconto2 }}
+                        {% for error in form.titulo_cod_desconto2.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_prazo_desconto2.label_tag }}
+                        {{ form.titulo_prazo_desconto2 }}
+                        {% for error in form.titulo_prazo_desconto2.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_valor_desconto_taxa2.label_tag }}
+                        {{ form.titulo_valor_desconto_taxa2 }}
+                        {% for error in form.titulo_valor_desconto_taxa2.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>  
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3>Dados de Juros</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        {{ form.titulo_codigo_juros.label_tag }}
+                        {{ form.titulo_codigo_juros }}
+                        {% for error in form.titulo_codigo_juros.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_prazo_juros.label_tag }}
+                        {{ form.titulo_prazo_juros }}
+                        {% for error in form.titulo_prazo_juros.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_valor_juros.label_tag }}
+                        {{ form.titulo_valor_juros }}
+                        {% for error in form.titulo_valor_juros.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>  
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3>Dados de Multa</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        {{ form.titulo_codigo_multa.label_tag }}
+                        {{ form.titulo_codigo_multa }}
+                        {% for error in form.titulo_codigo_multa.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_prazo_multa.label_tag }}
+                        {{ form.titulo_prazo_multa }}
+                        {% for error in form.titulo_prazo_multa.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_valor_multa_taxa.label_tag }}
+                        {{ form.titulo_valor_multa_taxa }}
+                        {% for error in form.titulo_valor_multa_taxa.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>  
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Dados de Protesto Automático</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        {{ form.titulo_cod_protesto.label_tag }}
+                        {{ form.titulo_cod_protesto }}
+                        {% for error in form.titulo_cod_protesto.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_prazo_protesto.label_tag }}
+                        {{ form.titulo_prazo_protesto }}
+                        {% for error in form.titulo_prazo_protesto.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>  
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3>Dados de Baixa Automática</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        {{ form.titulo_cod_baixa_devolucao.label_tag }}
+                        {{ form.titulo_cod_baixa_devolucao }}
+                        {% for error in form.titulo_cod_baixa_devolucao.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_prazo_baixa.label_tag }}
+                        {{ form.titulo_prazo_baixa }}
+                        {% for error in form.titulo_prazo_baixa.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>  
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3>Dados de Mensagens</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        {{ form.titulo_mensagem01.label_tag }}
+                        {{ form.titulo_mensagem01 }}
+                        {% for error in form.titulo_mensagem01.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_mensagem02.label_tag }}
+                        {{ form.titulo_mensagem02 }}
+                        {% for error in form.titulo_mensagem02.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_mensagem03.label_tag }}
+                        {{ form.titulo_mensagem03 }}
+                        {% for error in form.titulo_mensagem03.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>  
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3>Dados do Sacador/Avalista</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        {{ form.titulo_sacador_avalista.label_tag }}
+                        {{ form.titulo_sacador_avalista }}
+                        {% for error in form.titulo_sacador_avalista.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_sacador_avalista_endereco.label_tag }}
+                        {{ form.titulo_sacador_avalista_endereco }}
+                        {% for error in form.titulo_sacador_avalista_endereco.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_sacador_avalista_cidade.label_tag }}
+                        {{ form.titulo_sacador_avalista_cidade }}
+                        {% for error in form.titulo_sacador_avalista_cidade.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_sacador_avalista_uf.label_tag }}
+                        {{ form.titulo_sacador_avalista_uf }}
+                        {% for error in form.titulo_sacador_avalista_uf.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_sacador_avalista_cep.label_tag }}
+                        {{ form.titulo_sacador_avalista_cep }}
+                        {% for error in form.titulo_sacador_avalista_cep.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_inscricao_sacador_avalista.label_tag }}
+                        {{ form.titulo_inscricao_sacador_avalista }}
+                        {% for error in form.titulo_inscricao_sacador_avalista.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    
+                </div>  
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3>Outros Dados</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        {{ form.titulo_postagem_boleto.label_tag }}
+                        {{ form.titulo_postagem_boleto }}
+                        {% for error in form.titulo_postagem_boleto.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_cod_emissao_bloqueto.label_tag }}
+                        {{ form.titulo_cod_emissao_bloqueto }}
+                        {% for error in form.titulo_cod_emissao_bloqueto.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_outros_acrescimos.label_tag }}
+                        {{ form.titulo_outros_acrescimos }}
+                        {% for error in form.titulo_outros_acrescimos.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_emissao_boleto.label_tag }}
+                        {{ form.titulo_emissao_boleto }}
+                        {% for error in form.titulo_emissao_boleto.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_categoria.label_tag }}
+                        {{ form.titulo_categoria }}
+                        {% for error in form.titulo_categoria.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_postagem_boleto.label_tag }}
+                        {{ form.titulo_postagem_boleto }}
+                        {% for error in form.titulo_postagem_boleto.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_informacoes_adicionais.label_tag }}
+                        {{ form.titulo_informacoes_adicionais }}
+                        {% for error in form.titulo_informacoes_adicionais.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_instrucoes.label_tag }}
+                        {{ form.titulo_instrucoes }}
+                        {% for error in form.titulo_instrucoes.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.titulo_variacao_carteira.label_tag }}
+                        {{ form.titulo_variacao_carteira }}
+                        {% for error in form.titulo_variacao_carteira.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>  
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-6">
+                    <a href="{% url 'boletos:templates' %}" class="btn btn-default">Voltar</a>
+                </div>
+                <div class="col-6 text-right">
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/components/mask/jquery.mask.min.js' %}"></script>
+<script src="{% static 'js/mascaras.js' %}"></script>
+<script>
+    $('#{{form.codigo_cidade_incidencia.auto_id }}').on('blur', function(){
+        let codigo = $(this).val();
+        console.log('tamanho do codigo ' + codigo.length)
+        let campo_nome_cidade = $('#{{ form.descricao_cidade_incidencia.auto_id }}');
+        if(codigo.length == 7){
+            $.ajax({
+                url: `https://servicodados.ibge.gov.br/api/v1/localidades/municipios/${codigo}`,
+                type: 'get',
+                beforeSend: () => campo_nome_cidade.prop('disabled', true),
+                success: (data) => {
+                    if(data.length !== []){
+                        campo_nome_cidade.val(data.nome);
+                    }
+                },
+                complete: () => campo_nome_cidade.prop('disabled', false)
+            })
+        }
+    })
+</script>
+{% endblock %}
