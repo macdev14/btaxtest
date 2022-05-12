@@ -12,6 +12,7 @@ from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, Token
 
 from bson.errors import InvalidId
 from bson.objectid import ObjectId
+from bitrix24.bx24 import bitrixBtax
 
 from boletos.models import Boleto
 from boletos.serializers import CobrancaSerializer
@@ -30,7 +31,7 @@ import json
 from django.http import JsonResponse
 from btax.settings import CLIENT_ID, CLIENT_SECRET, DOMAIN
 from btax.decorators import bitrix_auth
-from btax.config import bx24
+
 from django.templatetags.static import static
 #remoto:
 
@@ -50,6 +51,8 @@ def token_redirect(request):
         print('TOKEN')
         print(request.GET['user_token'])
         print(request.POST.dict())
+        
+        bx24 = bitrixBtax(token_btax=request.GET['user_token'],instalation=True)
 
         bitrix_user = request.GET['bitrix_user'] if 'bitrix_user' in request.GET else None
         
@@ -79,35 +82,35 @@ def token_redirect(request):
         print(headers)
         # mostrar payload
         print("PAYLOAD")
-        print(payload)
+        #print(payload)
         print(payload['titulo_numero_documento'])
         id_negocio =payload['titulo_numero_documento']
         PREFIX = 'boletos/'
         url_boleto = static('assets/'+PREFIX+f'boleto_{id_negocio}.pdf')
-
-        payload_boleto = {
-            'id_negocio' : id_negocio,
-            # 'url_boleto': url_boleto_payload
-        }
+    
+  
         
         # gerar url p/ requisicao
         url = request.build_absolute_uri(reverse('api:cobrancas-emitir'))
         print(url)
 
-        url_boleto = request.build_absolute_uri(reverse('core:boleto-url-update'))
-        # print(url_boleto)
+    
 
         # realizar requisicao
         r = requests.post(url, data=json.dumps(payload), headers=headers)
-        #res = bx24.call('crm.deal.update', { 'id': id_negocio,  'fields':{'UF_CRM_1643650856094': url_boleto }} )
-        #print(res)
+        res = bx24.call('crm.deal.update', { 'id': id_negocio,  'fields':{'UF_CRM_1643650856094': url_boleto }} )
+        print(res)
         print("JSON RESPONSE")
-        #boleto_ = requests.post(url_boleto, data=json.dumps(payload_boleto), headers=headers)
+       
         # mostrar resposta
         print(r.json())
         new = r.json()
         obj = {}
        
+        response = dict(r.json())
+        if not "id" in response:   
+            bx24.call('im.notify', {'to': int(bitrix_user), 'message': 'Conta com esse Email inexistente'  })
+
 
 
         obj["properties[id]"] = new['id']
@@ -116,19 +119,9 @@ def token_redirect(request):
         json_obj = json.loads(json_obj)
         print("object json: ")
         print(json_obj)
-        #return JsonResponse(json_obj)
+        return JsonResponse(json_obj)
 
-        resp = redirect('core:boleto-url-update')
-        resp.set_cookie('id_negocio', id_negocio)
-        sleep(3)
-        return resp
-        #response = dict(r.json())
-        # if not "id" in response:   
-        #     bx24.call('im.notify', {'to': int(bitrix_user), 'message': 'Conta com esse Email inexistente'  })
-
-        #data_response['message'] = 'Testando..'
-        #status_code = status_code = status.HTTP_200_OK
-        return redirect(reverse('core:home'))
+    
    
 
 class TesteList(APIView):

@@ -1,6 +1,6 @@
 from django import forms
 from django.db.models import Q
-
+from urllib.parse import urlparse
 from .models import Conta, Empresa, Endereco, Telefone
 
 class BaseFormWithFormControlBootstrap(forms.ModelForm):
@@ -139,7 +139,9 @@ class ContasForm(forms.ModelForm):
         razao_social = cleaned_data.get('razao_social')
         im = cleaned_data.get('im')
         cnae = cleaned_data.get('cnae')
-
+        self.cleaned_data['bitrix_dominio'] = urlparse(cleaned_data.get('bitrix_dominio')).netloc
+        
+        
         if tipo_pessoa == Conta.PESSOA_JURIDICA:
             if not regime_tributario:
                 self.add_error('regime_tributario', 'Informe um regime tributário')
@@ -166,6 +168,12 @@ class ContasForm(forms.ModelForm):
         if Conta.objects.filter(~Q(id=self.instance.id), contato_email=contato_email, is_deletado=False).exists():
             raise forms.ValidationError('Já existe uma Conta com esse e-mail')
         return contato_email
+
+    def clean_bitrix_dominio(self):
+        bitrix_dominio = self.cleaned_data.get('bitrix_dominio')
+        if Conta.objects.filter(~Q(id=self.instance.id), bitrix_dominio=bitrix_dominio, is_deletado=False).exists():
+            raise forms.ValidationError('Já existe uma Conta com este Domínio Bitrix24')
+        return bitrix_dominio
 
 class EmpresaForm(BaseFormWithFormControlBootstrap):
 

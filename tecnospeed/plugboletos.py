@@ -5,7 +5,7 @@ import requests
 import boto3
 import asyncio
 from btax.settings import *
-from btax.config import bx24
+from bitrix24.bx24 import bitrixBtax
 from django.templatetags.static import static
 CNPJ = os.environ['TS_CNPJ']
 TOKEN = os.environ['TS_TOKEN']

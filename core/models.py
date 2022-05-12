@@ -119,6 +119,14 @@ class Conta(models.Model):
     bitrix_dominio = models.CharField(
         'Dominio Bitrix24',
         max_length=100,
+        #unique=True,
+        null=True,
+        blank=True,
+    )
+
+    refresh_token = models.CharField(
+        'Refresh Token Bitrix24',
+        max_length=1000,
         unique=True,
         null=True,
         blank=True,
