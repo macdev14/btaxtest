@@ -38,7 +38,7 @@ from django.urls import resolve
 # gerar token adicionar no robot
 @csrf_exempt
 def boleto_url_update(request):
-    resp = redirect(reverse('core:home'))
+    resp = redirect(reverse('boletos:boletos-gerados'))
     bx24 = bitrixBtax(token_btax=Token.objects.get(user=request.user).key)
     #auth_url = bx24.build_authorization_url()
     if request.method == 'POST':
@@ -48,7 +48,7 @@ def boleto_url_update(request):
         res = bx24.call('crm.deal.update', { 'id': id_negocio,  'fields':{'UF_CRM_1643650856094': url_boleto }} )
         print(res)
         if 'error' in res:
-                # resp = redirect('core:home')
+            resp = redirect(bx24.build_authorization_url())
             resp.set_cookie('VIEW_REDIRECT', 'core:boleto-url-update')
             return resp
 
