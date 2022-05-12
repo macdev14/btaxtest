@@ -36,8 +36,8 @@ def boletos_gerados(request):
     boletos = list(querys.filtra_objs(Boleto.COLLECTION_NAME, {'cedente_cpf_cnpj': str(request.user.profile.conta.cpf_cnpj), 'situacao' : 'SALVO'}  ))
     
     #boletos_gerados = {}
-    for result_object in boletos:
-         print(result_object)
+    # for result_object in boletos:
+    #      print(result_object)
          #boletos_gerados[str(result_object.get('_id'))] = result_object
     resp =  render(request, 'boletos/templates/lista.html', 
         {

@@ -21,8 +21,7 @@ from mongodb import querys
 
 from tecnospeed import plugboletos
 
-from bitrix24 import bitrix24
-from pybitrix24 import Bitrix24
+
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
@@ -30,7 +29,7 @@ import datetime
 import json
 from django.http import JsonResponse
 from btax.settings import CLIENT_ID, CLIENT_SECRET, DOMAIN
-from btax.decorators import bitrix_auth
+
 
 from django.templatetags.static import static
 #remoto:
