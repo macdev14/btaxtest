@@ -44,7 +44,7 @@ def boleto_url_update(request):
     if request.method == 'POST':
         id_negocio = request.POST['id_negocio']
         PREFIX = 'boletos/'
-        url_boleto = static('assets/'+PREFIX+f'boleto_{id_negocio}.pdf')
+        url_boleto = static(PREFIX+f'boleto_{id_negocio}.pdf')
         res = bx24.call('crm.deal.update', { 'id': id_negocio,  'fields':{'UF_CRM_1643650856094': url_boleto }} )
         print(res)
         if 'error' in res:
