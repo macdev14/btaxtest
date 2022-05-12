@@ -493,7 +493,7 @@ class bitrixBtax(Bitrix24):
         
         url = self._build_oauth_url('token')
         data = requester.request(url, query=kwargs)
-        #print(data)
+        print(data)
         self._access_token = data.get('access_token')
         self._refresh_token = data.get('refresh_token')
         self._expires_in = data.get('expires_in')
