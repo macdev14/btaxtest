@@ -25,7 +25,6 @@ deploy-prod:
   stage: deploy
   variables:
     GIT_CLONE_PATH: $CI_BUILDS_DIR/btax
-    GIT_STRATEGY: clone
   before_script:
     - source /home/ubuntu/env/btax/bin/activate
     - source /home/ubuntu/env/btax/bin/postactivate
