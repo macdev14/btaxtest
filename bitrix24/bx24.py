@@ -7,6 +7,7 @@ from core.models import *
 from rest_framework.authtoken.models import Token
 from urllib.parse import urlparse
 from btax.settings import CLIENT_ID, CLIENT_SECRET
+from django.db import connection
 class bitrixBtax(Bitrix24):
  
     def __init__(self,token_btax=None, client_id=CLIENT_ID, client_secret=CLIENT_SECRET,
@@ -505,5 +506,9 @@ class bitrixBtax(Bitrix24):
         self.user_conta.refresh_token =  data.get('refresh_token') if data.get('refresh_token') else self.user_conta.refresh_token
 
         self.user_conta.save()
+        
         #print(self._refresh_token)
         return data
+    
+    def __del__(self):
+        connection.close()
