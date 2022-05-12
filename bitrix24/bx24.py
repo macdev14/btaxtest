@@ -495,11 +495,11 @@ class bitrixBtax(Bitrix24):
         data = requester.request(url, query=kwargs)
         print(data)
         print(url)
-        self._access_token = data.get('access_token')
-        self._refresh_token = data.get('refresh_token')
-        self._expires_in = data.get('expires_in')
-        self.user_id = data.get('user_id')
-        self.member_id = data.get('member_id')
+        self._access_token = data.get('access_token') if data.get('access_token') else self._access_token
+        self._refresh_token = data.get('refresh_token') if data.get('refresh_token') else self._refresh_token
+        self._expires_in = data.get('expires_in') if data.get('expires_in') else self._expires_in
+        self.user_id = data.get('user_id') if data.get('user_id') else self.user_id 
+        self.member_id = data.get('member_id') if data.get('member_id') else self.member_id 
         #print(self.user_conta.refresh_token)
         #print(data.get('refresh_token'))
         self.user_conta.refresh_token =  data.get('refresh_token') if data.get('refresh_token') else self.user_conta.refresh_token
