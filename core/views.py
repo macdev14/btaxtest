@@ -21,95 +21,30 @@ from django.views.decorators.csrf import csrf_exempt
 from mongodb import querys
 from .models_mongodb import ServicoMongo, mongo_to_dict
 from boletos.models import TemplateBoleto
-from bitrix24.bitrix24 import *
-from pybitrix24 import Bitrix24
+#from bitrix24.bitrix24 import *
+#from pybitrix24 import Bitrix24
 import schedule
 from django.templatetags.static import static
 from btax.settings import CLIENT_ID, CLIENT_SECRET, DOMAIN, TS_PLUGBOLETO_BASE_URL, TS_TOKEN, TS_CNPJ
-<<<<<<< HEAD
-from btax.config import bx24
-=======
-# from btax.config import bx24
->>>>>>> debef6e (ls)
 
+from bitrix24.bx24 import bitrixBtax
 from django.urls import resolve
 
-#from btax.decorators import bitrix_auth
-
-#remoto:
-bx24 = Bitrix24(DOMAIN, CLIENT_ID, CLIENT_SECRET)
-
-<<<<<<< HEAD
-
-=======
->>>>>>> debef6e (ls)
-#local:
-# if BITRIX_LOCAL:
-#     bx24 = Bitrix24(DOMAIN, CLIENT_ID_LOCAL, CLIENT_SECRET_LOCAL)
 
 
-print(bx24.build_authorization_url())
-#auth_id = "0c275462005ad5dd001942f700000318a0ab0798e2b501426e7cd42c5bf6a01bd507e3"
 
 
-# async def auth_bitrix(request):
-    
-#     v = bx24.call('crm.user.current')
-#     if 'error' in v:
-#         current_url = resolve(request.path_info).url_name
-#         resp = redirect('core:home')
-#         resp.set_cookie('VIEW_REDIRECT', current_url)
-#         return resp
-
-code, data, access_token, refresh_token = None, None, None, None
-
-auth_url = bx24.build_authorization_url()
-instalation = False
-
-def set_tokens(dicts=[]):
-    global access_token, refresh_token
-    print(dicts)
-    
-    access_token = dicts['access_token']
-    refresh_token = dicts['refresh_token']
-    
-
-def schedule_refresh():
-    def sched_set():
-        set_tokens(bx24.refresh_tokens())
-    schedule.every(1).minutes.do(sched_set)
 
 # gerar token adicionar no robot
 @csrf_exempt
 def boleto_url_update(request):
-<<<<<<< HEAD
-    resp = redirect(reverse('boletos:boletos-gerados'))
-    if request.method == 'POST':
-        #print('body:')
-        
-        resp.set_cookie('id_negocio', request.POST['id_negocio'])
-=======
     resp = redirect(reverse('core:home'))
+    bx24 = bitrixBtax(token_btax=Token.objects.get(user=request.user).key)
+    #auth_url = bx24.build_authorization_url()
     if request.method == 'POST':
-        #print('body:')
-        print('again: ',json.loads(request.body) )
-        data_post = json.loads(request.body)
-        resp.set_cookie('id_negocio', data_post['id_negocio'])
->>>>>>> debef6e (ls)
-        resp.set_cookie('VIEW_REDIRECT', 'core:boleto-url-update')
-        return resp
-    if 'id_negocio' in request.COOKIES:
-        id_negocio = request.COOKIES['id_negocio']
-        print('ran')
-        print('negocio'+str(id_negocio))
-     
-        #resp.set_cookie('id_negocio', id_negocio)
-        
-        # if 'bitrix_code' in request.COOKIES and request.COOKIES['bitrix_code'] or code:
-        #     bx24.obtain_tokens(request.COOKIES['bitrix_code'] or code)
-        # bx24.refresh_tokens()
+        id_negocio = request.POST['id_negocio']
         PREFIX = 'boletos/'
-        url_boleto = static('assets/'+PREFIX+f'boleto_{id_negocio}.pdf')
+        url_boleto = static(PREFIX+f'boleto_{id_negocio}.pdf')
         res = bx24.call('crm.deal.update', { 'id': id_negocio,  'fields':{'UF_CRM_1643650856094': url_boleto }} )
         print(res)
         if 'error' in res:
@@ -121,41 +56,29 @@ def boleto_url_update(request):
    
      
   
-    # resp.set_cookie('id_negocio', id_negocio)
-    # resp.set_cookie('url_boleto', url_boleto)
-   
-    
-   
-    # if 'id_negocio' in request.COOKIES and 'url_boleto' in request.COOKIES and request.COOKIES['id_negocio'] and request.COOKIES['url_boleto']:
-    #res = bx24.call('crm.deal.update', { 'id': request.COOKIES['id_negocio'],  'fields':{'UF_CRM_1643650856094': request.COOKIES['url_boleto'] }} )
-    #print(res)
-        
-    # resp.delete_cookie('id_negocio', id_negocio)
-    # resp.delete_cookie('url_boleto', url_boleto)
+
+
     return resp
     
+def update_btax(request):
+    bx24 = bitrixBtax(token_btax=Token.objects.get(user=request.user).key,instalation=True)
+    bx24.update_robot(domain=request.META['HTTP_HOST'])
+    return redirect('core:home')
 #@bitrix_auth(bx24)
+
 def instalacao_btax(request):
     # Obter variaveis globais para modificacao e leitura
-    global refresh_token, access_token, code, auth_url, bx24, instalation
+    #global refresh_token, access_token, code, auth_url, bx24, instalation
     instalation = True
-    ''' 
-
-    Autorizar app a obter informacoes de quem instalou o btax e voltar para a pagina de instalacao para criar o robot com o token 
-
-    '''
-    # se estiver vazio os tokens de acesso autorizar novamente e obter tokens 
-    if (refresh_token is None) and (access_token is None) and (code is None): return redirect(auth_url)
+    bx24 = bitrixBtax(token_btax=Token.objects.get(user=request.user).key)
+    auth_url = bx24.build_authorization_url()
+    if not bx24.authorized():
+        return redirect(auth_url)
     
-    # obter informacoes do usuario caso nao haja redireciona para a pagina principal
-    #if not 'result' in bx24.call('user.current'): return redirect('core:home')
-    
-    try:
-        bitrix24_user = bx24.call('user.current')['result'] 
-        bitrix24_user_tst = bx24.call('user.current')
-        bitrix24_user_tst['result']
-    except:
-        return redirect('core:home')
+    bitrix24_user = bx24.call('user.current')['result'] 
+    bitrix24_user_tst = bx24.call('user.current')
+    bitrix24_user_tst['result']
+   
     
     #print(bitrix24_user)
     
@@ -183,201 +106,55 @@ def instalacao_btax(request):
         # passar token e id do usuario do btax para criacao do robo no bitrix24
         print("Creating Robot")
         
-        instalation = False
-        try:
-            install_robot(token, user.profile.conta.id, bx24, info['ID'], request.META['HTTP_HOST'])
-            return redirect(auth_url)
-        except:
-            return redirect(reverse('core:instalacao'))
-        # resp = redirect('core:home')
-        # resp.set_cookie('token', token)
-        # return resp
+        
+        
+        bx24.install_robot(domain=request.META['HTTP_HOST'])
+        bx24.call('im.notify', {'to': int(info['ID']), 'message': 'Automação BTAX adicionada, entre em Regras de automação para configurar.'  })
+     
     # Se não possuir conta no btax24 o usuário que tentou instalar será notificado
-    print("Error while creating robot")
-    bx24.call('im.notify', {'to': int(info['ID']), 'message': 'Conta com esse Email inexistente'  })
-    instalation = False
+    else:
+        print("Error while creating robot")
+        bx24.call('im.notify', {'to': int(info['ID']), 'message': 'Conta com esse Email inexistente'  })
+    
     
     resp = redirect('core:home')
-    #resp.set_cookie('token', token)
+   
     return resp
 
 
 
-def update_btax(request):
-    # Obter variaveis globais para modificacao e leitura
-    global refresh_token, access_token, code, auth_url, bx24, instalation
-    instalation = False
-    ''' 
 
-    Autorizar app a obter informacoes de quem instalou o btax e voltar para a pagina de instalacao para criar o robot com o token 
-
-    '''
-    # se estiver vazio os tokens de acesso autorizar novamente e obter tokens 
-    if (refresh_token is None) and (access_token is None) and (code is None): return redirect(auth_url)
-    
-    # obter informacoes do usuario caso nao haja redireciona para a pagina principal
-    #if not 'result' in bx24.call('user.current'): return redirect('core:home')
-    print("update called")
-    
-    
-   
-   
-
-        
-    
-    
-   
-    try:
-        # guardar informacoes: email
-        bitrix24_user = bx24.call('user.current')['result'] 
-        info = bitrix24_user
-        email = info["EMAIL"]
-        # verificar se existe uma conta com este nome e email
-        if Conta.objects.filter(contato_email=email).exists():
-        # teste de obter conta; conta = Conta.objects.get(is_deletado=False, nome=nome,email=email)
-       
-        # obter usuario que possui este email
-            user = User.objects.get(email=email)
-
-        # obter token
-            token = Token.objects.get(user=user)
-
-        # passar token e id do usuario do btax para criacao do robo no bitrix24
-            print("Updating Robot View")
-        
-        
-       
-            update_robot(token, user.profile.conta.id, bx24, info['ID'], request.META['HTTP_HOST'])
-            return redirect('boletos:templates')
-    
-        print("Error while updating robot")
-        #bx24.call('im.notify', {'to': int(info['ID']), 'message': 'Conta com esse Email inexistente'  })
-        if 'NOTIFICACAO_BITRIX' in request.COOKIES and request.COOKIES['NOTIFICACAO_BITRIX']:
-            bx24.call('im.notify', {'to': int(info['ID']), 'message': request.COOKIES['NOTIFICACAO_BITRIX']  })
-        if 'id_integracao' in request.COOKIES and request.COOKIES['id_integracao']:
-            bx24.call('crm.deal.update', {'id': 4758, 'fields':{  "UF_CRM_1643650856094":  static(f'/boletos/boleto_{request.COOKIES["id_integracao"]}.pdf' )   }	  })
-            
-    except:
-        resp = redirect('core:home')
-        resp.set_cookie('VIEW_REDIRECT', 'core:update-btax')
-        return resp
-       
     # Se não possuir conta no btax24 o usuário que tentou instalar será notificado
     
     
-    resp = redirect('boletos:templates')
-    resp.delete_cookie('NOTIFICACAO_BITRIX')
-    #resp.set_cookie('token', token)
-    return resp
+   
 
 
 @csrf_exempt
-# @login_required
+@login_required
 def home(request,  url_name="", **kwargs):
-    global refresh_token, access_token, code, auth_url, bx24, instalation
-    
-    print("kwargs: ")
-    print(kwargs)
-    print("url name: ")
-    print(url_name)
-
-    #if 'code' in request.GET:
-    if 'code' in request.GET: code = request.GET['code'] 
-   
-    if 'error' in bx24.obtain_tokens(code): return redirect(auth_url)
-    bx24.obtain_tokens(code)['access_token'] if 'access_token' in bx24.obtain_tokens(code) else redirect(auth_url)
-    bx24.refresh_tokens()
-    print("inside kwargs: ")
-    print(kwargs)
-            # if kwargs.get('url_name'):
-            #     print(url_name)
-            #     #resp = kwargs.get('url_name')
-            #     try: resp = redirect(reverse(url_name, args=[1]))
-            #     except: resp = redirect(reverse(url_name, kwargs=kwargs))
-            #     #bx24.refresh_tokens()
-                
-            #    return resp
-           
-        
-        
-    
-        
-
-    if instalation:
-        instalation = False
-        resp = redirect('core:instalacao')
-                #bx24.refresh_tokens()
-        resp.set_cookie('bitrix_code', code)
+    user = request.user
+    if user.is_superuser or user.is_staff:
+        resp = render(request, 'core/home.html')
         return resp
-        
-    if 'VIEW_REDIRECT' in request.COOKIES and request.COOKIES['VIEW_REDIRECT']:
-        red = request.COOKIES['VIEW_REDIRECT']
-        if 'boletos-gerados' in request.COOKIES['VIEW_REDIRECT']:
-            red = 'boletos:boletos-gerados'
-        try: resp = redirect(reverse(red, args=[1]))
-        except: resp = redirect(reverse(red, kwargs=kwargs))
-        resp.set_cookie('bitrix_code', code)
-        resp.delete_cookie('VIEW_REDIRECT')
-        return resp
-        
-        
+    bx24 = bitrixBtax(token_btax=Token.objects.get(user=request.user).key)
+    
+    if 'code' in request.GET: 
+        code = request.GET['code'] 
+        bx24.obtain_tokens(code)
+    
+        bx24.refresh_tokens()
+    
+    if not bx24.authorized():
+        auth_url = bx24.build_authorization_url()
+        return redirect(auth_url)
+
+
     resp = render(request, 'core/home.html')
-    resp.set_cookie('bitrix_code', code)
     return resp
-    # try:
-
-    #     templates_boletos = querys.filtra_objs(TemplateBoleto.COLLECTION_NAME, {'conta_id': str(request.user.profile.conta.id), 'deletado': False })
-        
-    #     dict_options = {}
-    #     for id_boleto in templates_boletos:
-    #         dict_options[ str(id_boleto.get('descricao')) ] = str(id_boleto.get('_id'))
-    # except:
-    #     pass 
-
-
-
-    #print(dict_options)
-    # def auth_redirect():
-    #     return redirect(auth_url)
     
-    # if request.method == "GET":
-    #     if "code" in request.GET:
-    #         code = request.GET["code"]
-    #         if url_name:
-    #             try: bx24.obtain_tokens(code)
-    #             except:redirect(auth_url)
-    #             resp = redirect(url_name)
-
-    #             resp.set_cookie('bitrix_code', code)
-                
-    #             return resp
-        #if (refresh_token is None) and  (access_token is None) and (code is None): return redirect(auth_url)
-        # try:
-        #     tokens = bx24.obtain_tokens(code)
-        #     print(tokens)
-        #     refresh_token = tokens['refresh_token']
-        #     access_token = tokens['access_token']
-        #     #bx24.call('bizproc.robot.delete', {'CODE': 'btax' })
-            
-        # except: 
-        #     schedule.every(50).minutes.do(auth_redirect)
-            
-        #     return redirect(auth_url)
-        # print(refresh_token or None)
-        # print(access_token or None)
-        # print(code or None )
-        # print("instalacao: ")
-        # print(instalation)
-        # schedule_refresh()
-        
-
-
-
 
         
-        
-
-
 
 
 @login_required
