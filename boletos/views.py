@@ -8,7 +8,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, Http40
 from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
 
-from bitrix24 import bx24
+from bitrix24.bx24 import bitrixBtax
 
 from .forms import TemplateBoletoForm
 from .models import TemplateBoleto, Boleto
@@ -67,7 +67,7 @@ def templates_boletos(request):
 #@bitrix_auth(bx24)
 def templates_boletos_novo(request):
     user_token = Token.objects.get(user=request.user).key
-    bx24 = bx24.bitrixBtax(user_token)
+    bx24 = bitrixBtax(user_token)
     conta = request.user.profile.conta
 
     if request.method == 'POST':
@@ -99,7 +99,7 @@ def templates_boletos_novo(request):
 def templates_boletos_editar(request, template_boleto_id):
     conta = request.user.profile.conta
     user_token = Token.objects.get(user=request.user).key
-    bx24 = bx24.bitrixBtax(user_token)
+    bx24 = bitrixBtax(user_token)
     template_boleto = querys.get_obj(TemplateBoleto.COLLECTION_NAME, {'_id': ObjectId(template_boleto_id), 'conta_id': str(conta.id)})
     if request.method == 'POST':
         form = TemplateBoletoForm(request.POST)
@@ -132,7 +132,7 @@ def templates_boletos_editar(request, template_boleto_id):
 def templates_boletos_excluir(request, template_boleto_id):
     conta = request.user.profile.conta
     user_token = Token.objects.get(user=request.user).key
-    bx24 = bx24.bitrixBtax(user_token)
+    bx24 = bitrixBtax(user_token)
     template_boleto = querys.get_obj(TemplateBoleto.COLLECTION_NAME, {'_id': ObjectId(template_boleto_id), 'conta_id': str(conta.id)})
     template_boleto['deletado'] = True
     querys.update_obj(TemplateBoleto.COLLECTION_NAME, template_boleto['_id'], template_boleto)
@@ -146,7 +146,7 @@ def templates_boletos_excluir(request, template_boleto_id):
 def boletos_excluir(request, boleto_id):
     conta = request.user.profile.conta
     user_token = Token.objects.get(user=request.user).key
-    bx24 = bx24.bitrixBtax(user_token)
+    bx24 = bitrixBtax(user_token)
     boleto = querys.get_obj(Boleto.COLLECTION_NAME, { 'cedente_cpf_cnpj': str(request.user.profile.conta.cpf_cnpj), 'situacao' : 'SALVO' })
     boleto['situacao'] = 'BAIXA'
     querys.update_obj(Boleto.COLLECTION_NAME, boleto['_id'], boleto)
