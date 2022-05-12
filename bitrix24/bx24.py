@@ -33,11 +33,12 @@ class bitrixBtax(Bitrix24):
         self.user_id = user_id
         self.hostname = hostname
         self.token_btax = token_btax
-        #if instalation==False:
+        
         self.user_conta = Token.objects.get(key=token_btax).user.profile.conta
-        #self.user_auth = User.objects.get(pk=self.token_account.user_id)
-        self.hostname = urlparse(self.user_conta.bitrix_dominio).netloc 
-            
+       
+        url_parsed = urlparse(self.user_conta.bitrix_dominio).netloc
+        self.hostname = url_parsed if url_parsed else self.user_conta.bitrix_dominio
+
         self._refresh_token = self.user_conta.refresh_token
         #print('refresh_token', self._refresh_token)
         # if not self._refresh_token and not instalation:
