@@ -2,10 +2,7 @@ import uuid, os
 from django.db import models
 
 from autenticacao.models import User
-<<<<<<< HEAD
-=======
 from django_dnf.fields import DomainNameField
->>>>>>> dfe4662f63c38772a690479088e232040a840204
 
 def profile_foto_upload(self, filename):
     name, ext = os.path.splitext(filename)
