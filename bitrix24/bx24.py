@@ -91,7 +91,8 @@ class bitrixBtax(Bitrix24):
         if not token: token = self.token_btax
         if not bitrix_userid: bitrix_userid=self.user_id
         if not account_id: account_id=self.user_conta.id
-
+        print('Account Id')
+        print(account_id)
         if 'localhost' in domain or '127.0.0.1' in domain: domain="btaxtest.herokuapp.com"
         templates_boletos = querys.filtra_objs(TemplateBoleto.COLLECTION_NAME, {'conta_id': str(account_id), 'deletado': False })
         print('USER TOKEN:')
@@ -115,13 +116,15 @@ class bitrixBtax(Bitrix24):
         except Exception as e:
             raise Exception("Invalid tokens while deleting robots")
 
+        
+
         properties = {
             
                 'template_boleto_id': {
                         'Name': 'Template de Boleto Cadastrado',
                         'Type': 'select',
                         'Options': dict_options,
-                        'Default': list(dict_options.keys())[0] or ''
+                        'Default': list(dict_options.keys())[0] if dict_options.keys() else ''
                     },
 
                     'sacado_cpf_cnpj': {
@@ -306,7 +309,7 @@ class bitrixBtax(Bitrix24):
                             'Name': 'Template de Boleto Cadastrado',
                             'Type': 'select',
                             'Options': dict_options,
-                            'Default': list(dict_options.keys())[0] or ''
+                            'Default': list(dict_options.keys())[0] if dict_options.keys() else ''
                         },
 
                     # 'id_boleto': {
