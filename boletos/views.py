@@ -148,7 +148,7 @@ def boletos_excluir(request, boleto_id):
     user_token = Token.objects.get(user=request.user).key
     bx24 = bx24.bitrixBtax(user_token)
     boleto = querys.get_obj(Boleto.COLLECTION_NAME, { 'cedente_cpf_cnpj': str(request.user.profile.conta.cpf_cnpj), 'situacao' : 'SALVO' })
-    boleto['situacao'] = 'FALHA'
+    boleto['situacao'] = 'BAIXA'
     querys.update_obj(Boleto.COLLECTION_NAME, boleto['_id'], boleto)
     token = Token.objects.get(user=request.user)
     resp = redirect('boletos:boletos-gerados')

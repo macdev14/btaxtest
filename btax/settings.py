@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'django_dnf',
     'oauth2_provider',
     'corsheaders',
     'rest_framework',
@@ -138,7 +138,9 @@ LOGIN_URL = '/auth/entrar/'
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/assets/'
-STATIC_ROOT = BASE_DIR / 'static/'
+
+STATIC_ROOT = os.environ['STATIC_ROOT']
+
 STATICFILES_DIRS = [
     BASE_DIR / 'static/assets',
 ]
@@ -194,13 +196,15 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 # aws
 
+USE_AWS = os.environ['USE_AWS']
 AWS_S3_REGION_NAME = 'sa-east-1'
+if USE_AWS: 
+    STATIC_ROOT = AWS_URL + '/static/'
+    STATIC_URL = AWS_URL + '/static/'
 
-STATIC_ROOT = AWS_URL + '/static/'
-STATIC_URL = AWS_URL + '/static/'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-MEDIA_URL = AWS_URL + '/media/'
-MEDIA_ROOT = AWS_URL + '/media/'
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    MEDIA_URL = AWS_URL + '/media/'
+    MEDIA_ROOT = AWS_URL + '/media/'
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
 

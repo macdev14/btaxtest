@@ -28,10 +28,11 @@
    
     {% ifchanged %}
     <tr>
-            <td>
+           
                 {% retorna_id boleto as b_id %}
-                <a href="{% url 'boletos:templates-editar' b_id %}">{{ b_id }}</a>
-            </td>
+              
+        
+            <td>{{ boleto.titulo_numero_documento }}</td>
             <td>{{ boleto.cedente_cpf_cnpj }}</td>
             <td>{{ boleto.sacado_cpf_cnpj }}</td>
             <td>{{ boleto.situacao }}</td>
