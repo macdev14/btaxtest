@@ -27,7 +27,7 @@ def consultar_boleto(request):
 
 @login_required
 def boletos_delete_all(request):
-    p = querys.update_varios_objs(Boleto.COLLECTION_NAME, {'cedente_cpf_cnpj': str(request.user.profile.conta.cpf_cnpj), 'situacao' : 'SALVO' }, { '$set': {'situacao' : 'BAIXA' } }  )
+    querys.update_varios_objs(Boleto.COLLECTION_NAME, {'cedente_cpf_cnpj': str(request.user.profile.conta.cpf_cnpj), 'situacao' : 'SALVO' }, { '$set':{ 'situacao': 'BAIXA'  }  }  )
     resp = HttpResponseRedirect(reverse('boletos:boletos-gerados'))
     return resp
 @login_required

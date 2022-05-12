@@ -86,7 +86,7 @@ def token_redirect(request):
         print(payload['titulo_numero_documento'])
         id_negocio =payload['titulo_numero_documento']
         PREFIX = 'boletos/'
-        url_boleto = static('assets/'+PREFIX+f'boleto_{id_negocio}.pdf')
+        url_boleto = static(PREFIX+f'boleto_{id_negocio}.pdf')
     
   
         
