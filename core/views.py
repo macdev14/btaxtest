@@ -36,7 +36,7 @@ from django.urls import resolve
 
 
 # gerar token adicionar no robot
-@csrf_exempt
+# @csrf_exempt
 def boleto_url_update(request):
     resp = redirect(reverse('boletos:boletos-gerados'))
     bx24 = bitrixBtax(token_btax=Token.objects.get(user=request.user).key)
