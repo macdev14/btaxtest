@@ -1,5 +1,7 @@
 # btax
-
+# Desenvolvedores
+- Lauro Pimentel
+- João Henrique
 ## Requisitos para rodar o projeto
 - **Python 3.6+**
 - **Django 3.2**
