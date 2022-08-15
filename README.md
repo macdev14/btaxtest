@@ -1,5 +1,5 @@
 # btax
-# Desenvolvedores
+## Desenvolvedores
 - Lauro Pimentel
 - João Henrique
 ## Requisitos para rodar o projeto
